@@ -4,49 +4,84 @@ const { parse } = require("csv-parse");
 const Trip = require("../models/trip");
 const config = require("../utils/config");
 const mongoose = require("mongoose");
+
+//Process file function parses csv files, creates new Trip objects, filters them and uploads them to a database
+
 const processFile = async () => {
+  const start = Date.now();
   mongoose.connect(config.MONGODB_URI);
   let records = [];
-  let trash = [];
-  const parser = fs.createReadStream(`${arg}`).pipe(
-    parse({
-      columns: true,
+  let trash = 0;
+  const parser = fs.createReadStream(`${arg}`);
+  console.log("now parsing file...");
+  parser
+    .pipe(
+      parse({
+        columns: true,
+      })
+    )
+    .on("data", async (record) => {
+      let vals = Object.values(record);
+      let it = {
+        departure: vals[0],
+        ret: vals[1],
+        depId: vals[2],
+        depNm: vals[3],
+        retId: vals[4],
+        retNm: vals[5],
+        distance: vals[6],
+        duration: vals[7],
+      };
+      parseInt(it.distance) > 10 && parseInt(it.duration) > 10
+        ? records.push(it)
+        : trash++;
     })
-  );
-  for await (const record of parser) {
-    let vals = Object.values(record);
-    let it = {
-      departure: vals[0],
-      ret: vals[1],
-      depId: vals[2],
-      depNm: vals[3],
-      retId: vals[4],
-      retNm: vals[5],
-      distance: vals[6],
-      duration: vals[7],
-    };
-    parseInt(it.distance) > 10 && parseInt(it.duration) > 10
-      ? records.push(it)
-      : trash.push(it);
-  }
+    .on("end", async () => {
+      console.log("all records parsed");
+      console.log(records.length, " valid records");
+      console.log(trash, " invalid records");
+      try {
+        //230 -> 210 seconds mongoAtl with chunked method
+        // seconds Azure | est 4710 sec
+        /* 
+      console.log("now sending chunks of 1000 records to db...");
+      let chunks = 0
+      for (let i = 0; i < records.length; i += 1000 ){
+        const chunk = records.slice(i, i+1000)
+        const done = await Trip.insertMany(chunk, { ordered: false });
+        if (done){
+          chunks++
+          console.log("chunk ", chunks, " uploaded")
+        }
+      }; */
+        //186 seconds mongoAtl with non chunked method
+        // Azure | est
 
-  try {
-    const done = await Trip.insertMany(records);
-    if (done) {
-      mongoose.connection.close(function () {
-        console.log("complete");
-        console.log("filtered out ", trash.length, " files");
-        process.exit(0);
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-  /* 
-  const done = await Trip.insertMany(records)
-  if(done){
-    mongoose.Connection.close();
-    return console.log(completed);
-  } */
+        console.log("now uploading files to db");
+        await Trip.insertMany(records, { ordered: false });
+
+        const mls = Date.now() - start;
+        console.log(
+          "It took ",
+          Math.floor(mls / 1000),
+          " seconds to complete parsing and upload of your file"
+        );
+        mongoose.connection.close(function () {
+          console.log("complete");
+          process.exit(0);
+        });
+      } catch (error) {
+        console.log(error);
+        mongoose.connection.close(function () {
+          console.log("closing mongo connection");
+          process.exit(0);
+        });
+      }
+    });
 };
-processFile();
+
+try {
+  processFile();
+} catch (error) {
+  console.log(error);
+}
