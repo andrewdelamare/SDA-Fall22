@@ -1,10 +1,19 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
-const Trip = require("./trip");
+
 
 const durSchema = new Schema({
   page: { type: Number, required: true },
-  trips: [Trip],
+  trips: [{
+    departure: { type: Date, required: true },
+    ret: { type: Date, required: true },
+    depId: { type: Number, required: true },
+    depNm: { type: String, required: true },
+    retId: { type: Number, required: true },
+    retNm: { type: String, required: true },
+    distance: { type: Number, required: true },
+    duration: { type: Number, required: true },
+  }],
 });
 
 const Dur = mongoose.model("Dur", durSchema);
