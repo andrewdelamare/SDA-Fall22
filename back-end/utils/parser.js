@@ -1,5 +1,4 @@
 const fs = require("fs");
-const arg = process.argv[2];
 const { parse } = require("csv-parse");
 const Trip = require("../models/trip");
 const config = require("../utils/config");
@@ -7,12 +6,12 @@ const mongoose = require("mongoose");
 
 //Process file function parses csv files, creates new Trip objects, filters them and uploads them to a database
 
-const processFile = async () => {
+const processFile = async (args) => {
   const start = Date.now();
   mongoose.connect(config.MONGODB_URI);
   let records = [];
   let trash = 0;
-  const parser = fs.createReadStream(`${arg}`);
+  const parser = fs.createReadStream(`${args}`);
   console.log("now parsing file...");
   parser
     .pipe(
@@ -41,8 +40,8 @@ const processFile = async () => {
       console.log(records.length, " valid records");
       console.log(trash, " invalid records");
       try {
-        //230 -> 210 seconds mongoAtl with chunked method
-        // seconds Azure | est 4710 sec
+        //210 seconds mongoAtl with chunked method
+        // seconds Azure | est 4710 sec with chunked method
         /* 
       console.log("now sending chunks of 1000 records to db...");
       let chunks = 0
@@ -55,7 +54,7 @@ const processFile = async () => {
         }
       }; */
         //186 seconds mongoAtl with non chunked method
-        // Azure | est
+        //13193 seconds Azure with non chunked method
 
         console.log("now uploading files to db");
         await Trip.insertMany(records, { ordered: false });
@@ -79,9 +78,10 @@ const processFile = async () => {
       }
     });
 };
-
+const arg = process.argv[2];
 try {
-  processFile();
+  processFile(arg);
 } catch (error) {
   console.log(error);
 }
+module.exports = processFile;
