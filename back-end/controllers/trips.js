@@ -30,17 +30,8 @@ const { body, validationResult } = require("express-validator");
 //"distance": vals[6],
 //"duration": vals[7],
 
-tripRouter.get("/trip/:", (req, res) => {});
-
-tripRouter.get("/trip/:", (req, res) => {});
-
-tripRouter.get("/trip/:", (req, res) => {});
-
-tripRouter.get("/trip/:", (req, res) => {});
-
-tripRouter.get("/trip/:", (req, res) => {});
-
-tripRouter.get("/trip/:", (req, res) => {});
+tripRouter.get("/trips", (req, res) => {});
+tripRouter.get("/trips/:currentpg/:direction/:filter/:sort", (req, res) => {});
 
 tripRouter.post(
   "/trip",
