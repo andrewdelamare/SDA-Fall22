@@ -104,7 +104,7 @@ const processFile = async (file, type, upload) => {
               }
             }
           };
-          await chunkedUpload(hours, Trip);
+          await chunkedUpload(hours, Hour);
           //------------------------NON CHUNKED-----------------------
           //186 seconds mongoAtl with non chunked method
           //13193 seconds Azure with non chunked method
