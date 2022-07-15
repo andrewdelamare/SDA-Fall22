@@ -59,7 +59,6 @@ const processFile = async (file, type, upload) => {
       const startmon = startOfMonth(dep);
       const endmon = endOfMonth(dep);
       const hourinterval = eachHourOfInterval({ start: startmon, end: endmon });
-      console.log(hourinterval.length);
       for (const h of hourinterval) {
         hours.push(
           new Hour({
@@ -85,6 +84,7 @@ const processFile = async (file, type, upload) => {
           }
         }
       }
+      records = [];
       progbar.stop();
       if (upload === "upload") {
         try {
@@ -92,25 +92,25 @@ const processFile = async (file, type, upload) => {
           //--------------------------CHUNKED------------------------
           //210 seconds mongoAtl with chunked method
           // seconds Azure | est 4710 sec with chunked method
-          //const chunkedUpload = async (arr, model) => {
-          //  console.log("now sending chunks of 100 records to db...");
-          //  let chunks = 0;
-          //  for (let i = 0; i < arr.length; i += 100) {
-          //    const chunk = arr.slice(i, i + 100);
-          //    const done = await model.insertMany(chunk, { ordered: false });
-          //    if (done) {
-          //      chunks++;
-          //      console.log("chunk ", chunks, " uploaded");
-          //    }
-          //  }
-          //};
-          //await chunkedUpload(depArr, Trip);
+          const chunkedUpload = async (arr, model) => {
+            console.log("now sending chunks of 100 records to db...");
+            let chunks = 0;
+            for (let i = 0; i < arr.length; i += 100) {
+              const chunk = arr.slice(i, i + 100);
+              const done = await model.insertMany(chunk, { ordered: false });
+              if (done) {
+                chunks++;
+                console.log("chunk ", chunks, " uploaded");
+              }
+            }
+          };
+          await chunkedUpload(hours, Trip);
           //------------------------NON CHUNKED-----------------------
           //186 seconds mongoAtl with non chunked method
           //13193 seconds Azure with non chunked method
           // seconds mongoAtl non chunked as hours
-          console.log("now uploading files to db");
-          await Hour.insertMany(hours, { ordered: false });
+          //console.log("now uploading files to db");
+          //await Hour.insertMany(hours, { ordered: false });
 
           const mls = Date.now() - start;
           console.log(
