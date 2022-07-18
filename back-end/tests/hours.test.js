@@ -17,7 +17,7 @@ const api = supertest(app);
 
 test("Parse files", async () => {
   //expect.assertions(1);
-  const obj = await parseFile("./test.csv", "trip");
+  const obj = await parseFile("csv/2021-05.csv", "trip");
   console.log(obj);
 
   //console.log(result.recordsLen);

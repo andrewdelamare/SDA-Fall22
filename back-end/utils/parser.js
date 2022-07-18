@@ -128,7 +128,7 @@ const uploadFiles = async (arr, model) => {
       console.log("complete");
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     mongoose.connection.close(function () {
       console.log("closing mongo connection");
       process.exit(0);
@@ -160,13 +160,4 @@ const processFile = async (file, type, action) => {
     process.exit(0);
   }
 };
-
-const file = process.argv[2];
-const type = process.argv[3];
-const action = process.argv[4];
-try {
-  processFile(file, type, action);
-} catch (error) {
-  console.log(error);
-}
 module.exports = { processFile, parseFile, packageHours, uploadFiles };
