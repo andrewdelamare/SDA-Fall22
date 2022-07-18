@@ -14,9 +14,6 @@ const {
   eachDayOfInterval,
   eachHourOfInterval,
 } = require("date-fns");
-
-//Process file function parses csv files, creates new Trip/Station objects, filters them,
-//adds them to containers by date and hour to aid query time and uploads them to a database
 //node utils/parser.js csv/2021-05.csv
 
 const parseFile = (file, type) => {
