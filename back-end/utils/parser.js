@@ -1,6 +1,5 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
-const Trip = require("../models/trip");
 const Hour = require("../models/hour");
 const config = require("../utils/config");
 const mongoose = require("mongoose");
@@ -95,7 +94,7 @@ const processFile = async (file, type, upload) => {
               {},
               cliProgress.Presets.shades_classic
             );
-            const leng = (arr.length % 100) + 1;
+            const leng = ~~(arr.length / 100) + 1;
             progbar.start(leng, 0);
             let chunks = 0;
             for (let i = 0; i < arr.length; i += 100) {
@@ -115,7 +114,6 @@ const processFile = async (file, type, upload) => {
             Math.floor(mls / 1000),
             " seconds to complete parsing and upload of your file"
           );
-          console.log(hours.length);
           mongoose.connection.close(function () {
             console.log("complete");
             process.exit(0);

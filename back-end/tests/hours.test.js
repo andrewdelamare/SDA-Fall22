@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
-const tripRouter = require("../controllers/trips");
+const hourRouter = require("../controllers/hours");
 const Trip = require("../models/trip");
 const processFile = require("../utils/parser");
 const testFile = require("test");
