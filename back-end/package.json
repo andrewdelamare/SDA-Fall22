@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "backend for sda-fall22",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
+  },
   "author": "Andrew de Lamare",
   "license": "MIT",
   "dependencies": {
