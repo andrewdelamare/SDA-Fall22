@@ -18,7 +18,6 @@ const {
 
 //Process file function parses csv files, creates new Trip/Station objects, filters them,
 //adds them to containers by date and hour to aid query time and uploads them to a database
-//
 //node utils/parser.js csv/2021-05.csv
 const processFile = async (file, type, upload) => {
   const start = Date.now();
@@ -73,6 +72,7 @@ const processFile = async (file, type, upload) => {
         cliProgress.Presets.shades_classic
       );
       const leng = records.length;
+      console.log("now sorting trips into their respective hour documents...");
       progbar.start(leng, 0);
       for (const record of records) {
         const dep = parseISO(record.departure);
@@ -89,29 +89,26 @@ const processFile = async (file, type, upload) => {
       if (upload === "upload") {
         try {
           mongoose.connect(config.MONGODB_URI);
-          //--------------------------CHUNKED------------------------
-          //210 seconds mongoAtl with chunked method
-          // seconds Azure | est 4710 sec with chunked method
           const chunkedUpload = async (arr, model) => {
             console.log("now sending chunks of 100 records to db...");
+            const progbar = new cliProgress.SingleBar(
+              {},
+              cliProgress.Presets.shades_classic
+            );
+            const leng = (arr.length % 100) + 1;
+            progbar.start(leng, 0);
             let chunks = 0;
             for (let i = 0; i < arr.length; i += 100) {
               const chunk = arr.slice(i, i + 100);
               const done = await model.insertMany(chunk, { ordered: false });
               if (done) {
                 chunks++;
-                console.log("chunk ", chunks, " uploaded");
+                progbar.increment();
               }
             }
+            progbar.stop();
           };
           await chunkedUpload(hours, Hour);
-          //------------------------NON CHUNKED-----------------------
-          //186 seconds mongoAtl with non chunked method
-          //13193 seconds Azure with non chunked method
-          // seconds mongoAtl non chunked as hours
-          //console.log("now uploading files to db");
-          //await Hour.insertMany(hours, { ordered: false });
-
           const mls = Date.now() - start;
           console.log(
             "It took ",
@@ -137,12 +134,13 @@ const processFile = async (file, type, upload) => {
           Math.floor(mls / 1000),
           " seconds to complete the parsing of your file"
         );
+        process.exit(0);
       }
     });
 };
 const file = process.argv[2];
-const upload = process.argv[4];
 const type = process.argv[3];
+const upload = process.argv[4];
 try {
   processFile(file, type, upload);
 } catch (error) {
