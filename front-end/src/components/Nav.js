@@ -11,27 +11,27 @@ export const NavBar = () => {
         </Link>
 
         <Link
-          to="/rooms"
+          to="/data"
           className="inline-flex border-0 px-5  focus:outline-none"
         >
           Data Overview
         </Link>
 
         <Link
-          to="/spa"
+          to="/trips"
           className="inline-flex border-0 px-5 focus:outline-none"
         >
           Trips
         </Link>
 
         <Link
-          to="/restaurant"
+          to="/stations"
           className="inline-flex border-0 px-5  focus:outline-none"
         >
           Stations
         </Link>
         <Link
-          to="/book"
+          to="/import"
           className="inline-flex border-0 px-5  focus:outline-none"
         >
           Import

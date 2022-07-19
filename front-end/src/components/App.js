@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { Landing } from "./Landing";
 import { NavBar } from "./Nav";
 function App() {
   let { size } = useParams();
@@ -15,7 +16,13 @@ function App() {
     <BrowserRouter>
       <div className="overflow-x-hidden">
         <NavBar />
-        <Routes></Routes>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/data" element={<Landing />} />
+          <Route path="/trips" element={<Landing />} />
+          <Route path="/stations" element={<Landing />} />
+          <Route path="/import" element={<Landing />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );
