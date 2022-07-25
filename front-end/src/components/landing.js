@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-//import img from "../zero-take-WvHrrR1C5Po-unsplash.jpg";
+import img from "../images/micheile-dot-com-GrdAN0NEIKY-unsplash.jpg";
 
 const LandingHero = () => (
   <div className="relative">
@@ -11,8 +11,8 @@ const LandingHero = () => (
       />
     </div>
 
-    <div className="absolute top-1/2 left-1/4 right-1/4 text-white font-serif">
-      <div className="text-6xl">Central Finland Fake Hotel</div>
+    <div className="absolute top-1/2 left-1/2 right-1/8 text-white font-serif">
+      <div className="text-6xl">City Bike App</div>
     </div>
   </div>
 );
@@ -37,31 +37,31 @@ const Amenities = () => (
   <div className="block w-full h-auto pt-4 pl-4 pb-4 relative ">
     <Amenity
       className="w-3/5 h-[340px] float-left relative"
-      title="Accommodations"
-      desc="Find your paradise"
-      linkLoc="/rooms"
-      img="bg-accomadation  bg-[center_48rem]"
+      title="Data Overview"
+      desc="Key data points and trends"
+      linkLoc="/"
+      img="bg-data "
     />
     <Amenity
       className="w-2/5 h-[360px] float-right relative"
-      title="Wellness Spa"
-      desc="Let your cares fade away"
-      linkLoc="/spa"
-      img="bg-spa bg-cover text-white"
+      title="Trips"
+      desc="Every trip at your fingertips"
+      linkLoc="/"
+      img="bg-trips bg-cover text-white bg-center"
     />
     <Amenity
       className="w-3/5 h-[300px] float-left relative"
-      title="Gourmet Cuisine"
-      desc="World class service, locally inspired"
-      linkLoc="/restaurant"
-      img="bg-restaurant bg-cover bg-[center_left_29rem] text-white "
+      title="Stations"
+      desc="Check out the data by station"
+      linkLoc="/"
+      img="bg-stations bg-cover bg-[center_left_29rem] text-white "
     />
     <Amenity
       className="w-2/5 h-[280px] float-right relative"
-      title="Meetings & Events"
-      desc="Lets Meet!"
+      title="Upload"
+      desc="Add a new trip or set of trips"
       linkLoc="/"
-      img="bg-events bg-cover bg-[right_17rem] text-white "
+      img="bg-upload bg-cover bg-center text-white "
     />
   </div>
 );
