@@ -17,6 +17,7 @@ module.exports = {
       width: {
         400: "400px",
         700: "700px",
+        1000: "1000px",
         1200: "1200px",
         1300: "1300px",
         1400: "1400px",
@@ -28,6 +29,9 @@ module.exports = {
         data: "url('images/markus-winkler-IrRbSND5EUc-unsplash.jpg')",
         upload: "url('images/thomas-lefebvre-gp8BLyaTaA0-unsplash.jpg')",
         trips: "url('images/william-f-santos-Lbe4a4ExlQY-unsplash.jpg')",
+      },
+      minWidth: {
+        96: "366px",
       },
     },
   },

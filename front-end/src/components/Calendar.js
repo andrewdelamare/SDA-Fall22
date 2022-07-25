@@ -1,16 +1,12 @@
 import {
-  getMonth,
   eachDayOfInterval,
-  getYear,
   startOfMonth,
   endOfMonth,
   parseISO,
-  endOfDay,
   startOfDay,
-  toDate,
 } from "date-fns";
-import { startOfToday } from "date-fns";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 
 // ------------------------------------------------------------------------
 
@@ -101,14 +97,28 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
         </h1>
       </div>
 
-      <div className="grid grid-cols-7 pt-3 mx-4">
-        <div className="place-self-center w-8 h-8">S</div>
-        <div className="place-self-center w-8 h-8">M</div>
-        <div className="place-self-center w-8 h-8">T</div>
-        <div className="place-self-center w-8 h-8">W</div>
-        <div className="place-self-center w-8 h-8">T</div>
-        <div className="place-self-center w-8 h-8">F</div>
-        <div className="place-self-center w-8 h-8">S</div>
+      <div className="grid grid-cols-7 pt-3 mx-4 gap-3">
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          S
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          M
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          T
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          W
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          T
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          F
+        </div>
+        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
+          S
+        </div>
       </div>
       <div className="grid gap-3 grid-cols-7 pt-3 mx-4">
         {allDays.map((day) => (
@@ -127,39 +137,37 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
 // ------------------------------------------------------------------------
 
 export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
-  const today = toDate(new Date(2021, 3, 1));
   let month = 4;
   let year = 2021;
+
   const [selectedMonth, setSelectedMonth] = useState({ mon: month, yr: year });
-  const [smStyleState, setSmS] = useState("w-96");
+  const [smStyleState, setSmS] = useState("min-w-96");
+
   const [nextMonth, setNextMonth] = useState({
     mon: month === 8 ? 8 : month + 1,
     yr: 2021,
   });
-  const [nmStyleState, setNmS] = useState("opacity-0 w-96 invisible");
+  const [nmStyleState, setNmS] = useState("opacity-0 min-w-96 invisible");
 
   const [lastMonth, setLastMonth] = useState({
     mon: month === 1 ? 12 : month - 1,
     yr: month === 1 ? year - 1 : year,
   });
-  const [lmStyleState, setLmS] = useState("opacity-0 w-96 invisible");
+  const [lmStyleState, setLmS] = useState("opacity-0 min-w-96 invisible");
 
-  const lmStyles = "opacity-0 w-96 invisible";
+  const lmStyles = "opacity-0 min-w-96 invisible";
   const lmTransitionR =
-    "opacity-100 w-96 transition duration-300 translate-x-full";
+    "opacity-100 min-w-96 transition duration-300 translate-x-full";
 
-  const smStyles = "opacity-100 w-96 ";
+  const smStyles = "opacity-100 min-w-96 ";
   const smTransitionL =
-    "opacity-0 w-96 transition duration-300 -translate-x-full  ";
-  const smTransitionR = " transition w-96 duration-300 translate-x-full";
+    "opacity-0 min-w-96 transition duration-300 -translate-x-full  ";
+  const smTransitionR =
+    " transition min-w-96 duration-300 opacity-0 translate-x-full";
 
-  //const nmStyles = "opacity-100 w-96";
-  //const nmTransitionL = " transition w-96 duration-300 -translate-x-full ";
-  //const nmTransitionR = "transition w-96 duration-300 opacity-0 translate-x-full";
-
-  const nmStyles = "opacity-0 w-96 invisible";
+  const nmStyles = "opacity-0 min-w-96 invisible";
   const nmTransitionL =
-    "opacity-100 w-96 transition duration-300 -translate-x-full";
+    "opacity-100 min-w-96 transition duration-300 -translate-x-full";
 
   const selectDay = (date) => {
     setSelectedDay(date);
@@ -219,18 +227,19 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
         break;
     }
   };
-
+  const lArrow = "<";
+  const rArrow = ">";
   return (
-    <div className="relative overflow-x-hidden w-1200 z-0">
-      <div className="justify-center mx-auto">
-        <button className="mx-5 self-center" onClick={() => updateMonth("-")}>
-          -
+    <div className="relative overflow-x-hidden -left-[330px] z-0 justify-center items-center">
+      <div className="absolute z-10 left-[395px] flex">
+        <button className="mr-[143px] " onClick={() => updateMonth("-")}>
+          {lArrow}
         </button>
-        <button className="mx-5 self-center" onClick={() => updateMonth("+")}>
-          +
+        <button className="ml-[143px] " onClick={() => updateMonth("+")}>
+          {rArrow}
         </button>
       </div>
-      <div className="inline-flex overflow-x-hidden w-full self-center">
+      <div className="inline-flex overflow-x-hidden w-full  ">
         <Month
           month={lastMonth}
           className={lmStyleState}
