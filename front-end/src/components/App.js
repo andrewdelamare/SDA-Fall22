@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import { Landing } from "./Landing";
+import { Trips } from "./Trips";
 import { NavBar } from "./Nav";
 function App() {
   let { size } = useParams();
@@ -19,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/data" element={<Landing />} />
-          <Route path="/trips" element={<Landing />} />
+          <Route path="/trips" element={<Trips />} />
           <Route path="/stations" element={<Landing />} />
           <Route path="/import" element={<Landing />} />
         </Routes>
