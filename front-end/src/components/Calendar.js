@@ -128,12 +128,12 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
 
 export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const today = toDate(new Date(2021, 3, 1));
-  let month = getMonth(today) + 1;
-  let year = getYear(today);
+  let month = 4;
+  let year = 2021;
   const [selectedMonth, setSelectedMonth] = useState({ mon: month, yr: year });
   const [smStyleState, setSmS] = useState("w-96");
   const [nextMonth, setNextMonth] = useState({
-    mon: month === 7 ? 7 : month + 1,
+    mon: month === 8 ? 8 : month + 1,
     yr: 2021,
   });
   const [nmStyleState, setNmS] = useState("opacity-0 w-96 invisible");
@@ -168,44 +168,51 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const updateMonth = (direction) => {
     switch (direction) {
       case "+":
-        //move calendars
-        setSmS(smTransitionL);
-        setNmS(nmTransitionL);
+        if (nextMonth.mon > 8) {
+          break;
+        } else {
+          //move calendars
+          setSmS(smTransitionL);
+          setNmS(nmTransitionL);
 
-        setTimeout(() => {
-          //set new data
-          setLastMonth({ mon: selectedMonth.mon, yr: selectedMonth.yr });
-          setSelectedMonth({
-            mon: selectedMonth.mon + 1,
-            yr: selectedMonth.yr,
-          });
-          setNextMonth({ mon: nextMonth.mon + 1, yr: nextMonth.yr });
+          setTimeout(() => {
+            //set new data
+            setLastMonth({ mon: selectedMonth.mon, yr: selectedMonth.yr });
+            setSelectedMonth({
+              mon: selectedMonth.mon + 1,
+              yr: selectedMonth.yr,
+            });
+            setNextMonth({ mon: nextMonth.mon + 1, yr: nextMonth.yr });
 
-          //revert styles
-          setSmS(smStyles);
-          setNmS(nmStyles);
-        }, 300);
+            //revert styles
+            setSmS(smStyles);
+            setNmS(nmStyles);
+          }, 300);
+        }
 
         break;
       case "-":
-        //move calendars
-        setLmS(lmTransitionR);
-        setSmS(smTransitionR);
-        setTimeout(() => {
-          //set new data
-          setLastMonth({ mon: lastMonth.mon - 1, yr: selectedMonth.yr });
-          setNextMonth({ mon: selectedMonth.mon, yr: selectedMonth.yr });
+        if (lastMonth.mon < 4) {
+          break;
+        } else {
+          //move calendars
+          setLmS(lmTransitionR);
+          setSmS(smTransitionR);
+          setTimeout(() => {
+            //set new data
+            setLastMonth({ mon: lastMonth.mon - 1, yr: selectedMonth.yr });
+            setNextMonth({ mon: selectedMonth.mon, yr: selectedMonth.yr });
 
-          setSelectedMonth({
-            mon: selectedMonth.mon - 1,
-            yr: selectedMonth.yr,
-          });
-          //revert styles
-          setLmS(lmStyles);
-          setSmS(smStyles);
-          setNmS(nmStyles);
-        }, 300);
-
+            setSelectedMonth({
+              mon: selectedMonth.mon - 1,
+              yr: selectedMonth.yr,
+            });
+            //revert styles
+            setLmS(lmStyles);
+            setSmS(smStyles);
+            setNmS(nmStyles);
+          }, 300);
+        }
         break;
       default:
         console.log("please enter + or - to change the month");
