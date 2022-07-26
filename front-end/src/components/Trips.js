@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Calendar } from "./Calendar";
 const Hour = ({ selectedHour, setHour, time }) => {
-  return <button onClick={() => setHour(time)}>{`${time}:00`}</button>;
+  const styles = selectedHour === time ? "text-white bg-black rounded-xl" : "";
+  return (
+    <button
+      className={styles}
+      onClick={() => setHour(time)}
+    >{`${time}:00`}</button>
+  );
 };
 
 const HourSelector = ({ selectedHour, setHour }) => {
