@@ -147,7 +147,7 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
     mon: month === 8 ? 8 : month + 1,
     yr: 2021,
   });
-  const [nmStyleState, setNmS] = useState("opacity-0 min-w-96 invisible");
+  const [nmStyleState, setNmS] = useState("opacity-0 invisible");
 
   const [lastMonth, setLastMonth] = useState({
     mon: month === 1 ? 12 : month - 1,
@@ -159,15 +159,15 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const lmTransitionR =
     "opacity-100 min-w-96 transition duration-300 translate-x-full";
 
-  const smStyles = "opacity-100 min-w-96 ";
+  const smStyles = "opacity-100 min-w-96 z-10";
   const smTransitionL =
     "opacity-0 min-w-96 transition duration-300 -translate-x-full  ";
   const smTransitionR =
     " transition min-w-96 duration-300 opacity-0 translate-x-full";
 
-  const nmStyles = "opacity-0 min-w-96 invisible";
+  const nmStyles = "opacity-0 invisible -z-20";
   const nmTransitionL =
-    "opacity-100 min-w-96 transition duration-300 -translate-x-full";
+    "opacity-100 min-w-96 transition duration-300 w-2 -translate-x-full";
 
   const selectDay = (date) => {
     setSelectedDay(date);
@@ -230,8 +230,8 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const lArrow = "<";
   const rArrow = ">";
   return (
-    <div className="relative overflow-x-hidden -left-[330px] z-0 justify-center items-center">
-      <div className="absolute z-10 left-[395px] flex">
+    <div className="relative overflow-x-hidden -left-[330px] z-10 justify-center items-center">
+      <div className="absolute left-[395px] flex z-40">
         <button className="mr-[143px] " onClick={() => updateMonth("-")}>
           {lArrow}
         </button>
@@ -239,7 +239,7 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
           {rArrow}
         </button>
       </div>
-      <div className="inline-flex overflow-x-hidden w-full  ">
+      <div className="inline-flex overflow-x-hidden  ">
         <Month
           month={lastMonth}
           className={lmStyleState}
