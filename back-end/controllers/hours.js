@@ -2,7 +2,7 @@ const express = require("express");
 const Hour = require("../models/hour");
 const hourRouter = express.Router();
 const { body, validationResult } = require("express-validator");
-const { startOfDay, startOfHour } = require("date-fns");
+const { startOfDay, startOfHour, addHours } = require("date-fns");
 
 hourRouter.get("/hour", async (req, res) => {
   const result = await Hour.find({}).limit(1).lean();
@@ -11,7 +11,13 @@ hourRouter.get("/hour", async (req, res) => {
 hourRouter.get("/hours/:day/:hour", async (req, res) => {
   const day = req.params.day;
   const hour = req.params.hour;
-  const result = await Hour.find({ day: day, hour: hour }).lean();
+
+  const dayDate = new Date(parseFloat(day));
+  const toIso = dayDate.toISOString();
+  const hourdate = addHours(dayDate, hour);
+  const hourdateiso = hourdate.toISOString();
+
+  const result = await Hour.find({ day: toIso, hour: hourdateiso }).lean();
   return res.status(200).json(result);
 });
 
@@ -51,4 +57,4 @@ hourRouter.post(
     return res.status(201).json(result);
   }
 );
-module.exports = [hourRouter];
+module.exports = hourRouter;

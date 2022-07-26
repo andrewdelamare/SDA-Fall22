@@ -18,9 +18,9 @@ const api = supertest(app);
 test("Parse files", async () => {
   expect.assertions(5);
   const obj = await parseFile("tests/short.csv", "trip");
-  expect(obj.recordsLen).toEqual(62159)
-  expect(obj.trash).toEqual(2547)
-  expect(obj.records[5000]).toHaveProperty("departure")
-  expect(obj.records[5040]).toHaveProperty("ret")
-  expect(obj.records[60040]).toHaveProperty("distance")
+  expect(obj.recordsLen).toEqual(62159);
+  expect(obj.trash).toEqual(2547);
+  expect(obj.records[5000]).toHaveProperty("departure");
+  expect(obj.records[5040]).toHaveProperty("ret");
+  expect(obj.records[60040]).toHaveProperty("distance");
 }, 30000);

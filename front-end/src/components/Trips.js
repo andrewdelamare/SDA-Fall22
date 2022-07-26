@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { getTripsByDateHour } from "../services/tripService";
 import { Calendar } from "./Calendar";
 const Hour = ({ selectedHour, setHour, time }) => {
   const styles = selectedHour === time ? "text-white bg-black rounded-xl" : "";
@@ -56,14 +57,26 @@ const DateSelector = ({
   );
 };
 
+/* 
+_id: "62d16b18bddaad10b0f9400d"
+depId: 201​​​​​
+depNm: "Länsisatamankuja"
+​​​​​departure: "2021-04-30T21:59:54.000Z"
+​​​​​distance: 2104
+​​​​​duration: 408
+​​​​​ret: "2021-04-30T22:06:44.000Z"
+​​​​​retId: 5
+​​​​​retNm: "Sepänkatu"
+*/
+
 const TripRow = ({ trip }) => {
   return (
     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        {trip.departure}
+        {trip.depNm}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.ret}
+        {trip.retNm}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
         {trip.distance}
@@ -124,13 +137,24 @@ const TripTable = ({ trips }) => {
 };
 
 export const Trips = () => {
-  const [selectedDay, setSelectedDay] = useState(new Date(2021, 3, 30));
+  const [selectedDay, setSelectedDay] = useState(new Date(2021, 4, 1));
   const [selectedHour, setSelHour] = useState(0);
   const [trips, setTrips] = useState([]);
   const setHour = (hour) => {
     setSelHour(hour);
   };
-  const getTrips = () => {};
+  const getTrips = async () => {
+    //const toIso = selectedDay.toISOString();
+    //const hourdate = addHours(selectedDay, selectedHour)
+    //const hourdateiso = hourdate.toISOString()
+    //console.log(toIso, hourdateiso)
+
+    const dayPrim = selectedDay[Symbol.toPrimitive]("number");
+    const res = await getTripsByDateHour(dayPrim, selectedHour);
+    console.log(res);
+    const updatedTrips = res[0].trips.map((trip) => trip);
+    setTrips(updatedTrips);
+  };
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around">
