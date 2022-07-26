@@ -230,7 +230,7 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const lArrow = "<";
   const rArrow = ">";
   return (
-    <div className="relative overflow-x-hidden -left-[330px] z-10 justify-center items-center">
+    <div className="relative overflow-x-hidden -left-[330px] justify-center items-center">
       <div className="absolute left-[395px] flex z-40">
         <button className="mr-[143px] " onClick={() => updateMonth("-")}>
           {lArrow}

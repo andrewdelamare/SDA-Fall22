@@ -16,7 +16,7 @@ const HourSelector = ({ selectedHour, setHour }) => {
     22, 11, 23,
   ];
   return (
-    <div className="absolute lg:left-[60%]">
+    <div className="absolute left-[70%] lg:left-[60%]">
       <div className="grid grid-cols-2 grid-rows-[repeat(12,25px)] gap-x-2 mx-10 my-4 w-24 text-sm">
         {arr.map((hour) => (
           <Hour
@@ -31,22 +31,118 @@ const HourSelector = ({ selectedHour, setHour }) => {
   );
 };
 
+const DateSelector = ({
+  selectedDay,
+  setSelectedDay,
+  selectedHour,
+  setHour,
+  getTrips,
+}) => {
+  return (
+    <div className="flex border-2 border-black w-full lg:w-2/3 h-[420px] m-10 p-8  ">
+      <div className="flex ">
+        <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+      </div>
+      <div className="flex ">
+        <HourSelector selectedHour={selectedHour} setHour={setHour} />
+      </div>
+      <button
+        className="absolute left-[47%] top-[500px] border-2 border-black p-2 hover:bg-stone-200 active:bg-stone-400 "
+        onClick={() => getTrips()}
+      >
+        Get Trips
+      </button>
+    </div>
+  );
+};
+
+const TripRow = ({ trip }) => {
+  return (
+    <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+        {trip.departure}
+      </td>
+      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+        {trip.ret}
+      </td>
+      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+        {trip.distance}
+      </td>
+      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+        {trip.duration}
+      </td>
+    </tr>
+  );
+};
+
+const TripTable = ({ trips }) => {
+  return (
+    <div className="flex flex-col">
+      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+          <div className="overflow-hidden">
+            <table className="min-w-full">
+              <thead className="bg-white border-b">
+                <tr>
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Departure
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Return
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Duration
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Distance
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {trips.map((trip) => (
+                  <TripRow trip={trip} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Trips = () => {
   const [selectedDay, setSelectedDay] = useState(new Date(2021, 3, 30));
   const [selectedHour, setSelHour] = useState(0);
+  const [trips, setTrips] = useState([]);
   const setHour = (hour) => {
     setSelHour(hour);
   };
+  const getTrips = () => {};
   return (
-    <div className=" mx-10 my-4 mt-[96px] flex justify-around">
-      <div className="flex border-2 border-black w-2/3 h-[420px] m-10 p-8  ">
-        <div className="flex ">
-          <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-        </div>
-        <div className="flex ">
-          <HourSelector selectedHour={selectedHour} setHour={setHour} />
-        </div>
+    <div className=" mx-10 my-4 mt-[96px] flex flex-col">
+      <div className="w-full flex justify-around">
+        <DateSelector
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          selectedHour={selectedHour}
+          setHour={setHour}
+          getTrips={getTrips}
+        />
       </div>
+      <TripTable trips={trips} />
     </div>
   );
 };
