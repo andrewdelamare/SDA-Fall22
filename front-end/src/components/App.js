@@ -3,8 +3,8 @@ import { Landing } from "./Landing";
 import { Trips } from "./Trips";
 import { NavBar } from "./Nav";
 function App() {
-  let { size } = useParams();
-  /* <Route path="/" element={<Landing />} />
+  /* let { size } = useParams();
+   <Route path="/" element={<Landing />} />
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/book" element={<Booking />}>
             <Route path=":size" element={<Booking size={size} />} />

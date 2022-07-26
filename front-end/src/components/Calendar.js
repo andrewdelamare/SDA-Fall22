@@ -11,8 +11,8 @@ import { useState } from "react";
 // ------------------------------------------------------------------------
 
 const Day = ({ selectDay, day, selectedDay }) => {
-  const today = new Date(2021, 3, 30);
-  const end = new Date(2021, 7, 1);
+  const today = new Date(2021, 4, 1);
+  const end = new Date(2021, 6, 31);
   const dayOfWeek = day.getDay();
   let sel = startOfDay(day).getTime() === selectedDay.getTime() ? true : false;
 
@@ -137,14 +137,14 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
 // ------------------------------------------------------------------------
 
 export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
-  let month = 4;
+  let month = 5;
   let year = 2021;
 
   const [selectedMonth, setSelectedMonth] = useState({ mon: month, yr: year });
   const [smStyleState, setSmS] = useState("min-w-96");
 
   const [nextMonth, setNextMonth] = useState({
-    mon: month === 8 ? 8 : month + 1,
+    mon: month === 7 ? 7 : month + 1,
     yr: 2021,
   });
   const [nmStyleState, setNmS] = useState("opacity-0 invisible");
@@ -176,7 +176,7 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const updateMonth = (direction) => {
     switch (direction) {
       case "+":
-        if (nextMonth.mon > 8) {
+        if (nextMonth.mon > 7) {
           break;
         } else {
           //move calendars
@@ -200,7 +200,7 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
 
         break;
       case "-":
-        if (lastMonth.mon < 4) {
+        if (lastMonth.mon < 5) {
           break;
         } else {
           //move calendars

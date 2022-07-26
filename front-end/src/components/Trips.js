@@ -82,7 +82,7 @@ const TripRow = ({ trip }) => {
         {trip.distance}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.duration}
+        {trip.duration/1000}
       </td>
     </tr>
   );
@@ -119,7 +119,7 @@ const TripTable = ({ trips }) => {
                     scope="col"
                     className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Distance
+                    Distance (km)
                   </th>
                 </tr>
               </thead>
