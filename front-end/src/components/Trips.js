@@ -70,6 +70,11 @@ depNm: "Länsisatamankuja"
 */
 
 const TripRow = ({ trip }) => {
+  const minutes = Math.floor(trip.duration / 60);
+  const seconds = trip.duration % 60;
+  const stringTime =
+    seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
+
   return (
     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -79,10 +84,10 @@ const TripRow = ({ trip }) => {
         {trip.retNm}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.distance}
+        {stringTime}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.duration/1000}
+        {trip.duration / 1000}
       </td>
     </tr>
   );
@@ -113,7 +118,7 @@ const TripTable = ({ trips }) => {
                     scope="col"
                     className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Duration
+                    Duration (min:sec)
                   </th>
                   <th
                     scope="col"
