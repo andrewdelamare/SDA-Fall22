@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const Hour = require("../models/hour");
+const Station = require("../models/station");
 const config = require("../utils/config");
 const mongoose = require("mongoose");
 const cliProgress = require("cli-progress");
@@ -15,6 +16,8 @@ const {
   eachHourOfInterval,
 } = require("date-fns");
 //node utils/parser.js csv/2021-05.csv
+//FID,ID,Nimi,Namn,Name,Osoite,Adress,Kaupunki,Stad,Operaattor,Kapasiteet,x,y
+//1,501,Hanasaari,Hanaholmen,Hanasaari,Hanasaarenranta 1,Hanaholmsstranden 1,Espoo,Esbo,CityBike Finland,10,24.840319,60.16582
 
 const parseFile = (file, type) => {
   let records = [];
@@ -45,6 +48,23 @@ const parseFile = (file, type) => {
           parseInt(it.distance) > 10 && parseInt(it.duration) > 10
             ? records.push(it)
             : trash++;
+        } else if (type === "station") {
+          let it = new Station({
+            fid: vals[0],
+            stationId: vals[1],
+            Nimi: vals[2],
+            namn: vals[3],
+            name: vals[4],
+            osoite: vals[5],
+            address: vals[6],
+            kaupunki: vals[7],
+            stad: vals[8],
+            operaattor: vals[9],
+            kapasiteet: vals[10],
+            x: vals[11],
+            y: vals[12],
+          });
+          records.push(it);
         }
       })
       .on("end", () => {
@@ -137,9 +157,18 @@ const processFile = async (file, type, action) => {
   const start = Date.now();
   const recordsObj = await parseFile(file, type);
   const records = recordsObj.records;
-  const hours = await packageHours(records);
   if (action === "upload" && type == "trip") {
+    const hours = await packageHours(records);
     await uploadFiles(hours, Hour);
+    const mls = Date.now() - start;
+    console.log(
+      "It took ",
+      Math.floor(mls / 1000),
+      " seconds to complete parsing and upload of your file"
+    );
+    process.exit(0);
+  } else if (action === "upload" && type == "station") {
+    await uploadFiles(records, Station);
     const mls = Date.now() - start;
     console.log(
       "It took ",
