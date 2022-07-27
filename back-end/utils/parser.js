@@ -14,6 +14,7 @@ const {
   endOfMonth,
   eachDayOfInterval,
   eachHourOfInterval,
+  getMonth,
 } = require("date-fns");
 //node utils/parser.js csv/2021-05.csv
 //FID,ID,Nimi,Namn,Name,Osoite,Adress,Kaupunki,Stad,Operaattor,Kapasiteet,x,y
@@ -63,6 +64,20 @@ const parseFile = (file, type) => {
             kapasiteet: vals[10],
             x: vals[11],
             y: vals[12],
+            startNum: 0,
+            endNum: 0,
+            disSt: { may: [], june: [], july: [] },
+            disEnd: { may: [], june: [], july: [] },
+            startedAt: {
+              may: [],
+              june: [],
+              july: [],
+            },
+            returnedAt: {
+              may: [],
+              june: [],
+              july: [],
+            },
           });
           records.push(it);
         }
@@ -113,6 +128,141 @@ const packageHours = (records) => {
 
     progbar.stop();
     resolve(hours);
+  });
+};
+
+const addTripDataToStations = async (records) => {
+  console.log("now updating station documents...");
+  return new Promise(async (resolve) => {
+    const progbar = new cliProgress.SingleBar(
+      {},
+      cliProgress.Presets.shades_classic
+    );
+    const leng = records.length;
+    progbar.start(leng, 0);
+    //for each trip
+    for (const record of records) {
+      const iso = parseISO(record.departure);
+      const mon = getMonth(iso);
+      // startNum ++, distance -> disSt, retId -> returnedAt
+
+      const depChanges =
+        mon == 4
+          ? {
+              $push: {
+                "disSt.may": record.distance,
+                "returnedAt.may": record.retId,
+              },
+              $inc: { startNum: 1 },
+            }
+          : mon == 5
+          ? {
+              $push: {
+                "disSt.june": record.distance,
+                "returnedAt.june": record.retId,
+              },
+              $inc: { startNum: 1 },
+            }
+          : {
+              $push: {
+                "disSt.july": record.distance,
+                "returnedAt.july": record.retId,
+              },
+              $inc: { startNum: 1 },
+            };
+
+      await Station.findOneAndUpdate({ stationId: record.depId }, depChanges);
+      // endNum ++, distance -> disEnd, depId -> startedAt
+
+      const retChanges =
+        mon == 4
+          ? {
+              $push: {
+                "disEnd.may": record.distance,
+                "startedAt.may": record.depId,
+              },
+              $inc: { endNum: 1 },
+            }
+          : mon == 5
+          ? {
+              $push: {
+                "disEnd.june": record.distance,
+                "startedAt.june": record.depId,
+              },
+              $inc: { endNum: 1 },
+            }
+          : {
+              $push: {
+                "disEnd.july": record.distance,
+                "startedAt.july": record.depId,
+              },
+              $inc: { endNum: 1 },
+            };
+
+      await Station.findOneAndUpdate({ stationId: record.retId }, retChanges);
+
+      progbar.increment();
+    }
+    progbar.stop();
+    resolve();
+  });
+};
+
+const altTripDataMethod = async (records) => {
+  console.log("now updating station documents...");
+  return new Promise(async (resolve) => {
+    const progbar = new cliProgress.SingleBar(
+      {},
+      cliProgress.Presets.shades_classic
+    );
+    const leng = records.length;
+    progbar.start(leng, 0);
+    for (const station of records) {
+      let i = 0;
+      if (i < 2208) {
+        let hObjs = await Hour.find({})
+          .limit(100)
+          .skip(i * 100);
+        for (const obj of hObjs) {
+          const bucketOfTrips = obj.trips;
+          for (const trip of bucketOfTrips) {
+            const iso = parseISO(trip.departure);
+            const mon = getMonth(iso);
+            if (station.stationId == trip.depId) {
+              mon == 4
+                ? (station.disSt.may.push(trip.distance),
+                  station.returnedAt.may.push(trip.retId),
+                  station.startNum++)
+                : mon == 5
+                ? (station.disSt.june.push(trip.distance),
+                  station.returnedAt.june.push(trip.retId),
+                  station.startNum++)
+                : (station.disSt.july.push(trip.distance),
+                  station.returnedAt.july.push(trip.retId),
+                  station.startNum++);
+            }
+            if (station.stationId == trip.retId) {
+              mon == 4
+                ? (station.disEnd.may.push(trip.distance),
+                  station.startedAt.may.push(trip.depId),
+                  station.endNum++)
+                : mon == 5
+                ? (station.disEnd.june.push(trip.distance),
+                  station.startedAt.june.push(trip.depId),
+                  station.endNum++)
+                : (station.disEnd.july.push(trip.distance),
+                  station.startedAt.july.push(trip.depId),
+                  station.endNum++);
+            }
+          }
+        }
+        i + 100;
+      }
+      await station.save();
+      progbar.increment();
+    }
+    progbar.stop();
+    resolve();
   });
 };
 
@@ -167,6 +317,24 @@ const processFile = async (file, type, action) => {
       " seconds to complete parsing and upload of your file"
     );
     process.exit(0);
+  } else if (action === "stationData" && type == "trip") {
+    await addTripDataToStations(records);
+    const mls = Date.now() - start;
+    console.log(
+      "It took ",
+      Math.floor(mls / 1000),
+      " seconds to complete parsing and updates to staion documents"
+    );
+    process.exit(0);
+  } else if (action === "stationData" && type == "station") {
+    await altTripDataMethod(records);
+    const mls = Date.now() - start;
+    console.log(
+      "It took ",
+      Math.floor(mls / 1000),
+      " seconds to complete parsing and updates to staion documents"
+    );
+    process.exit(0);
   } else if (action === "upload" && type == "station") {
     await uploadFiles(records, Station);
     const mls = Date.now() - start;
@@ -186,4 +354,10 @@ const processFile = async (file, type, action) => {
     process.exit(0);
   }
 };
-module.exports = { processFile, parseFile, packageHours, uploadFiles };
+module.exports = {
+  processFile,
+  parseFile,
+  packageHours,
+  uploadFiles,
+  addTripDataToStations,
+};

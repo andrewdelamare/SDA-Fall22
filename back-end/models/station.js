@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 
 const stationSchema = new Schema({
-  fid: Number,
-  stationId: Number,
+  fid: String,
+  stationId: String,
   Nimi: String,
   namn: String,
   name: String,
@@ -19,19 +19,17 @@ const stationSchema = new Schema({
   y: String,
   startNum: Number,
   endNum: Number,
-  avDisSt: { all: Number, 4: Number, 6: Number, 7: Number },
-  avDisEnd: { all: Number, 5: Number, 6: Number, 7: Number },
-  popRetSt: {
-    all: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    5: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    6: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    7: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
+  disSt: { may: [Number], june: [Number], july: [Number] },
+  disEnd: { may: [Number], june: [Number], july: [Number] },
+  startedAt: {
+    may: [Number],
+    june: [Number],
+    july: [Number],
   },
-  popDepEnd: {
-    all: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    5: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    6: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
-    7: { 1: Number, 2: Number, 3: Number, 4: Number, 5: Number },
+  returnedAt: {
+    may: [Number],
+    june: [Number],
+    july: [Number],
   },
 });
 
