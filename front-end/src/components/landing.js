@@ -46,14 +46,14 @@ const Amenities = () => (
       className="w-2/5 h-[360px] float-right relative"
       title="Trips"
       desc="Every trip at your fingertips"
-      linkLoc="/"
+      linkLoc="/trips"
       img="bg-trips bg-cover text-white bg-center"
     />
     <Amenity
       className="w-3/5 h-[300px] float-left relative"
       title="Stations"
       desc="Check out the data by station"
-      linkLoc="/"
+      linkLoc="/stations"
       img="bg-stations bg-cover bg-[center_left_29rem] text-white "
     />
     <Amenity

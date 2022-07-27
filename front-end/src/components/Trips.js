@@ -57,18 +57,6 @@ const DateSelector = ({
   );
 };
 
-/* 
-_id: "62d16b18bddaad10b0f9400d"
-depId: 201​​​​​
-depNm: "Länsisatamankuja"
-​​​​​departure: "2021-04-30T21:59:54.000Z"
-​​​​​distance: 2104
-​​​​​duration: 408
-​​​​​ret: "2021-04-30T22:06:44.000Z"
-​​​​​retId: 5
-​​​​​retNm: "Sepänkatu"
-*/
-
 const TripRow = ({ trip }) => {
   const minutes = Math.floor(trip.duration / 60);
   const seconds = trip.duration % 60;
