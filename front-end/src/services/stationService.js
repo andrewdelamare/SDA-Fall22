@@ -6,4 +6,15 @@ const getStations = async (page) => {
   return response.data;
 };
 
-export { getStations };
+const getStation = async (id) => {
+  const response = await axios.get(`${baseUrl}/stations/station/${id}`);
+  return response.data;
+};
+
+const getDepartures = async (id) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/departures`
+  );
+  return response.data;
+};
+export { getStations, getStation, getDepartures };

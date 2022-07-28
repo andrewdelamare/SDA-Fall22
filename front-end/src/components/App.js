@@ -3,6 +3,7 @@ import { Landing } from "./Landing";
 import { Trips } from "./Trips";
 import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
+import { StationView } from "./StationView";
 function App() {
   /* let { size } = useParams();
    <Route path="/" element={<Landing />} />
@@ -13,7 +14,6 @@ function App() {
           <Route path="/spa" element={<Spa />} />
           <Route path="/restaurant" element={<Restaurant />} /> */
   //<Footer />
-
   return (
     <BrowserRouter>
       <div className="overflow-x-hidden">
@@ -23,6 +23,7 @@ function App() {
           <Route path="/data" element={<Landing />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/stations" element={<Stations />} />
+          <Route path="/stations/:id" element={<StationView />} />
           <Route path="/import" element={<Landing />} />
         </Routes>
       </div>
