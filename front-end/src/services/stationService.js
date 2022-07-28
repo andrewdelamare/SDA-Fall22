@@ -11,10 +11,31 @@ const getStation = async (id) => {
   return response.data;
 };
 
-const getDepartures = async (id) => {
+const getTotalCounts = async (id) => {
   const response = await axios.get(
-    `${baseUrl}/stations/station/${id}/departures`
+    `${baseUrl}/stations/station/${id}/totalcounts`
   );
   return response.data;
 };
-export { getStations, getStation, getDepartures };
+
+const getTotalAverages = async (id) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/totalavs`
+  );
+  return response.data;
+};
+
+const getAllPopular = async (id) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/allpopular`
+  );
+  return response.data;
+};
+
+export {
+  getStations,
+  getStation,
+  getTotalCounts,
+  getAllPopular,
+  getTotalAverages,
+};

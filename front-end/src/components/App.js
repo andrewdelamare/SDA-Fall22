@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Landing } from "./Landing";
 import { Trips } from "./Trips";
 import { NavBar } from "./Nav";
