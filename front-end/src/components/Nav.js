@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 export const NavBar = () => {
   return (
     <nav className="flex justify-between fixed z-20 bg-stone-200 top-0 w-full ">
-      <div className="m-7 text-xl sm:text-4xl font-serif ">
+      <div className="m-7 sm:text-xl md:text-2xl lg:text-3xl font-serif ">
         Helsinki City Bike App
       </div>
       <div className="flex flex-row justify-between m-7 items-center">

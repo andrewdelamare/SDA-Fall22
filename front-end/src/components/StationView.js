@@ -34,15 +34,16 @@ const Spinner = () => {
   );
 };
 
-const StationLinkButton = ({ name, id }) => {
-  console.log(name, id);
+const StationLinkButton = ({ name, id, reset }) => {
   const navigate = useNavigate();
   const goToStation = (id) => {
+    reset()
     navigate(`/stations/${id}`);
   };
 
   return (
     <button
+      type="button"
       className="inline-block bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:text-blue-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 transition duration-150 ease-in-out"
       onClick={() => goToStation(id)}
     >
@@ -51,7 +52,7 @@ const StationLinkButton = ({ name, id }) => {
   );
 };
 
-const DataView = ({ counts, avs, popular }) => {
+const DataView = ({ counts, avs, popular, reset }) => {
   return (
     <div>
       <div className="flex flex-wrap">
@@ -95,6 +96,7 @@ const DataView = ({ counts, avs, popular }) => {
                 <div>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popReturns.first.stNm}
                       id={popular.popReturns.first.stId}
                     />{" "}
@@ -102,6 +104,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popReturns.second.stNm}
                       id={popular.popReturns.second.stId}
                     />{" "}
@@ -109,6 +112,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popReturns.third.stNm}
                       id={popular.popReturns.third.stId}
                     />{" "}
@@ -116,6 +120,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popReturns.fourth.stNm}
                       id={popular.popReturns.fourth.stId}
                     />{" "}
@@ -123,6 +128,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popReturns.fifth.stNm}
                       id={popular.popReturns.fifth.stId}
                     />{" "}
@@ -143,6 +149,7 @@ const DataView = ({ counts, avs, popular }) => {
                 <div>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popDepartures.first.stNm}
                       id={popular.popDepartures.first.stId}
                     />{" "}
@@ -150,6 +157,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popDepartures.second.stNm}
                       id={popular.popDepartures.second.stId}
                     />{" "}
@@ -157,6 +165,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popDepartures.third.stNm}
                       id={popular.popDepartures.third.stId}
                     />{" "}
@@ -164,6 +173,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popDepartures.fourth.stNm}
                       id={popular.popDepartures.fourth.stId}
                     />{" "}
@@ -171,6 +181,7 @@ const DataView = ({ counts, avs, popular }) => {
                   </li>
                   <li>
                     <StationLinkButton
+                      reset={reset}
                       name={popular.popDepartures.fifth.stNm}
                       id={popular.popDepartures.fifth.stId}
                     />{" "}
@@ -192,11 +203,20 @@ export const StationView = () => {
   const [counts, setCounts] = useState(null);
   const [popular, setPopular] = useState(null);
   const [station, setStation] = useState({ name: "..." });
+  const [fired, setFired] = useState(false);
+
+  const resetOnNavigate = () => {
+    setAvs(null)
+    setCounts(null)
+    setPopular(null)
+    setStation({ name: "..." })
+    setFired(false)
+  }
 
   useEffect(() => {
     const getAvs = async () => {
       const res = await getTotalAverages(id);
-      setAvs(res);
+      if (res) setAvs(res);
     };
     const getSt = async () => {
       const res = await getStation(id);
@@ -210,11 +230,14 @@ export const StationView = () => {
       const res = await getTotalCounts(id);
       setCounts(res);
     };
-    getSt();
-    getAvs();
-    getCounts();
-    getPop();
-  }, [id]);
+    if (fired === false){
+      getSt();
+      getAvs();
+      getCounts();
+      getPop();
+      setFired(true)
+    }
+  }, [id, fired]);
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">
       <div className="">
@@ -223,7 +246,7 @@ export const StationView = () => {
         ) : (
           <h2 className="text-3xl underline font-bold ">{station.name}</h2>
         )}
-        <DataView avs={avs} counts={counts} popular={popular} />
+        <DataView avs={avs} counts={counts} popular={popular} reset={resetOnNavigate} />
         {station.name === "..." ? <Spinner /> : <Map features={[station]} />}
       </div>
     </div>
