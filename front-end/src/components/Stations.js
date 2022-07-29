@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getStations } from "../services/stationService";
 
 const StationRow = ({ station }) => {
@@ -12,6 +12,7 @@ const StationRow = ({ station }) => {
     <tr
       className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
       onClick={() => goToStation(station.id)}
+      alt="Station row, clickable link to station view"
     >
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
         {station.name}

@@ -6,7 +6,7 @@ import {
   getAllPopular,
   getTotalAverages,
 } from "../services/stationService";
-
+import { Map } from "./Map";
 const Spinner = () => {
   return (
     <div className="flex">
@@ -22,7 +22,7 @@ const Spinner = () => {
           cy="12"
           r="10"
           stroke="currentColor"
-          stroke-width="4"
+          strokeWidth="4"
         ></circle>
         <path
           className="opacity-75"
@@ -200,6 +200,7 @@ export const StationView = () => {
           <h2 className="text-3xl underline font-bold ">{station.name}</h2>
         )}
         <DataView avs={avs} counts={counts} popular={popular} />
+        {station.name === "..." ? <Spinner /> : <Map features={[station]} />}
       </div>
     </div>
   );

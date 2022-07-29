@@ -16,6 +16,10 @@ function App() {
   //<Footer />
   return (
     <BrowserRouter>
+      <link
+        href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+        rel="stylesheet"
+      ></link>
       <div className="overflow-x-hidden">
         <NavBar />
         <Routes>
