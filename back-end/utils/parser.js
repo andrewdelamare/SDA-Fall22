@@ -206,5 +206,4 @@ module.exports = {
   parseFile,
   packageHours,
   uploadFiles,
-  addTripDataToStations,
 };

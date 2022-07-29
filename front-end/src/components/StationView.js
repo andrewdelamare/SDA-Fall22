@@ -37,94 +37,122 @@ const Spinner = () => {
 const DataView = ({ counts, avs, popular }) => {
   return (
     <div>
-      <h3>
-        Total departures: {counts === null ? <Spinner /> : counts.depCount}
-      </h3>
-      <h3>Total returns: {counts === null ? <Spinner /> : counts.retCount}</h3>
-      <h3>
-        Average distance if starting from this station:{" "}
-        {avs === null ? <Spinner /> : avs.avDistSt}
-      </h3>
-      <h3>
-        Average distance if returned to this station:{" "}
-        {avs === null ? <Spinner /> : avs.avDistRet}{" "}
-      </h3>
-      <h3>Popular return stations:</h3>
-      <ol className="list-decimal">
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popReturns.first.stNm} : ${popular.popReturns.first.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popReturns.second.stNm} : ${popular.popReturns.second.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popReturns.third.stNm} : ${popular.popReturns.third.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popReturns.fourth.stNm} : ${popular.popReturns.fourth.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popReturns.fifth.stNm} : ${popular.popReturns.fifth.count}`
-          )}
-        </li>
-      </ol>
-      <h3>Popular departure stations:</h3>
-      <ol className="list-decimal">
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popDepartures.first.stNm} : popular.popDepartures.first.count`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popDepartures.second.stNm} : ${popular.popDepartures.second.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popDepartures.third.stNm} : ${popular.popDepartures.third.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popDepartures.fourth.stNm} : ${popular.popDepartures.fourth.count}`
-          )}
-        </li>
-        <li>
-          {popular === null ? (
-            <Spinner />
-          ) : (
-            `${popular.popDepartures.fifth.stNm} : ${popular.popDepartures.fifth.count}`
-          )}
-        </li>
-      </ol>
+      <div className="flex flex-wrap">
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Total departures: </h3>
+          <div>{counts === null ? <Spinner /> : counts.depCount}</div>
+        </div>
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Total returns: </h3>
+          <div>{counts === null ? <Spinner /> : counts.retCount}</div>
+        </div>
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Average distance if starting from this station:</h3>
+          <div>
+            {avs === null ? (
+              <Spinner />
+            ) : (
+              ` ${Math.floor(avs.avDistSt) / 1000} km`
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Average distance if returned to this station:</h3>
+          <div>
+            {avs === null ? (
+              <Spinner />
+            ) : (
+              ` ${Math.floor(avs.avDistRet) / 1000} km`
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-wrap">
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Popular return stations:</h3>
+          <div>
+            <ol className="list-decimal list-inside">
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popReturns.first.stNm} : ${popular.popReturns.first.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popReturns.second.stNm} : ${popular.popReturns.second.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popReturns.third.stNm} : ${popular.popReturns.third.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popReturns.fourth.stNm} : ${popular.popReturns.fourth.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popReturns.fifth.stNm} : ${popular.popReturns.fifth.count}`
+                )}
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+          <h3>Popular departure stations:</h3>
+          <div>
+            <ol className="list-decimal list-inside">
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popDepartures.first.stNm} : ${popular.popDepartures.first.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popDepartures.second.stNm} : ${popular.popDepartures.second.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popDepartures.third.stNm} : ${popular.popDepartures.third.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popDepartures.fourth.stNm} : ${popular.popDepartures.fourth.count}`
+                )}
+              </li>
+              <li>
+                {popular === null ? (
+                  <Spinner />
+                ) : (
+                  `${popular.popDepartures.fifth.stNm} : ${popular.popDepartures.fifth.count}`
+                )}
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -165,8 +193,14 @@ export const StationView = () => {
   }, [id]);
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">
-      {station.name === "..." ? <Spinner /> : <h2>{station.name}</h2>}
-      <DataView avs={avs} counts={counts} popular={popular} />
+      <div className="">
+        {station.name === "..." ? (
+          <Spinner />
+        ) : (
+          <h2 className="text-3xl underline font-bold ">{station.name}</h2>
+        )}
+        <DataView avs={avs} counts={counts} popular={popular} />
+      </div>
     </div>
   );
 };
