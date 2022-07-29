@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getStations } from "../services/stationService";
 
 const StationRow = ({ station }) => {
+  const navigate = useNavigate();
+  const goToStation = (id) => {
+    navigate(`${station.stationId}`);
+  };
+
   return (
-    <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+    <tr
+      className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+      onClick={() => goToStation(station.id)}
+    >
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        <Link to={`${station.stationId}`} state={station}>
-          {station.name}
-        </Link>
+        {station.name}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
         {`${station.osoite}, ${
@@ -55,6 +61,39 @@ const StationTable = ({ stations }) => {
   );
 };
 
+const PageSelector = ({ page, changePage, count }) => {
+  return (
+    <div className="flex justify-center">
+      <nav>
+        <ul className="flex list-style-none">
+          <li className="">
+            <button
+              className="text-sm py-1 px-2 relative block border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 hover:bg-gray-200"
+              onClick={() => changePage("-")}
+            >
+              Previous
+            </button>
+          </li>
+          <li className="">
+            <button className="text-sm py-1 px-2 relative block border-0 bg-stone-500 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-stone-600 ">{`${page}/${
+              Math.floor(count / 100) + 1
+            }`}</button>
+          </li>
+
+          <li className="">
+            <button
+              className="text-sm py-1 px-2 relative block border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200"
+              onClick={() => changePage("+")}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+};
+
 export const Stations = () => {
   const [stations, setStations] = useState([]);
   const [page, setPage] = useState(1);
@@ -83,11 +122,7 @@ export const Stations = () => {
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around"></div>
       <StationTable stations={stations} />
-      <div className="flex text-sm">
-        <button onClick={() => changePage("-")}>{`<`}</button>
-        <div>{`Page ${page}/${Math.floor(count / 100) + 1}`}</div>
-        <button onClick={() => changePage("+")}>{`>`}</button>
-      </div>
+      <PageSelector page={page} changePage={changePage} count={count} />
     </div>
   );
 };
