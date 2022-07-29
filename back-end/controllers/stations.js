@@ -4,12 +4,12 @@ const Station = require("../models/station");
 const stationRouter = express.Router();
 
 stationRouter.get("/stations", async (req, res) => {
-  const result = await Station.find({}).limit(100).lean();
+  const result = await Station.find({}).limit(50).lean();
   return res.status(200).json(result);
 });
 stationRouter.get("/stations/:page", async (req, res) => {
-  const page = req.params.page * 100;
-  const docs = await Station.find({}).skip(page).limit(100).lean();
+  const page = req.params.page * 50;
+  const docs = await Station.find({}).skip(page).limit(50).lean();
   const count = await Station.estimatedDocumentCount();
   const result = [docs, count];
   return res.status(200).json(result);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getTotalCounts,
   getStation,
@@ -31,6 +31,23 @@ const Spinner = () => {
         ></path>
       </svg>
     </div>
+  );
+};
+
+const StationLinkButton = ({ name, id }) => {
+  console.log(name, id);
+  const navigate = useNavigate();
+  const goToStation = (id) => {
+    navigate(`/stations/${id}`);
+  };
+
+  return (
+    <button
+      className="inline-block bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:text-blue-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 transition duration-150 ease-in-out"
+      onClick={() => goToStation(id)}
+    >
+      {name}
+    </button>
   );
 };
 
@@ -72,41 +89,47 @@ const DataView = ({ counts, avs, popular }) => {
           <h3>Popular return stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popReturns.first.stNm} : ${popular.popReturns.first.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popReturns.second.stNm} : ${popular.popReturns.second.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popReturns.third.stNm} : ${popular.popReturns.third.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popReturns.fourth.stNm} : ${popular.popReturns.fourth.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popReturns.fifth.stNm} : ${popular.popReturns.fifth.count}`
-                )}
-              </li>
+              {popular === null ? (
+                <Spinner />
+              ) : (
+                <div>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popReturns.first.stNm}
+                      id={popular.popReturns.first.stId}
+                    />{" "}
+                    : {popular.popReturns.first.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popReturns.second.stNm}
+                      id={popular.popReturns.second.stId}
+                    />{" "}
+                    : {popular.popReturns.second.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popReturns.third.stNm}
+                      id={popular.popReturns.third.stId}
+                    />{" "}
+                    : {popular.popReturns.third.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popReturns.fourth.stNm}
+                      id={popular.popReturns.fourth.stId}
+                    />{" "}
+                    : {popular.popReturns.fourth.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popReturns.fifth.stNm}
+                      id={popular.popReturns.fifth.stId}
+                    />{" "}
+                    : {popular.popReturns.fifth.count}
+                  </li>
+                </div>
+              )}
             </ol>
           </div>
         </div>
@@ -114,41 +137,47 @@ const DataView = ({ counts, avs, popular }) => {
           <h3>Popular departure stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popDepartures.first.stNm} : ${popular.popDepartures.first.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popDepartures.second.stNm} : ${popular.popDepartures.second.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popDepartures.third.stNm} : ${popular.popDepartures.third.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popDepartures.fourth.stNm} : ${popular.popDepartures.fourth.count}`
-                )}
-              </li>
-              <li>
-                {popular === null ? (
-                  <Spinner />
-                ) : (
-                  `${popular.popDepartures.fifth.stNm} : ${popular.popDepartures.fifth.count}`
-                )}
-              </li>
+              {popular === null ? (
+                <Spinner />
+              ) : (
+                <div>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popDepartures.first.stNm}
+                      id={popular.popDepartures.first.stId}
+                    />{" "}
+                    : {popular.popDepartures.first.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popDepartures.second.stNm}
+                      id={popular.popDepartures.second.stId}
+                    />{" "}
+                    : {popular.popDepartures.second.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popDepartures.third.stNm}
+                      id={popular.popDepartures.third.stId}
+                    />{" "}
+                    : {popular.popDepartures.third.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popDepartures.fourth.stNm}
+                      id={popular.popDepartures.fourth.stId}
+                    />{" "}
+                    : {popular.popDepartures.fourth.count}
+                  </li>
+                  <li>
+                    <StationLinkButton
+                      name={popular.popDepartures.fifth.stNm}
+                      id={popular.popDepartures.fifth.stId}
+                    />{" "}
+                    : {popular.popDepartures.fifth.count}
+                  </li>
+                </div>
+              )}
             </ol>
           </div>
         </div>
@@ -163,33 +192,28 @@ export const StationView = () => {
   const [counts, setCounts] = useState(null);
   const [popular, setPopular] = useState(null);
   const [station, setStation] = useState({ name: "..." });
-  console.log(id);
 
   useEffect(() => {
     const getAvs = async () => {
       const res = await getTotalAverages(id);
-      console.log(res);
       setAvs(res);
     };
     const getSt = async () => {
       const res = await getStation(id);
-      console.log(res);
       setStation(res);
     };
     const getPop = async () => {
       const res = await getAllPopular(id);
-      console.log(res);
       setPopular(res);
     };
     const getCounts = async () => {
       const res = await getTotalCounts(id);
-      console.log(res);
       setCounts(res);
     };
-    getPop();
+    getSt();
     getAvs();
     getCounts();
-    getSt();
+    getPop();
   }, [id]);
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">

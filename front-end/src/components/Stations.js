@@ -77,7 +77,7 @@ const PageSelector = ({ page, changePage, count }) => {
           </li>
           <li className="">
             <button className="text-sm py-1 px-2 relative block border-0 bg-stone-500 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-stone-600 ">{`${page}/${
-              Math.floor(count / 100) + 1
+              Math.floor(count / 50) + 1
             }`}</button>
           </li>
 
@@ -101,7 +101,7 @@ export const Stations = () => {
   const [count, setCount] = useState(500);
 
   const changePage = (direction) => {
-    direction === "+" && page < Math.floor(count / 100) + 1
+    direction === "+" && page < Math.floor(count / 50) + 1
       ? setPage(page + 1)
       : direction === "-" && page !== 1
       ? setPage(page - 1)
