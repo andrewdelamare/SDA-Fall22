@@ -37,7 +37,7 @@ const Spinner = () => {
 const StationLinkButton = ({ name, id, reset }) => {
   const navigate = useNavigate();
   const goToStation = (id) => {
-    reset()
+    reset();
     navigate(`/stations/${id}`);
   };
 
@@ -206,12 +206,12 @@ export const StationView = () => {
   const [fired, setFired] = useState(false);
 
   const resetOnNavigate = () => {
-    setAvs(null)
-    setCounts(null)
-    setPopular(null)
-    setStation({ name: "..." })
-    setFired(false)
-  }
+    setAvs(null);
+    setCounts(null);
+    setPopular(null);
+    setStation({ name: "..." });
+    setFired(false);
+  };
 
   useEffect(() => {
     const getAvs = async () => {
@@ -230,12 +230,12 @@ export const StationView = () => {
       const res = await getTotalCounts(id);
       setCounts(res);
     };
-    if (fired === false){
+    if (fired === false) {
       getSt();
       getAvs();
       getCounts();
       getPop();
-      setFired(true)
+      setFired(true);
     }
   }, [id, fired]);
   return (
@@ -246,7 +246,12 @@ export const StationView = () => {
         ) : (
           <h2 className="text-3xl underline font-bold ">{station.name}</h2>
         )}
-        <DataView avs={avs} counts={counts} popular={popular} reset={resetOnNavigate} />
+        <DataView
+          avs={avs}
+          counts={counts}
+          popular={popular}
+          reset={resetOnNavigate}
+        />
         {station.name === "..." ? <Spinner /> : <Map features={[station]} />}
       </div>
     </div>
