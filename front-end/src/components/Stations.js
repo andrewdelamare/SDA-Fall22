@@ -13,14 +13,14 @@ const StationRow = ({ station }) => {
 
   return (
     <tr
-      className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+      className="bg-white border-b transition duration-300 ease-in-out hover:bg-blue-100 hover:text-blue-600 "
       onClick={() => goToStation(station.id)}
       alt="Station row, clickable link to station view"
     >
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium transition duration-300 ease-in-out ">
         {station.name}
       </td>
-      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
         {`${station.osoite}, ${
           station.kaupunki === " " ? "Helsinki" : station.kaupunki
         }`}
@@ -75,9 +75,11 @@ const StationTable = ({
               </thead>
               <tbody>
                 {count === 0 ? (
-                  <div className="w-full flex justify-center m-4">
-                    <Spinner />
-                  </div>
+                  <tr className="w-full flex justify-center m-4">
+                    <td>
+                      <Spinner />
+                    </td>
+                  </tr>
                 ) : (
                   stationsPage.map((station) => (
                     <StationRow key={station._id} station={station} />

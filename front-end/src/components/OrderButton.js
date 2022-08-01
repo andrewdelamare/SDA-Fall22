@@ -13,7 +13,7 @@ export const OrderButton = ({ changeOrder, order, col }) => {
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
-            stroke-linecap="round"
+            strokeLinecap="round"
           ></path>
         </svg>
       </button>
@@ -32,7 +32,7 @@ export const OrderButton = ({ changeOrder, order, col }) => {
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
-            stroke-linecap="round"
+            strokeLinecap="round"
           ></path>
         </svg>
       </button>
@@ -51,7 +51,7 @@ export const OrderButton = ({ changeOrder, order, col }) => {
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
-            stroke-linecap="round"
+            strokeLinecap="round"
           ></path>
         </svg>
       </button>
