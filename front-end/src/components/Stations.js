@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getStations } from "../services/stationService";
 import { PageSelector } from "./PageSelector";
+import { OrderButton } from "./OrderButton";
 
 const StationRow = ({ station }) => {
   const navigate = useNavigate();
@@ -27,7 +28,11 @@ const StationRow = ({ station }) => {
   );
 };
 
-const StationTable = ({ stations }) => {
+const StationTable = ({ stations, page, changeOrder, name, address }) => {
+  const stationsPage =
+    stations !== undefined
+      ? stations.slice((page - 1) * 50, page * 50)
+      : stations;
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -38,21 +43,31 @@ const StationTable = ({ stations }) => {
                 <tr>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left "
                   >
-                    Name
+                    <div className="m-2">Name</div>
+                    <OrderButton
+                      changeOrder={changeOrder}
+                      order={name}
+                      col={"name"}
+                    />
                   </th>
                   <th
                     scope="col"
                     className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Address
+                    <div className="m-2">Address</div>
+                    <OrderButton
+                      changeOrder={changeOrder}
+                      order={address}
+                      col={"address"}
+                    />
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {stations.map((station, i) => (
-                  <StationRow key={i} station={station} />
+                {stationsPage.map((station) => (
+                  <StationRow key={station._id} station={station} />
                 ))}
               </tbody>
             </table>
@@ -66,7 +81,9 @@ const StationTable = ({ stations }) => {
 export const Stations = () => {
   const [stations, setStations] = useState([]);
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(500);
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState("+");
+  const [address, setAddr] = useState("+");
 
   const changePage = (direction) => {
     direction === "+" && page < Math.floor(count / 50) + 1
@@ -76,21 +93,52 @@ export const Stations = () => {
       : console.log("Invalid page");
   };
 
+  const changeOrder = (col, order) => {
+    switch (col) {
+      case "name":
+        const sortedStationsName =
+          order === "+"
+            ? stations.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
+            : stations.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]));
+
+        order === "+" ? setName("-") : setName("+");
+        setStations(sortedStationsName);
+
+        break;
+      case "address":
+        const sortedStationsAddr =
+          order === "+"
+            ? stations.sort((a, b) => a.osoite[0].localeCompare(b.osoite[0]))
+            : stations.sort((a, b) => b.osoite[0].localeCompare(a.osoite[0]));
+        order === "+" ? setAddr("-") : setAddr("+");
+        setStations(sortedStationsAddr);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     const getStat = async () => {
-      const res = await getStations(page - 1);
-      const updatedStations = res[0];
+      const res = await getStations();
+      const updatedStations = res;
       setStations(updatedStations);
-      const estCount = res[1];
+      const estCount = res.length;
       setCount(estCount);
     };
-    getStat();
-  }, [page]);
+    if (count === 0) getStat();
+  }, [count]);
 
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around"></div>
-      <StationTable stations={stations} />
+      <StationTable
+        stations={stations}
+        page={page}
+        name={name}
+        address={address}
+        changeOrder={changeOrder}
+      />
       <PageSelector page={page} changePage={changePage} count={count} />
     </div>
   );
