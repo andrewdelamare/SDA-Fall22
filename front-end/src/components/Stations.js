@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getStations } from "../services/stationService";
 import { PageSelector } from "./PageSelector";
 import { OrderButton } from "./OrderButton";
+import { Spinner } from "./Spinner";
 
 const StationRow = ({ station }) => {
   const navigate = useNavigate();
@@ -28,7 +29,14 @@ const StationRow = ({ station }) => {
   );
 };
 
-const StationTable = ({ stations, page, changeOrder, name, address }) => {
+const StationTable = ({
+  stations,
+  page,
+  changeOrder,
+  name,
+  address,
+  count,
+}) => {
   const stationsPage =
     stations !== undefined
       ? stations.slice((page - 1) * 50, page * 50)
@@ -66,9 +74,15 @@ const StationTable = ({ stations, page, changeOrder, name, address }) => {
                 </tr>
               </thead>
               <tbody>
-                {stationsPage.map((station) => (
-                  <StationRow key={station._id} station={station} />
-                ))}
+                {count === 0 ? (
+                  <div className="w-full flex justify-center m-4">
+                    <Spinner />
+                  </div>
+                ) : (
+                  stationsPage.map((station) => (
+                    <StationRow key={station._id} station={station} />
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -138,6 +152,7 @@ export const Stations = () => {
         name={name}
         address={address}
         changeOrder={changeOrder}
+        count={count}
       />
       <PageSelector page={page} changePage={changePage} count={count} />
     </div>
