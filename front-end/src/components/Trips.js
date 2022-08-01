@@ -3,6 +3,7 @@ import { getTripsByDateHour } from "../services/tripService";
 import { Calendar } from "./Calendar";
 import { OrderButton } from "./OrderButton";
 import { PageSelector } from "./PageSelector";
+import { Link } from "react-router-dom";
 const Hour = ({ selectedHour, setHour, time }) => {
   const styles = selectedHour === time ? "text-white bg-black rounded-xl" : "";
   return (
@@ -62,22 +63,34 @@ const DateSelector = ({
   );
 };
 
-const TripRow = ({ trip, i }) => {
+const TripRow = ({ trip }) => {
   const minutes = Math.floor(trip.duration / 60);
   const seconds = trip.duration % 60;
   const stringTime =
     seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
+  const stringDepId =
+    trip.depId < 10
+      ? `00${trip.depId}`
+      : trip.depId < 100
+      ? `0${trip.depId}`
+      : trip.depId;
+  const stringRetId =
+    trip.retId < 10
+      ? `00${trip.retId}`
+      : trip.retId < 100
+      ? `0${trip.retId}`
+      : trip.retId;
 
   return (
     <tr
       key={trip._id}
-      className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+      className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200"
     >
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        {trip.depNm}
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 duration-300 ease-in-out hover:text-blue-600">
+        <Link to={`/stations/${stringDepId}`}>{trip.depNm}</Link>
       </td>
-      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.retNm}
+      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap duration-300 ease-in-out hover:text-blue-600">
+        <Link to={`/stations/${stringDepId}`}>{trip.retNm}</Link>
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
         {stringTime}
