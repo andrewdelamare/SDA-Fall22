@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { getTripsByDateHour } from "../services/tripService";
 import { Calendar } from "./Calendar";
+import { OrderButton } from "./OrderButton";
+import { PageSelector } from "./PageSelector";
 const Hour = ({ selectedHour, setHour, time }) => {
   const styles = selectedHour === time ? "text-white bg-black rounded-xl" : "";
   return (
@@ -18,6 +20,9 @@ const HourSelector = ({ selectedHour, setHour }) => {
   ];
   return (
     <div className="absolute left-[70%] lg:left-[60%]">
+      <div className="text-sm md:text-md w-full text-center">
+        Departure Hour
+      </div>
       <div className="grid grid-cols-2 grid-rows-[repeat(12,25px)] gap-x-2 mx-10 my-4 w-24 text-sm">
         {arr.map((hour) => (
           <Hour
@@ -84,67 +89,6 @@ const TripRow = ({ trip, i }) => {
   );
 };
 
-const OrderButton = ({ changeOrder, order, col }) => {
-  if (order === "+") {
-    return (
-      <button type="button" onClick={() => changeOrder(col, "+")}>
-        <svg
-          width="6"
-          height="3"
-          className="m-2 overflow-visible rotate-180"
-          aria-hidden="true"
-        >
-          <path
-            d="M0 0L3 3L6 0"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            stroke-linecap="round"
-          ></path>
-        </svg>
-      </button>
-    );
-  } else if (order === "-") {
-    return (
-      <button type="button" onClick={() => changeOrder(col, "-")}>
-        <svg
-          width="6"
-          height="3"
-          className="m-2 overflow-visible"
-          aria-hidden="true"
-        >
-          <path
-            d="M0 0L3 3L6 0"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            stroke-linecap="round"
-          ></path>
-        </svg>
-      </button>
-    );
-  } else {
-    return (
-      <button type="button" onClick={() => changeOrder(col, "+")}>
-        <svg
-          width="6"
-          height="3"
-          className="m-2 overflow-visible rotate-180"
-          aria-hidden="true"
-        >
-          <path
-            d="M0 0L3 3L6 0"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            stroke-linecap="round"
-          ></path>
-        </svg>
-      </button>
-    );
-  }
-};
-
 const TripTable = ({
   tripList,
   changeOrder,
@@ -152,7 +96,13 @@ const TripTable = ({
   retOrder,
   disOrder,
   durOrder,
+  page,
 }) => {
+  const tripsPage =
+    tripList != undefined
+      ? tripList.slice((page - 1) * 50, page * 50)
+      : tripList;
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -207,7 +157,7 @@ const TripTable = ({
                   </th>
                 </tr>
               </thead>
-              <tbody>{tripList}</tbody>
+              <tbody>{tripsPage}</tbody>
             </table>
           </div>
         </div>
@@ -225,6 +175,16 @@ export const Trips = () => {
   const [retOrder, setRet] = useState("+");
   const [disOrder, setDis] = useState("+");
   const [durOrder, setDur] = useState("+");
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
+
+  const changePage = (direction) => {
+    direction === "+" && page < Math.floor(count / 50) + 1
+      ? setPage(page + 1)
+      : direction === "-" && page !== 1
+      ? setPage(page - 1)
+      : console.log("Invalid page");
+  };
 
   const setHour = (hour) => {
     setSelHour(hour);
@@ -238,6 +198,7 @@ export const Trips = () => {
     setTripList(
       updatedTrips.map((trip) => <TripRow key={trip._id} trip={trip} />)
     );
+    setCount(updatedTrips.length);
   };
 
   const changeOrder = (col, order) => {
@@ -308,12 +269,14 @@ export const Trips = () => {
       </div>
       <TripTable
         tripList={tripList}
+        page={page}
         changeOrder={changeOrder}
         depOrder={depOrder}
         retOrder={retOrder}
         disOrder={disOrder}
         durOrder={durOrder}
       />
+      <PageSelector page={page} changePage={changePage} count={count} />
     </div>
   );
 };

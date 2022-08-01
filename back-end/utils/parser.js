@@ -24,6 +24,7 @@ const parseFile = (file, type) => {
   let records = [];
   let recordsLen = 0;
   let trash = 0;
+  let uniqueRecords;
   const parser = fs.createReadStream(`${file}`);
   console.log("now parsing file...");
   return new Promise((resolve) => {
@@ -47,7 +48,7 @@ const parseFile = (file, type) => {
             duration: vals[7],
           };
           parseInt(it.distance) > 10 && parseInt(it.duration) > 10
-            ? records.push(it)
+            ? (records.push(it), recordsLen++)
             : trash++;
         } else if (type === "station") {
           let it = new Station({
@@ -86,8 +87,41 @@ const parseFile = (file, type) => {
         console.log("all records parsed");
         console.log(records.length, " valid records");
         console.log(trash, " invalid records");
-        recordsLen = records.length;
-        resolve({ records, recordsLen, trash });
+
+        if (type === "trip") {
+          const uniqByProp_map = (p1, p2, p3, p4, r) =>
+            Array.from(
+              r
+                .reduce(
+                  (acc, item) => (
+                    item &&
+                      item[p1] &&
+                      item[p2] &&
+                      item[p3] &&
+                      item[p4] &&
+                      acc.set(
+                        `${item[p1]},${item[p2]},${item[p3]},${item[p4]}`,
+                        item
+                      ),
+                    acc
+                  ),
+                  new Map()
+                )
+                .values()
+            );
+
+          const uniqueById = uniqByProp_map(
+            "departure",
+            "ret",
+            "depId",
+            "retId",
+            records
+          );
+          uniqueRecords = uniqueById;
+        }
+        const urLength = uniqueRecords.length;
+        console.log(recordsLen - urLength, " duplicate records");
+        resolve({ uniqueRecords, recordsLen, urLength, trash });
       });
   });
 };
@@ -171,7 +205,7 @@ const uploadFiles = async (arr, model) => {
 const processFile = async (file, type, action) => {
   const start = Date.now();
   const recordsObj = await parseFile(file, type);
-  const records = recordsObj.records;
+  const records = await recordsObj.uniqueRecords;
   if (action === "upload" && type == "trip") {
     const hours = await packageHours(records);
     await uploadFiles(hours, Hour);
