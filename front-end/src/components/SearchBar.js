@@ -1,20 +1,30 @@
-export const SearchBar = ({searchUpdate, fieldUpdate, submitSearch}) => {
-
-  const updateField = (update, func) => {
-    update.preventDefault()
-    func(update.target.value.toLowerCase())
-  }
+export const SearchBar = ({ filterEvent, options }) => {
+  const searchIt = (e) => {
+    e.preventDefault();
+    const field = document.getElementById("searchSelect").value.toLowerCase();
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    filterEvent(search, field);
+  };
 
   return (
     <div className="flex w-full justify-center ">
-      <select onChange={(e) => updateField(e, fieldUpdate)} id="searchSelect">
-        <option>Search Field</option>
-        <option value="departure">Departure</option>
-        <option value="ret">Return</option>
-        <option value="duration">Duration</option>
-        <option value="distance">Distance</option>
-      </select>
-      <input type="search" className="border-2 mx-2" placeholder="Search" id="searchInput" onChange={(e) => updateField(e, searchUpdate)}></input>
+      <form onChange={(e) => searchIt(e)}>
+        <select id="searchSelect">
+          <option>Search Field</option>
+
+          {options.map((o) => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
+        <input
+          type="search"
+          className="border-2 mx-2"
+          placeholder="Search"
+          id="searchInput"
+        ></input>
+      </form>
     </div>
-  )
-}
+  );
+};

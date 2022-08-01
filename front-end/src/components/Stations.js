@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getStations } from "../services/stationService";
 import { PageSelector } from "./PageSelector";
 import { OrderButton } from "./OrderButton";
 import { Spinner } from "./Spinner";
+import { SearchBar } from "./SearchBar";
 
 const StationRow = ({ station }) => {
-  const navigate = useNavigate();
-  const goToStation = (id) => {
-    navigate(`${station.stationId}`);
-  };
-
   return (
     <tr
       className="bg-white border-b transition duration-300 ease-in-out hover:bg-blue-100 hover:text-blue-600 "
-      onClick={() => goToStation(station.id)}
       alt="Station row, clickable link to station view"
     >
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium transition duration-300 ease-in-out ">
-        {station.name}
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium transition duration-300 ease-in-out">
+        <Link className="hover:underline" to={`${station.stationId}`}>
+          {station.name}
+        </Link>
       </td>
       <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
         {`${station.osoite}, ${
@@ -74,16 +71,18 @@ const StationTable = ({
                 </tr>
               </thead>
               <tbody>
-                {count === 0 ? (
+                {count === null ? (
                   <tr className="w-full flex justify-center m-4">
                     <td>
                       <Spinner />
                     </td>
                   </tr>
-                ) : (
+                ) : stationsPage !== undefined ? (
                   stationsPage.map((station) => (
                     <StationRow key={station._id} station={station} />
                   ))
+                ) : (
+                  <tr></tr>
                 )}
               </tbody>
             </table>
@@ -97,9 +96,12 @@ const StationTable = ({
 export const Stations = () => {
   const [stations, setStations] = useState([]);
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(null);
   const [name, setName] = useState("+");
   const [address, setAddr] = useState("+");
+  const [search, setSearch] = useState("");
+  const [field, setField] = useState("Search Field");
+  const [filtered, setFiltered] = useState([]);
 
   const changePage = (direction) => {
     direction === "+" && page < Math.floor(count / 50) + 1
@@ -114,8 +116,16 @@ export const Stations = () => {
       case "name":
         const sortedStationsName =
           order === "+"
-            ? stations.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
-            : stations.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]));
+            ? filtered.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
+            : filtered.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]));
+
+        order === "+"
+          ? setStations(
+              stations.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
+            )
+          : setStations(
+              stations.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]))
+            );
 
         order === "+" ? setName("-") : setName("+");
         setStations(sortedStationsName);
@@ -124,8 +134,12 @@ export const Stations = () => {
       case "address":
         const sortedStationsAddr =
           order === "+"
-            ? stations.sort((a, b) => a.osoite[0].localeCompare(b.osoite[0]))
-            : stations.sort((a, b) => b.osoite[0].localeCompare(a.osoite[0]));
+            ? filtered.sort((a, b) => a.osoite[0].localeCompare(b.osoite[0]))
+            : filtered.sort((a, b) => b.osoite[0].localeCompare(a.osoite[0]));
+        order === "+"
+          ? stations.sort((a, b) => a.osoite[0].localeCompare(b.osoite[0]))
+          : stations.sort((a, b) => b.osoite[0].localeCompare(a.osoite[0]));
+
         order === "+" ? setAddr("-") : setAddr("+");
         setStations(sortedStationsAddr);
         break;
@@ -134,22 +148,49 @@ export const Stations = () => {
     }
   };
 
+  const filterStations = (search, field) =>
+    stations.filter((e) => {
+      if ((search !== "") | (field !== "Search Field")) {
+        switch (field) {
+          case "name":
+            return e.Nimi.toLowerCase().includes(search.toLowerCase());
+          case "address":
+            return e.osoite.toLowerCase().includes(search.toLowerCase());
+          default:
+            return e;
+        }
+      } else {
+        return e;
+      }
+    });
+
+  const filterEvent = (search, field) => {
+    const f = filterStations(search, field);
+    setFiltered(f);
+    setCount(f.length);
+  };
+
   useEffect(() => {
     const getStat = async () => {
       const res = await getStations();
       const updatedStations = res;
       setStations(updatedStations);
+      setFiltered(updatedStations);
       const estCount = res.length;
       setCount(estCount);
     };
-    if (count === 0) getStat();
+
+    if (count === null) {
+      getStat();
+    }
   }, [count]);
 
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around"></div>
+      <SearchBar filterEvent={filterEvent} options={["Name", "Address"]} />
       <StationTable
-        stations={stations}
+        stations={filtered}
         page={page}
         name={name}
         address={address}

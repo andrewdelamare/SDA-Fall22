@@ -88,10 +88,20 @@ const TripRow = ({ trip }) => {
       className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200"
     >
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 duration-300 ease-in-out ">
-        <Link className="hover:underline hover:text-blue-600" to={`/stations/${stringDepId}`}>{trip.depNm}</Link>
+        <Link
+          className="hover:underline hover:text-blue-600"
+          to={`/stations/${stringDepId}`}
+        >
+          {trip.depNm}
+        </Link>
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap duration-300 ease-in-out  ">
-        <Link className="hover:underline hover:text-blue-600" to={`/stations/${stringRetId}`}>{trip.retNm}</Link>
+        <Link
+          className="hover:underline hover:text-blue-600"
+          to={`/stations/${stringRetId}`}
+        >
+          {trip.retNm}
+        </Link>
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
         {stringTime}
@@ -171,7 +181,15 @@ const TripTable = ({
                   </th>
                 </tr>
               </thead>
-              <tbody>{tripsPage}</tbody>
+              <tbody>
+                {tripsPage !== undefined ? (
+                  tripsPage.map((trip) => (
+                    <TripRow key={trip._id} trip={trip} />
+                  ))
+                ) : (
+                  <tr></tr>
+                )}
+              </tbody>
             </table>
           </div>
         </div>
@@ -190,12 +208,8 @@ export const Trips = () => {
   const [disOrder, setDis] = useState("+");
   const [durOrder, setDur] = useState("+");
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [field, setField] = useState("Search Field");
-  const [filtered, setFiltered] = useState([])
-  const [filteredCount, setFCount] = useState(1)
-
-  
+  const [filtered, setFiltered] = useState([]);
+  const [filteredCount, setFCount] = useState(1);
 
   const changePage = (direction) => {
     direction === "+" && page < Math.floor(filteredCount / 50) + 1
@@ -213,11 +227,9 @@ export const Trips = () => {
     const res = await getTripsByDateHour(dayPrim, selectedHour);
     const updatedTrips = res[0].trips.map((trip) => trip);
     setTrips(updatedTrips);
-    setTripList(
-      updatedTrips.map((trip) => <TripRow key={trip._id} trip={trip} />)
-    );
+    setTripList(updatedTrips.map((trip) => trip));
     setFiltered(updatedTrips);
-    setFCount(updatedTrips.length)
+    setFCount(updatedTrips.length);
   };
 
   const changeOrder = (col, order) => {
@@ -229,27 +241,27 @@ export const Trips = () => {
             : filtered.sort((a, b) => b.depNm[0].localeCompare(a.depNm[0]));
 
         order === "+" ? setDep("-") : setDep("+");
-        order === "+" 
-        ? setTrips(trips.sort((a, b) => a.depNm[0].localeCompare(b.depNm[0])))
-        : setTrips(trips.sort((a, b) => b.depNm[0].localeCompare(a.depNm[0])));
-        setTripList(
-          sortedTripsDep.map((trip) => <TripRow key={trip._id} trip={trip} />)
-        );
+        order === "+"
+          ? setTrips(trips.sort((a, b) => a.depNm[0].localeCompare(b.depNm[0])))
+          : setTrips(
+              trips.sort((a, b) => b.depNm[0].localeCompare(a.depNm[0]))
+            );
+        setTripList(sortedTripsDep);
 
         break;
       case "retNm":
         const sortedTripsRet =
           order === "+"
             ? filtered.sort((a, b) => a.retNm[0].localeCompare(b.retNm[0]))
-            : filtered.sort((a, b) => b.retNm[0].localeCompare(a.retNm[0]))
+            : filtered.sort((a, b) => b.retNm[0].localeCompare(a.retNm[0]));
         order === "+" ? setRet("-") : setRet("+");
         order === "+"
-        ? setTrips(trips.sort((a, b) => a.retNm[0].localeCompare(b.retNm[0])))
-        : setTrips(trips.sort((a, b) => b.retNm[0].localeCompare(a.retNm[0])));
+          ? setTrips(trips.sort((a, b) => a.retNm[0].localeCompare(b.retNm[0])))
+          : setTrips(
+              trips.sort((a, b) => b.retNm[0].localeCompare(a.retNm[0]))
+            );
 
-        setTripList(
-          sortedTripsRet.map((trip) => <TripRow key={trip._id} trip={trip} />)
-        );
+        setTripList(sortedTripsRet);
 
         break;
       case "distance":
@@ -258,12 +270,10 @@ export const Trips = () => {
             ? filtered.sort((a, b) => a.distance - b.distance)
             : filtered.sort((a, b) => b.distance - a.distance);
         order === "+" ? setDis("-") : setDis("+");
-        order === "+" 
-        ? setTrips(trips.sort((a, b) => a.distance - b.distance))
-        : setTrips(trips.sort((a, b) => b.distance - a.distance))
-        setTripList(
-          sortedTripsDis.map((trip) => <TripRow key={trip._id} trip={trip} />)
-        );
+        order === "+"
+          ? setTrips(trips.sort((a, b) => a.distance - b.distance))
+          : setTrips(trips.sort((a, b) => b.distance - a.distance));
+        setTripList(sortedTripsDis);
 
         break;
       case "duration":
@@ -272,14 +282,10 @@ export const Trips = () => {
             ? filtered.sort((a, b) => a.duration - b.duration)
             : filtered.sort((a, b) => b.duration - a.duration);
         order === "+" ? setDur("-") : setDur("+");
-        order === "+" 
-        ? setTrips(trips.sort((a, b) => a.duration - b.duration))
-        : setTrips(trips.sort((a, b) => b.duration - a.duration))
-        setTripList(
-          sortedTripsDur.map((trip, i) => (
-            <TripRow key={trip._id} trip={trip} i={i} />
-          ))
-        );
+        order === "+"
+          ? setTrips(trips.sort((a, b) => a.duration - b.duration))
+          : setTrips(trips.sort((a, b) => b.duration - a.duration));
+        setTripList(sortedTripsDur);
 
         break;
       default:
@@ -287,14 +293,13 @@ export const Trips = () => {
     }
   };
 
-
-  useEffect(() => {
-    const filterTrips = () => trips.filter((e) => {
-      if(search !== "" | field !== "Search Field"){
+  const filterTrips = (search, field) =>
+    trips.filter((e) => {
+      if (search !== "" && field !== "Search Field") {
         switch (field) {
           case "departure":
             return e.depNm.toLowerCase().includes(search.toLowerCase());
-          case "ret":
+          case "return":
             return e.retNm.toLowerCase().includes(search.toLowerCase());
           case "duration":
             const minutes = Math.floor(e.duration / 60);
@@ -303,24 +308,25 @@ export const Trips = () => {
               seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
             return stringTime.includes(search.toLowerCase());
           case "distance":
-            return (e.distance/1000).toString().includes(search.toLowerCase());
+            return (e.distance / 1000)
+              .toString()
+              .includes(search.toLowerCase());
           default:
-            return e
+            console.log("switch broken");
+            return e;
         }
-      }else{
-        return e
+      } else {
+        console.log("nothing happening");
+        return e;
       }
     });
-    const f = filterTrips()
-    setFiltered(f)
-    setTripList(f.map((trip, i) => (
-      <TripRow key={trip._id} trip={trip} i={i} />
-    )))
-    setFCount(filtered.length)
 
-  }, [field, search, trips])
-   
-
+  const filterEvent = (search, field) => {
+    const f = filterTrips(search, field);
+    setFiltered(f);
+    setTripList(f.map((trip) => trip));
+    setFCount(f.length);
+  };
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around">
@@ -332,7 +338,10 @@ export const Trips = () => {
           getTrips={getTrips}
         />
       </div>
-      <SearchBar searchUpdate={setSearch} fieldUpdate={setField} />
+      <SearchBar
+        options={["Departure", "Return", "Duration", "Distance"]}
+        filterEvent={filterEvent}
+      />
       <TripTable
         tripList={tripList}
         page={page}
