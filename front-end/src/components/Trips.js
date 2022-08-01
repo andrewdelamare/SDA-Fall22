@@ -83,7 +83,7 @@ const TripRow = ({ trip, i }) => {
         {stringTime}
       </td>
       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-        {trip.duration / 1000}
+        {trip.distance / 1000}
       </td>
     </tr>
   );
@@ -99,7 +99,7 @@ const TripTable = ({
   page,
 }) => {
   const tripsPage =
-    tripList != undefined
+    tripList !== undefined
       ? tripList.slice((page - 1) * 50, page * 50)
       : tripList;
 
@@ -192,7 +192,6 @@ export const Trips = () => {
   const getTrips = async () => {
     const dayPrim = selectedDay[Symbol.toPrimitive]("number");
     const res = await getTripsByDateHour(dayPrim, selectedHour);
-    console.log(res);
     const updatedTrips = res[0].trips.map((trip) => trip);
     setTrips(updatedTrips);
     setTripList(
@@ -255,7 +254,6 @@ export const Trips = () => {
     }
   };
 
-  console.log(tripList);
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
       <div className="w-full flex justify-around">
