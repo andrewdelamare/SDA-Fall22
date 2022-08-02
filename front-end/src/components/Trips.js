@@ -295,7 +295,7 @@ export const Trips = () => {
 
   const filterTrips = (search, field) =>
     trips.filter((e) => {
-      if (search !== "" && field !== "Search Field") {
+      if (search !== "") {
         switch (field) {
           case "departure":
             return e.depNm.toLowerCase().includes(search.toLowerCase());
@@ -312,8 +312,11 @@ export const Trips = () => {
               .toString()
               .includes(search.toLowerCase());
           default:
-            console.log("switch broken");
-            return e;
+            return e.depNm.toLowerCase().includes(search.toLowerCase()) === true
+              ? true
+              : e.retNm.toLowerCase().includes(search.toLowerCase()) === true
+              ? true
+              : false;
         }
       } else {
         console.log("nothing happening");
@@ -338,10 +341,14 @@ export const Trips = () => {
           getTrips={getTrips}
         />
       </div>
-      <SearchBar
-        options={["Departure", "Return", "Duration", "Distance"]}
-        filterEvent={filterEvent}
-      />
+      {trips.length !== 0 ? (
+        <SearchBar
+          options={["Departure", "Return", "Duration", "Distance"]}
+          filterEvent={filterEvent}
+        />
+      ) : (
+        <div></div>
+      )}
       <TripTable
         tripList={tripList}
         page={page}

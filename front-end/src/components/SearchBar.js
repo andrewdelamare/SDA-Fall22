@@ -8,9 +8,9 @@ export const SearchBar = ({ filterEvent, options }) => {
 
   return (
     <div className="flex w-full justify-center ">
-      <form onChange={(e) => searchIt(e)}>
+      <form onChange={(e) => searchIt(e)} onSubmit={(e) => e.preventDefault()}>
         <select id="searchSelect">
-          <option>Search Field</option>
+          <option>Filter</option>
 
           {options.map((o) => (
             <option key={o} value={o}>
