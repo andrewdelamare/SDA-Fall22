@@ -4,6 +4,7 @@ import { Trips } from "./Trips";
 import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
 import { StationView } from "./StationView";
+import { DataView } from "./DataView";
 function App() {
   /* let { size } = useParams();
    <Route path="/" element={<Landing />} />
@@ -24,7 +25,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/data" element={<Landing />} />
+          <Route path="/data" element={<DataView />} />
           <Route path="/trips" element={<Trips />} />
           <Route path="/stations" element={<Stations />} />
           <Route path="/stations/:id" element={<StationView />} />

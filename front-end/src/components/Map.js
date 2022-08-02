@@ -2,7 +2,7 @@ import React from "react";
 import { useRef, useEffect, useState } from "react";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import mapboxgl from "!mapbox-gl";
-export const Map = ({ features }) => {
+export const Map = ({ features, zoom }) => {
   const [loaded, setLoaded] = useState(false);
   const mapContainer = useRef(null);
   mapboxgl.accessToken = process.env.REACT_APP_MAP;
@@ -13,7 +13,7 @@ export const Map = ({ features }) => {
         container: mapContainer.current,
         style: "mapbox://styles/arewdn/cl66b8ce6000o14n93c187bpn",
         center: [parseFloat(features[0].x), parseFloat(features[0].y)],
-        zoom: 12,
+        zoom: zoom,
       });
 
       // add markers to map
@@ -37,7 +37,7 @@ export const Map = ({ features }) => {
     } catch (error) {
       console.log(error);
     }
-  }, [loaded, features]);
+  }, [loaded, features, zoom]);
 
   return (
     <div

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  getTotalCounts,
+  getDVCounts,
+  getDVPopular,
+  getDVAverages,
+  dvMonthCounts,
+  dvMonthAverages,
+  dvMonthPopular,
   getStation,
-  getAllPopular,
-  getTotalAverages,
-  getMonthCounts,
-  getMonthAverages,
-  getMonthPopular,
 } from "../services/stationService";
 import { Map } from "./Map";
 import { Spinner } from "./Spinner";
@@ -26,36 +26,18 @@ const StationLinkButton = ({ name, id, reset }) => {
   );
 };
 
-const DataView = ({ counts, avs, popular, reset }) => {
+const Data = ({ counts, avs, popular, reset }) => {
   return (
     <div>
       <div className="flex flex-wrap">
         <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Total departures: </h3>
-          <div>{counts === null ? <Spinner /> : counts.depCount}</div>
+          <h3>Total Journeys: </h3>
+          <div>{counts === null ? <Spinner /> : counts.journeys}</div>
         </div>
         <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Total returns: </h3>
-          <div>{counts === null ? <Spinner /> : counts.retCount}</div>
-        </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Average distance when starting from this station:</h3>
+          <h3>Average distance:</h3>
           <div>
-            {avs === null ? (
-              <Spinner />
-            ) : (
-              ` ${Math.floor(avs.avDistSt) / 1000} km`
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Average distance when returned to this station:</h3>
-          <div>
-            {avs === null ? (
-              <Spinner />
-            ) : (
-              ` ${Math.floor(avs.avDistRet) / 1000} km`
-            )}
+            {avs === null ? <Spinner /> : ` ${Math.floor(avs.avDis) / 1000} km`}
           </div>
         </div>
       </div>
@@ -171,12 +153,11 @@ const DataView = ({ counts, avs, popular, reset }) => {
   );
 };
 
-export const StationView = () => {
+export const DataView = () => {
   const { id } = useParams();
   const [avs, setAvs] = useState(null);
   const [counts, setCounts] = useState(null);
   const [popular, setPopular] = useState(null);
-  const [station, setStation] = useState({ name: "..." });
   const [fired, setFired] = useState(false);
   const [month, setMonth] = useState("all");
   const [selectStyles, setSelStyles] = useState(
@@ -185,12 +166,13 @@ export const StationView = () => {
   const [bStyle, setBStyle] = useState(
     "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
   );
+  const [popStations, setPopStations] = useState(null);
+  const [mapLoad, setMl] = useState(false);
 
   const resetOnNavigate = () => {
     setAvs(null);
     setCounts(null);
     setPopular(null);
-    setStation({ name: "..." });
     setFired(false);
   };
 
@@ -203,44 +185,46 @@ export const StationView = () => {
       setAvs(null);
       setCounts(null);
       setPopular(null);
+      setPopStations(null);
+      setMl(false);
       setSelStyles("mt-3 hover:cursor-wait pointer-events-none");
       setBStyle(
         "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
       );
       switch (month) {
         case "all":
-          const allCount = await getTotalCounts(id);
+          const allCount = await getDVCounts();
           setCounts(allCount);
-          const allAvs = await getTotalAverages(id);
+          const allAvs = await getDVAverages();
           setAvs(allAvs);
-          const allPop = await getAllPopular(id);
+          const allPop = await getDVPopular();
           setPopular(allPop);
           break;
 
         case "may":
-          const mCounts = await getMonthCounts(id, 4);
+          const mCounts = await dvMonthCounts(4);
           setCounts(mCounts);
-          const mAvs = await getMonthAverages(id, 4);
+          const mAvs = await dvMonthAverages(4);
           setAvs(mAvs);
-          const mPop = await getMonthPopular(id, 4);
+          const mPop = await dvMonthPopular(4);
           setPopular(mPop);
           break;
 
         case "june":
-          const junCounts = await getMonthCounts(id, 5);
+          const junCounts = await dvMonthCounts(5);
           setCounts(junCounts);
-          const junAvs = await getMonthAverages(id, 5);
+          const junAvs = await dvMonthAverages(5);
           setAvs(junAvs);
-          const junPop = await getMonthPopular(id, 5);
+          const junPop = await dvMonthPopular(5);
           setPopular(junPop);
           break;
 
         case "july":
-          const julCounts = await getMonthCounts(id, 6);
+          const julCounts = await dvMonthCounts(6);
           setCounts(julCounts);
-          const julAvs = await getMonthAverages(id, 6);
+          const julAvs = await dvMonthAverages(6);
           setAvs(julAvs);
-          const julPop = await getMonthPopular(id, 6);
+          const julPop = await dvMonthPopular(6);
           setPopular(julPop);
           break;
         default:
@@ -253,44 +237,66 @@ export const StationView = () => {
 
   useEffect(() => {
     const getAvs = async () => {
-      const res = await getTotalAverages(id);
-      if (res) setAvs(res);
-    };
-    const getSt = async () => {
-      const res = await getStation(id);
-      setStation(res);
+      const res = await getDVAverages();
+      setAvs(res);
     };
     const getPop = async () => {
-      const res = await getAllPopular(id);
+      const res = await getDVPopular();
       setPopular(res);
     };
     const getCounts = async () => {
-      const res = await getTotalCounts(id);
+      const res = await getDVCounts(id);
       setCounts(res);
     };
     if (fired === false) {
-      getSt();
       getAvs();
       getCounts();
       getPop();
       setFired(true);
-      if ((avs !== null) | (counts !== null) | (popular !== null)) {
-        setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
-        setSelStyles("mt-3 ");
-      }
     }
-  }, [id, fired, avs, counts, popular]);
+    if (
+      avs !== null &&
+      counts !== null &&
+      popular !== null &&
+      popStations !== null
+    ) {
+      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setSelStyles("mt-3 ");
+    }
+    if (mapLoad === false && popular !== null) {
+      const loadPopInfo = async () => {
+        let arr = [];
+        for (const stat of Object.values(popular.popDepartures).slice(1)) {
+          const stringId =
+            stat.stId < 10
+              ? `00${stat.stId}`
+              : stat.stId < 100
+              ? `0${stat.stId}`
+              : stat.stId;
+          const s = await getStation(stringId);
+          arr.push(s);
+        }
+        for (const stat of Object.values(popular.popReturns).slice(1)) {
+          const stringId =
+            stat.stId < 10
+              ? `00${stat.stId}`
+              : stat.stId < 100
+              ? `0${stat.stId}`
+              : stat.stId;
+          const s = await getStation(stringId);
+          arr.push(s);
+        }
+        setPopStations(arr);
+      };
+      loadPopInfo();
+      setMl(true);
+    }
+  }, [id, fired, avs, counts, popular, mapLoad, popStations]);
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">
       <div className="">
         <div className="flex">
-          {station.name === "..." ? (
-            <Spinner />
-          ) : (
-            <h2 className="text-3xl underline font-bold mr-10">
-              {station.name}
-            </h2>
-          )}
+          <h2 className="text-3xl underline font-bold mr-10">Data Overview</h2>
           <form className="mt-3">
             <label className="mr-2">Filter by month:</label>
             <select
@@ -311,16 +317,16 @@ export const StationView = () => {
             </button>
           </form>
         </div>
-        <DataView
+        <Data
           avs={avs}
           counts={counts}
           popular={popular}
           reset={resetOnNavigate}
         />
-        {station.name === "..." ? (
+        {popStations === null ? (
           <Spinner />
         ) : (
-          <Map features={[station]} zoom={11.5} />
+          <Map features={popStations} zoom={10.5} />
         )}
       </div>
     </div>

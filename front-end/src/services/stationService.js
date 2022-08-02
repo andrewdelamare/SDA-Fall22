@@ -32,6 +32,25 @@ const getAllPopular = async (id) => {
   return response.data;
 };
 
+const getDVCounts = async () => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/totalcounts/data`
+  );
+  return response.data;
+};
+
+const getDVAverages = async () => {
+  const response = await axios.get(`${baseUrl}/stations/station/totalavs/data`);
+  return response.data;
+};
+
+const getDVPopular = async () => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/allpopular/data`
+  );
+  return response.data;
+};
+
 const getMonthCounts = async (id, month) => {
   const response = await axios.get(
     `${baseUrl}/stations/station/${id}/counts/${month}`
@@ -53,6 +72,27 @@ const getMonthPopular = async (id, month) => {
   return response.data;
 };
 
+const dvMonthCounts = async (month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/counts/${month}/data`
+  );
+  return response.data;
+};
+
+const dvMonthAverages = async (month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/avs/${month}/data`
+  );
+  return response.data;
+};
+
+const dvMonthPopular = async (month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/popular/${month}/data`
+  );
+  return response.data;
+};
+
 export {
   getStations,
   getStation,
@@ -62,4 +102,10 @@ export {
   getMonthCounts,
   getMonthAverages,
   getMonthPopular,
+  getDVAverages,
+  getDVCounts,
+  getDVPopular,
+  dvMonthAverages,
+  dvMonthCounts,
+  dvMonthPopular,
 };
