@@ -32,10 +32,34 @@ const getAllPopular = async (id) => {
   return response.data;
 };
 
+const getMonthCounts = async (id, month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/counts/${month}`
+  );
+  return response.data;
+};
+
+const getMonthAverages = async (id, month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/avs/${month}`
+  );
+  return response.data;
+};
+
+const getMonthPopular = async (id, month) => {
+  const response = await axios.get(
+    `${baseUrl}/stations/station/${id}/popular/${month}`
+  );
+  return response.data;
+};
+
 export {
   getStations,
   getStation,
   getTotalCounts,
   getAllPopular,
   getTotalAverages,
+  getMonthCounts,
+  getMonthAverages,
+  getMonthPopular,
 };

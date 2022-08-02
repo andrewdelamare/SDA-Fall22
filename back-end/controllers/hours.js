@@ -26,7 +26,7 @@ hourRouter.get("/hours/:day/:hour", async (req, res) => {
 hourRouter.post(
   "/trip",
   body("departure").isDate(),
-  body("return").isDate(),
+  body("ret").isDate(),
   body("depId").isNumeric(),
   body("depNm").isString(),
   body("retId").isNumeric(),
@@ -40,7 +40,7 @@ hourRouter.post(
     }
     const trip = {
       departure: req.body.departure,
-      return: req.body.return,
+      ret: req.body.return,
       depId: req.body.depId,
       depNm: req.body.depNm,
       retId: req.body.retId,

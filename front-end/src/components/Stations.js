@@ -99,8 +99,6 @@ export const Stations = () => {
   const [count, setCount] = useState(null);
   const [name, setName] = useState("+");
   const [address, setAddr] = useState("+");
-  const [search, setSearch] = useState("");
-  const [field, setField] = useState("Search Field");
   const [filtered, setFiltered] = useState([]);
 
   const changePage = (direction) => {

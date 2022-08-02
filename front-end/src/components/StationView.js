@@ -5,6 +5,9 @@ import {
   getStation,
   getAllPopular,
   getTotalAverages,
+  getMonthCounts,
+  getMonthAverages,
+  getMonthPopular,
 } from "../services/stationService";
 import { Map } from "./Map";
 import { Spinner } from "./Spinner";
@@ -36,7 +39,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
           <div>{counts === null ? <Spinner /> : counts.retCount}</div>
         </div>
         <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Average distance if starting from this station:</h3>
+          <h3>Average distance when starting from this station:</h3>
           <div>
             {avs === null ? (
               <Spinner />
@@ -46,7 +49,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
           </div>
         </div>
         <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
-          <h3>Average distance if returned to this station:</h3>
+          <h3>Average distance when returned to this station:</h3>
           <div>
             {avs === null ? (
               <Spinner />
@@ -175,6 +178,7 @@ export const StationView = () => {
   const [popular, setPopular] = useState(null);
   const [station, setStation] = useState({ name: "..." });
   const [fired, setFired] = useState(false);
+  const [month, setMonth] = useState("all");
 
   const resetOnNavigate = () => {
     setAvs(null);
@@ -182,6 +186,53 @@ export const StationView = () => {
     setPopular(null);
     setStation({ name: "..." });
     setFired(false);
+  };
+
+  const submitAction = async (e) => {
+    e.preventDefault();
+    setAvs(null);
+    setCounts(null);
+    setPopular(null);
+
+    switch (month) {
+      case "all":
+        const allCount = await getTotalCounts(id);
+        setCounts(allCount);
+        const allAvs = await getTotalAverages(id);
+        setAvs(allAvs);
+        const allPop = await getAllPopular(id);
+        setPopular(allPop);
+        break;
+
+      case "may":
+        const mCounts = await getMonthCounts(id, 4);
+        setCounts(mCounts);
+        const mAvs = await getMonthAverages(id, 4);
+        setAvs(mAvs);
+        const mPop = await getMonthPopular(id, 4);
+        setPopular(mPop);
+        break;
+
+      case "june":
+        const junCounts = await getMonthCounts(id, 5);
+        setCounts(junCounts);
+        const junAvs = await getMonthAverages(id, 5);
+        setAvs(junAvs);
+        const junPop = await getMonthPopular(id, 5);
+        setPopular(junPop);
+        break;
+
+      case "july":
+        const julCounts = await getMonthCounts(id, 6);
+        setCounts(julCounts);
+        const julAvs = await getMonthAverages(id, 6);
+        setAvs(julAvs);
+        const julPop = await getMonthPopular(id, 6);
+        setPopular(julPop);
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -212,11 +263,31 @@ export const StationView = () => {
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">
       <div className="">
-        {station.name === "..." ? (
-          <Spinner />
-        ) : (
-          <h2 className="text-3xl underline font-bold ">{station.name}</h2>
-        )}
+        <div className="flex">
+          {station.name === "..." ? (
+            <Spinner />
+          ) : (
+            <h2 className="text-3xl underline font-bold mr-10">
+              {station.name}
+            </h2>
+          )}
+          <form className="my-2 ">
+            <label className="mr-2">Filter by month:</label>
+            <select onChange={(e) => setMonth(e.target.value)}>
+              <option value={"all"}>All Months</option>
+              <option value={"may"}>May</option>
+              <option value={"june"}>June</option>
+              <option value={"july"}>July</option>
+            </select>
+            <button
+              className="ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+              type="submit"
+              onClick={(e) => submitAction(e)}
+            >
+              Apply Filter
+            </button>
+          </form>
+        </div>
         <DataView
           avs={avs}
           counts={counts}

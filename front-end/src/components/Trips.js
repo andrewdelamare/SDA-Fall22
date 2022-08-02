@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getTripsByDateHour } from "../services/tripService";
 import { Calendar } from "./Calendar";
 import { OrderButton } from "./OrderButton";
