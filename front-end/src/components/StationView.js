@@ -1,3 +1,4 @@
+import { set } from "mongoose";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -179,6 +180,12 @@ export const StationView = () => {
   const [station, setStation] = useState({ name: "..." });
   const [fired, setFired] = useState(false);
   const [month, setMonth] = useState("all");
+  const [selectStyles, setSelStyles] = useState(
+    "mt-3 hover:cursor-wait pointer-events-none"
+  );
+  const [bStyle, setBStyle] = useState(
+    "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+  );
 
   const resetOnNavigate = () => {
     setAvs(null);
@@ -189,49 +196,59 @@ export const StationView = () => {
   };
 
   const submitAction = async (e) => {
-    e.preventDefault();
-    setAvs(null);
-    setCounts(null);
-    setPopular(null);
+    if ((avs === null) | (counts === null) | (popular === null)) {
+      e.preventDefault();
+      return;
+    } else {
+      e.preventDefault();
+      setAvs(null);
+      setCounts(null);
+      setPopular(null);
+      setSelStyles("mt-3 hover:cursor-wait pointer-events-none");
+      setBStyle(
+        "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+      );
+      switch (month) {
+        case "all":
+          const allCount = await getTotalCounts(id);
+          setCounts(allCount);
+          const allAvs = await getTotalAverages(id);
+          setAvs(allAvs);
+          const allPop = await getAllPopular(id);
+          setPopular(allPop);
+          break;
 
-    switch (month) {
-      case "all":
-        const allCount = await getTotalCounts(id);
-        setCounts(allCount);
-        const allAvs = await getTotalAverages(id);
-        setAvs(allAvs);
-        const allPop = await getAllPopular(id);
-        setPopular(allPop);
-        break;
+        case "may":
+          const mCounts = await getMonthCounts(id, 4);
+          setCounts(mCounts);
+          const mAvs = await getMonthAverages(id, 4);
+          setAvs(mAvs);
+          const mPop = await getMonthPopular(id, 4);
+          setPopular(mPop);
+          break;
 
-      case "may":
-        const mCounts = await getMonthCounts(id, 4);
-        setCounts(mCounts);
-        const mAvs = await getMonthAverages(id, 4);
-        setAvs(mAvs);
-        const mPop = await getMonthPopular(id, 4);
-        setPopular(mPop);
-        break;
+        case "june":
+          const junCounts = await getMonthCounts(id, 5);
+          setCounts(junCounts);
+          const junAvs = await getMonthAverages(id, 5);
+          setAvs(junAvs);
+          const junPop = await getMonthPopular(id, 5);
+          setPopular(junPop);
+          break;
 
-      case "june":
-        const junCounts = await getMonthCounts(id, 5);
-        setCounts(junCounts);
-        const junAvs = await getMonthAverages(id, 5);
-        setAvs(junAvs);
-        const junPop = await getMonthPopular(id, 5);
-        setPopular(junPop);
-        break;
-
-      case "july":
-        const julCounts = await getMonthCounts(id, 6);
-        setCounts(julCounts);
-        const julAvs = await getMonthAverages(id, 6);
-        setAvs(julAvs);
-        const julPop = await getMonthPopular(id, 6);
-        setPopular(julPop);
-        break;
-      default:
-        break;
+        case "july":
+          const julCounts = await getMonthCounts(id, 6);
+          setCounts(julCounts);
+          const julAvs = await getMonthAverages(id, 6);
+          setAvs(julAvs);
+          const julPop = await getMonthPopular(id, 6);
+          setPopular(julPop);
+          break;
+        default:
+          break;
+      }
+      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setSelStyles("mt-3 ");
     }
   };
 
@@ -258,8 +275,12 @@ export const StationView = () => {
       getCounts();
       getPop();
       setFired(true);
+      if ((avs !== null) | (counts !== null) | (popular !== null)) {
+        setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+        setSelStyles("mt-3 ");
+      }
     }
-  }, [id, fired]);
+  }, [id, fired, avs, counts, popular]);
   return (
     <div className="mx-10 my-4 mt-[96px] flex flex-col">
       <div className="">
@@ -271,16 +292,19 @@ export const StationView = () => {
               {station.name}
             </h2>
           )}
-          <form className="my-2 ">
+          <form className="mt-3">
             <label className="mr-2">Filter by month:</label>
-            <select onChange={(e) => setMonth(e.target.value)}>
+            <select
+              onChange={(e) => setMonth(e.target.value)}
+              className={selectStyles}
+            >
               <option value={"all"}>All Months</option>
               <option value={"may"}>May</option>
               <option value={"june"}>June</option>
               <option value={"july"}>July</option>
             </select>
             <button
-              className="ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+              className={bStyle}
               type="submit"
               onClick={(e) => submitAction(e)}
             >

@@ -114,15 +114,15 @@ export const Stations = () => {
       case "name":
         const sortedStationsName =
           order === "+"
-            ? filtered.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
-            : filtered.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]));
+            ? filtered.sort((a, b) => a.name[0].localeCompare(b.name[0]))
+            : filtered.sort((a, b) => b.name[0].localeCompare(a.name[0]));
 
         order === "+"
           ? setStations(
-              stations.sort((a, b) => a.Nimi[0].localeCompare(b.Nimi[0]))
+              stations.sort((a, b) => a.name[0].localeCompare(b.name[0]))
             )
           : setStations(
-              stations.sort((a, b) => b.Nimi[0].localeCompare(a.Nimi[0]))
+              stations.sort((a, b) => b.name[0].localeCompare(a.name[0]))
             );
 
         order === "+" ? setName("-") : setName("+");
@@ -151,11 +151,15 @@ export const Stations = () => {
       if ((search !== "") | (field !== "Search Field")) {
         switch (field) {
           case "name":
-            return e.Nimi.toLowerCase().includes(search.toLowerCase());
+            return e.name.toLowerCase().includes(search.toLowerCase());
           case "address":
             return e.osoite.toLowerCase().includes(search.toLowerCase());
           default:
-            return e;
+            return e.name.toLowerCase().includes(search.toLowerCase()) === true
+              ? true
+              : e.osoite.toLowerCase().includes(search.toLowerCase()) === true
+              ? true
+              : false;
         }
       } else {
         return e;
@@ -185,8 +189,12 @@ export const Stations = () => {
 
   return (
     <div className=" mx-10 my-4 mt-[96px] flex flex-col">
-      <div className="w-full flex justify-around"></div>
-      <SearchBar filterEvent={filterEvent} options={["Name", "Address"]} />
+      <div className="w-full flex justify-around mt-2"></div>
+      {stations.length === 0 ? (
+        <div></div>
+      ) : (
+        <SearchBar filterEvent={filterEvent} options={["Name", "Address"]} />
+      )}
       <StationTable
         stations={filtered}
         page={page}
