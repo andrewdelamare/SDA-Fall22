@@ -31,8 +31,6 @@ hourRouter.get("/hours/:day/:hour", async (req, res) => {
   return res.status(200).json(result);
 });
 
-//tripRouter.get("/trips/find/:")
-
 hourRouter.post(
   "/trip",
   body("departure").isString(),
@@ -50,8 +48,6 @@ hourRouter.post(
     const dep = parseISO(req.body.departure);
     const ret = parseISO(req.body.ret);
     const duration = differenceInSeconds(ret, dep);
-    //const departure = format(dep, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx" )
-    //const retFormatted = format(ret, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx" )
     console.log(dep);
     console.log(ret);
     const trip = {

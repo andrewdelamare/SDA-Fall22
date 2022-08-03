@@ -65,20 +65,6 @@ const parseFile = (file, type) => {
             kapasiteet: vals[10],
             x: vals[11],
             y: vals[12],
-            startNum: 0,
-            endNum: 0,
-            disSt: { may: [], june: [], july: [] },
-            disEnd: { may: [], june: [], july: [] },
-            startedAt: {
-              may: [],
-              june: [],
-              july: [],
-            },
-            returnedAt: {
-              may: [],
-              june: [],
-              july: [],
-            },
           });
           records.push(it);
         }
@@ -87,29 +73,28 @@ const parseFile = (file, type) => {
         console.log("all records parsed");
         console.log(records.length, " valid records");
         console.log(trash, " invalid records");
+        const uniqByProp_map = (p1, p2, p3, p4, r) =>
+          Array.from(
+            r
+              .reduce(
+                (acc, item) => (
+                  item &&
+                    item[p1] &&
+                    item[p2] &&
+                    item[p3] &&
+                    item[p4] &&
+                    acc.set(
+                      `${item[p1]},${item[p2]},${item[p3]},${item[p4]}`,
+                      item
+                    ),
+                  acc
+                ),
+                new Map()
+              )
+              .values()
+          );
 
         if (type === "trip") {
-          const uniqByProp_map = (p1, p2, p3, p4, r) =>
-            Array.from(
-              r
-                .reduce(
-                  (acc, item) => (
-                    item &&
-                      item[p1] &&
-                      item[p2] &&
-                      item[p3] &&
-                      item[p4] &&
-                      acc.set(
-                        `${item[p1]},${item[p2]},${item[p3]},${item[p4]}`,
-                        item
-                      ),
-                    acc
-                  ),
-                  new Map()
-                )
-                .values()
-            );
-
           const uniqueById = uniqByProp_map(
             "departure",
             "ret",
@@ -118,7 +103,17 @@ const parseFile = (file, type) => {
             records
           );
           uniqueRecords = uniqueById;
+        } else if (type === "station") {
+          const uniqueById = uniqByProp_map(
+            "fid",
+            "stationId",
+            "",
+            "",
+            records
+          );
+          uniqueRecords = uniqueById;
         }
+
         const urLength = uniqueRecords.length;
         console.log(recordsLen - urLength, " duplicate records");
         resolve({ uniqueRecords, recordsLen, urLength, trash });

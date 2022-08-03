@@ -2,6 +2,7 @@ const express = require("express");
 const Hour = require("../models/hour");
 const Station = require("../models/station");
 const stationRouter = express.Router();
+const { body, validationResult } = require("express-validator");
 const { startOfMonth, endOfMonth, startOfDay } = require("date-fns");
 
 stationRouter.get("/stations", async (req, res) => {
@@ -14,6 +15,48 @@ stationRouter.get("/stations/station/:id", async (req, res) => {
   const doc = await Station.findOne({ stationId: id }).lean();
   return res.status(200).json(doc);
 });
+
+stationRouter.post(
+  "/station/new",
+  body("stationId").isNumeric(),
+  body("name").isString(),
+  body("address").isString(),
+  body("kaupunki").isString(),
+  body("operaattor").isString(),
+  body("x").isString(),
+  body("y").isString(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const id = req.body.stationId;
+    const stringId = id < 10 ? `00${id}` : id < 100 ? `0${id}` : `${id}`;
+    const station = {
+      stationId: stringId,
+      Nimi: req.body.name,
+      namn: req.body.name,
+      name: req.body.name,
+      osoite: req.body.address,
+      address: req.body.address,
+      kaupunki: req.body.kaupunki,
+      stad: req.body.kaupunki,
+      operaattor: req.body.operaattor,
+      x: req.body.x,
+      y: req.body.y,
+    };
+    const exists = await Station.exists({ stationId: station.stationId });
+    if (exists !== null) {
+      return res
+        .status(400)
+        .json({ error: "This station ID is already in use" });
+    } else {
+      const result = await Station.create(station);
+      console.log(result);
+      return res.status(201).json(result);
+    }
+  }
+);
 
 stationRouter.get("/stations/station/:id/totalcounts", async (req, res) => {
   const id = parseInt(req.params.id);

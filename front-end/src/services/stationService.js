@@ -1,6 +1,12 @@
 import axios from "axios";
 //const baseUrl = process.env.REACT_APP_BASE_URL;
 const baseUrl = "http://localhost:3003";
+
+const addStation = async (station) => {
+  const response = await axios.post(`${baseUrl}/station/new`, station);
+  return response.data;
+};
+
 const getStations = async () => {
   const response = await axios.get(`${baseUrl}/stations`);
   return response.data;
@@ -94,6 +100,7 @@ const dvMonthPopular = async (month) => {
 };
 
 export {
+  addStation,
   getStations,
   getStation,
   getTotalCounts,

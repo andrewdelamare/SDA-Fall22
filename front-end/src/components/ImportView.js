@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postTrip } from "../services/tripService";
+import { addStation } from "../services/stationService";
 
 /* 
 departure: req.body.departure,
@@ -27,9 +28,9 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
     <form
       className="flex flex-col"
       onSubmit={handleSubmit((data) => {
-        console.log(data)
-        postTrip(data)
-      } )}
+        console.log(data);
+        postTrip(data);
+      })}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
       <label>Departure: </label>
@@ -136,97 +137,101 @@ const StationForm = ({ handleSubmit, register, errors }) => {
   return (
     <form
       className="flex flex-col"
-      onSubmit={handleSubmit((data) => console.log(data))}
+      onSubmit={handleSubmit(async (data) => {
+        console.log(data);
+        await addStation(data);
+      })}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
-      <label>Departure: </label>
-      <input
-        type="datetime-local"
-        className="border-2 mx-2"
-        id="departureInput"
-        {...register("departure", {
-          required: "Departure time and date are required",
-          type: "datetime-local",
-          min: "2021-04-30T21:00",
-          max: "2021-07-31T21:00",
-        })}
-      />
-      <p>{errors.departure?.message}</p>
-      <label>Return: </label>
-      <input
-        type="datetime-local"
-        className="border-2 mx-2"
-        id="returnInput"
-        {...register("ret", {
-          required: "Return time and date are required",
-          type: "datetime-local",
-          min: "2021-04-30T21:00",
-          max: "2021-07-31T21:00",
-        })}
-      />
-      <p>{errors.return?.message}</p>
-      <label>Departure ID: </label>
+      <label>Station ID: </label>
       <input
         type="number"
         className="border-2 mx-2 text-sm"
-        {...register("depId", {
-          required: "Departure ID is required",
-          type: "number",
+        {...register("stationId", {
+          valueAsNumber: true,
+          required: "Station ID is required",
+          min: { value: 1, message: "Value must be greater than zero" },
         })}
       />
-      <p>{errors.depId?.message}</p>
-      <label>Return ID: </label>
-      <input
-        type="number"
-        className="border-2 mx-2 text-sm"
-        {...register("retId", {
-          required: "Return ID is required",
-          type: "number",
-        })}
-      />
-      <p>{errors.retId?.message}</p>
-      <label>Departure station name: </label>
+      <p>{errors.stationId?.message}</p>
+      <label>Name: </label>
       <input
         type="text"
         className="border-2 mx-2 text-sm"
-        {...register("depNm", {
-          required: "Departure station name is required",
+        {...register("name", {
+          required: "Station name is required",
           type: "text",
           minLength: {
             value: 4,
-            message: "Please enter the full name of the departure station",
+            message: "Please enter the full name of the station",
           },
         })}
       ></input>
-      <p>{errors.depNm?.message}</p>
-      <label>Return station name: </label>
+      <p>{errors.name?.message}</p>
+      <label>Address: </label>
       <input
         type="text"
         className="border-2 mx-2 text-sm"
-        {...register("retNm", {
-          required: "Return station name is required",
+        {...register("address", {
+          required: "Address name is required",
           type: "text",
           minLength: {
             value: 4,
-            message: "Please enter the full name of the return station",
+            message: "Please enter the full address",
           },
         })}
-      />
-      <p>{errors.retNm?.message}</p>
-      <label>Distance in meters: </label>
+      ></input>
+      <p>{errors.address?.message}</p>
+      <label>City: </label>
+      <input
+        type="text"
+        className="border-2 mx-2 text-sm"
+        {...register("kaupunki", {
+          required: "City is required",
+          type: "text",
+          minLength: {
+            value: 3,
+            message: "Please enter the full name of the city",
+          },
+        })}
+      ></input>
+      <p>{errors.name?.message}</p>
+      <label>Operator name: </label>
+      <input
+        type="text"
+        className="border-2 mx-2 text-sm"
+        {...register("operaattor", {
+          required: "Operator name is required",
+          type: "text",
+          minLength: {
+            value: 2,
+            message: "Please enter the full name of the operator",
+          },
+        })}
+      ></input>
+      <p>{errors.name?.message}</p>
+      <label>X coordinates: </label>
       <input
         type="number"
         className="border-2 mx-2 text-sm"
-        {...register("distance", {
-          required: "Distance is required",
+        {...register("x", {
+          required: "X coordinates are required",
           type: "number",
-          min: {
-            value: 10,
-            message: "The Journey must be longer than 10 meters",
-          },
+          min: { value: -90, message: "Must not be less than -90" },
+          max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
-      <p>{errors.distance?.message}</p>
+      <label>Y coordinates: </label>
+      <input
+        type="number"
+        className="border-2 mx-2 text-sm"
+        {...register("y", {
+          required: "Y coordinates are required",
+          type: "number",
+          min: { value: -90, message: "Must not be less than -90" },
+          max: { value: 90, message: "Must not be greater than 90" },
+        })}
+      />
       <button className="" type="submit">
         Submit
       </button>
@@ -251,7 +256,7 @@ export const ImportView = () => {
           onChange={(e) => {
             e.preventDefault();
             setOpt(e.target.value);
-            reset()
+            reset();
           }}
         >
           <option value="journey">Journey</option>
@@ -265,7 +270,7 @@ export const ImportView = () => {
           errors={errors}
         />
       ) : (
-        <StationForm 
+        <StationForm
           handleSubmit={handleSubmit}
           register={register}
           errors={errors}
