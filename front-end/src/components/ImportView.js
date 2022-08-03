@@ -27,9 +27,9 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
   return (
     <form
       className="flex flex-col"
-      onSubmit={handleSubmit((data) => {
+      onSubmit={handleSubmit(async (data) => {
         console.log(data);
-        postTrip(data);
+        await postTrip(data);
       })}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
@@ -138,7 +138,6 @@ const StationForm = ({ handleSubmit, register, errors }) => {
     <form
       className="flex flex-col"
       onSubmit={handleSubmit(async (data) => {
-        console.log(data);
         await addStation(data);
       })}
     >
@@ -221,6 +220,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
+      <p>{errors.x?.message}</p>
       <label>Y coordinates: </label>
       <input
         type="number"
@@ -232,6 +232,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
+      <p>{errors.y?.message}</p>
       <button className="" type="submit">
         Submit
       </button>
