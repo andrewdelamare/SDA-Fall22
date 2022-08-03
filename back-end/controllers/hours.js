@@ -2,7 +2,17 @@ const express = require("express");
 const Hour = require("../models/hour");
 const hourRouter = express.Router();
 const { body, validationResult } = require("express-validator");
-const { startOfDay, startOfHour, addHours } = require("date-fns");
+const {
+  startOfDay,
+  startOfHour,
+  addHours,
+  getSeconds,
+  differenceInSeconds,
+  format,
+  compareDesc,
+  subHours,
+  parseISO,
+} = require("date-fns");
 
 hourRouter.get("/hour", async (req, res) => {
   const result = await Hour.find({}).limit(1).lean();
@@ -25,35 +35,42 @@ hourRouter.get("/hours/:day/:hour", async (req, res) => {
 
 hourRouter.post(
   "/trip",
-  body("departure").isDate(),
-  body("ret").isDate(),
+  body("departure").isString(),
+  body("ret").isString(),
   body("depId").isNumeric(),
   body("depNm").isString(),
   body("retId").isNumeric(),
   body("retNm").isString(),
   body("distance").isNumeric(),
-  body("duration").isNumeric(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const dep = parseISO(req.body.departure);
+    const ret = parseISO(req.body.ret);
+    const duration = differenceInSeconds(ret, dep);
+    //const departure = format(dep, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx" )
+    //const retFormatted = format(ret, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx" )
+    console.log(dep);
+    console.log(ret);
     const trip = {
-      departure: req.body.departure,
-      ret: req.body.return,
+      departure: dep,
+      ret: ret,
       depId: req.body.depId,
       depNm: req.body.depNm,
       retId: req.body.retId,
       retNm: req.body.retNm,
       distance: req.body.distance,
-      duration: req.body.duration,
+      duration: duration,
     };
-    const d = parseISO(trip.departure);
-    const day = startOfDay(d);
-    const hour = startOfHour(d);
-    const result = await Hour.find({ day: day, hour: hour });
-    result.trips.push(trip);
-    await result.save();
+    const day = startOfDay(dep);
+    const hour = startOfHour(dep);
+    const result = await Hour.updateOne(
+      { day: day, hour: hour },
+      { $push: { trips: trip } }
+    );
+    console.log(result);
     return res.status(201).json(result);
   }
 );

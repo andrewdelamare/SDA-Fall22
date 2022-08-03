@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { postTrip } from "../services/tripService";
 
 /* 
 departure: req.body.departure,
@@ -25,6 +26,116 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
   return (
     <form
       className="flex flex-col"
+      onSubmit={handleSubmit((data) => {
+        console.log(data)
+        postTrip(data)
+      } )}
+    >
+      <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
+      <label>Departure: </label>
+      <input
+        type="datetime-local"
+        className="border-2 mx-2"
+        id="departureInput"
+        {...register("departure", {
+          valueAsDate: true,
+          required: "Departure time and date are required",
+          type: "datetime-local",
+          min: "2021-04-30T21:00",
+          max: "2021-07-31T21:00",
+        })}
+      />
+      <p>{errors.departure?.message}</p>
+      <label>Return: </label>
+      <input
+        type="datetime-local"
+        className="border-2 mx-2"
+        id="returnInput"
+        {...register("ret", {
+          valueAsDate: true,
+          required: "Return time and date are required",
+          type: "datetime-local",
+          min: "2021-04-30T21:00",
+          max: "2021-07-31T21:00",
+        })}
+      />
+      <p>{errors.ret?.message}</p>
+      <label>Departure ID: </label>
+      <input
+        type="number"
+        className="border-2 mx-2 text-sm"
+        {...register("depId", {
+          valueAsNumber: true,
+          required: "Departure ID is required",
+          type: "number",
+        })}
+      />
+      <p>{errors.depId?.message}</p>
+      <label>Return ID: </label>
+      <input
+        type="number"
+        className="border-2 mx-2 text-sm"
+        {...register("retId", {
+          valueAsNumber: true,
+          required: "Return ID is required",
+          type: "number",
+        })}
+      />
+      <p>{errors.retId?.message}</p>
+      <label>Departure station name: </label>
+      <input
+        type="text"
+        className="border-2 mx-2 text-sm"
+        {...register("depNm", {
+          required: "Departure station name is required",
+          type: "text",
+          minLength: {
+            value: 4,
+            message: "Please enter the full name of the departure station",
+          },
+        })}
+      ></input>
+      <p>{errors.depNm?.message}</p>
+      <label>Return station name: </label>
+      <input
+        type="text"
+        className="border-2 mx-2 text-sm"
+        {...register("retNm", {
+          required: "Return station name is required",
+          type: "text",
+          minLength: {
+            value: 4,
+            message: "Please enter the full name of the return station",
+          },
+        })}
+      />
+      <p>{errors.retNm?.message}</p>
+      <label>Distance in meters: </label>
+      <input
+        type="number"
+        className="border-2 mx-2 text-sm"
+        {...register("distance", {
+          valueAsNumber: true,
+          required: "Distance is required",
+          type: "number",
+          min: {
+            value: 10,
+            message: "The Journey must be longer than 10 meters",
+          },
+        })}
+      />
+      <p>{errors.distance?.message}</p>
+      <button className="" type="submit">
+        Submit
+      </button>
+    </form>
+  );
+};
+
+const StationForm = ({ handleSubmit, register, errors }) => {
+  return (
+    <form
+      className="flex flex-col"
       onSubmit={handleSubmit((data) => console.log(data))}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
@@ -46,7 +157,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
         type="datetime-local"
         className="border-2 mx-2"
         id="returnInput"
-        {...register("return", {
+        {...register("ret", {
           required: "Return time and date are required",
           type: "datetime-local",
           min: "2021-04-30T21:00",
@@ -123,13 +234,12 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
   );
 };
 
-const StationForm = () => {};
-
 export const ImportView = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
   const [option, setOpt] = useState("journey");
 
@@ -141,6 +251,7 @@ export const ImportView = () => {
           onChange={(e) => {
             e.preventDefault();
             setOpt(e.target.value);
+            reset()
           }}
         >
           <option value="journey">Journey</option>
@@ -154,7 +265,11 @@ export const ImportView = () => {
           errors={errors}
         />
       ) : (
-        <StationForm />
+        <StationForm 
+          handleSubmit={handleSubmit}
+          register={register}
+          errors={errors}
+        />
       )}
     </div>
   );

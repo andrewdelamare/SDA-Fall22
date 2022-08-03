@@ -10,4 +10,9 @@ const getTripsByDateHour = async (day, hour) => {
   return response.data;
 };
 
-export { getTrips, getTripsByDateHour };
+const postTrip = async (trip) => {
+  const response = await axios.post(`${baseUrl}/trip`, trip);
+  return response.data;
+}
+
+export { getTrips, getTripsByDateHour, postTrip };
