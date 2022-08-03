@@ -5,6 +5,7 @@ import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
 import { StationView } from "./StationView";
 import { DataView } from "./DataView";
+import { ImportView } from "./ImportView";
 function App() {
   /* let { size } = useParams();
    <Route path="/" element={<Landing />} />
@@ -29,7 +30,7 @@ function App() {
           <Route path="/trips" element={<Trips />} />
           <Route path="/stations" element={<Stations />} />
           <Route path="/stations/:id" element={<StationView />} />
-          <Route path="/import" element={<Landing />} />
+          <Route path="/upload" element={<ImportView />} />
         </Routes>
       </div>
     </BrowserRouter>

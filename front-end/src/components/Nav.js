@@ -3,7 +3,7 @@ export const NavBar = () => {
   return (
     <nav className="flex justify-between fixed z-20 bg-stone-200 top-0 w-full ">
       <div className="m-7 sm:text-xl md:text-2xl lg:text-3xl font-serif ">
-        Helsinki City Bike App
+        <Link to="/">Helsinki City Bike App</Link>
       </div>
       <div className="flex flex-row justify-between m-7 items-center">
         <Link to="/" className="inline-flex border-0 px-5 focus:outline-none">
@@ -21,7 +21,7 @@ export const NavBar = () => {
           to="/trips"
           className="inline-flex border-0 px-5 focus:outline-none"
         >
-          Trips
+          Journeys
         </Link>
 
         <Link
@@ -31,7 +31,7 @@ export const NavBar = () => {
           Stations
         </Link>
         <Link
-          to="/import"
+          to="/upload"
           className="inline-flex border-0 px-5  focus:outline-none"
         >
           Import

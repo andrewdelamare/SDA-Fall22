@@ -38,13 +38,13 @@ const Amenities = () => (
     <Amenity
       className="w-3/5 h-[340px] float-left relative"
       title="Data Overview"
-      desc="Key data points and trends"
-      linkLoc="/"
+      desc="Key data points"
+      linkLoc="/data"
       img="bg-data "
     />
     <Amenity
       className="w-2/5 h-[360px] float-right relative"
-      title="Trips"
+      title="Journeys"
       desc="Every trip at your fingertips"
       linkLoc="/trips"
       img="bg-trips bg-cover text-white bg-center"
@@ -59,8 +59,8 @@ const Amenities = () => (
     <Amenity
       className="w-2/5 h-[280px] float-right relative"
       title="Upload"
-      desc="Add a new trip or set of trips"
-      linkLoc="/"
+      desc="Add a new journey or station"
+      linkLoc="/upload"
       img="bg-upload bg-cover bg-center text-white "
     />
   </div>
