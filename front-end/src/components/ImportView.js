@@ -3,33 +3,25 @@ import { useForm } from "react-hook-form";
 import { postTrip } from "../services/tripService";
 import { addStation } from "../services/stationService";
 
-/* 
-departure: req.body.departure,
-      ret: req.body.return,
-      depId: req.body.depId,
-      depNm: req.body.depNm,
-      retId: req.body.retId,
-      retNm: req.body.retNm,
-      distance: req.body.distance,
-      duration: req.body.duration, 
-      
-      body("departure").isDate(),
-  body("ret").isDate(),
-  body("depId").isNumeric(),
-  body("depNm").isString(),
-  body("retId").isNumeric(),
-  body("retNm").isString(),
-  body("distance").isNumeric(),
-  body("duration").isNumeric(),
-      */
-
-const JourneyForm = ({ handleSubmit, register, errors }) => {
+const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
   return (
     <form
-      className="flex flex-col"
+      className="flex flex-col w-[300px] self-center"
       onSubmit={handleSubmit(async (data) => {
         console.log(data);
-        await postTrip(data);
+        await postTrip(data)
+          .then(() => {
+            setTimeout(() => {
+              setError(null);
+            }, 10000);
+            setError(false);
+          })
+          .catch(() => {
+            setTimeout(() => {
+              setError(null);
+            }, 10000);
+            setError(true);
+          });
       })}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
@@ -46,7 +38,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           max: "2021-07-31T21:00",
         })}
       />
-      <p>{errors.departure?.message}</p>
+      <p class="text-red-500">{errors.departure?.message}</p>
       <label>Return: </label>
       <input
         type="datetime-local"
@@ -60,7 +52,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           max: "2021-07-31T21:00",
         })}
       />
-      <p>{errors.ret?.message}</p>
+      <p class="text-red-500">{errors.ret?.message}</p>
       <label>Departure ID: </label>
       <input
         type="number"
@@ -71,7 +63,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           type: "number",
         })}
       />
-      <p>{errors.depId?.message}</p>
+      <p class="text-red-500">{errors.depId?.message}</p>
       <label>Return ID: </label>
       <input
         type="number"
@@ -82,7 +74,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           type: "number",
         })}
       />
-      <p>{errors.retId?.message}</p>
+      <p class="text-red-500">{errors.retId?.message}</p>
       <label>Departure station name: </label>
       <input
         type="text"
@@ -96,7 +88,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       ></input>
-      <p>{errors.depNm?.message}</p>
+      <p class="text-red-500">{errors.depNm?.message}</p>
       <label>Return station name: </label>
       <input
         type="text"
@@ -110,7 +102,7 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       />
-      <p>{errors.retNm?.message}</p>
+      <p class="text-red-500">{errors.retNm?.message}</p>
       <label>Distance in meters: </label>
       <input
         type="number"
@@ -125,20 +117,35 @@ const JourneyForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       />
-      <p>{errors.distance?.message}</p>
-      <button className="" type="submit">
+      <p class="text-red-500">{errors.distance?.message}</p>
+      <button
+        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
+        type="submit"
+      >
         Submit
       </button>
     </form>
   );
 };
 
-const StationForm = ({ handleSubmit, register, errors }) => {
+const StationForm = ({ handleSubmit, register, errors, setError }) => {
   return (
     <form
-      className="flex flex-col"
+      className="flex flex-col w-[300px] self-center"
       onSubmit={handleSubmit(async (data) => {
-        await addStation(data);
+        await addStation(data)
+          .then(() => {
+            setTimeout(() => {
+              setError(null);
+            }, 10000);
+            setError(false);
+          })
+          .catch(() => {
+            setTimeout(() => {
+              setError(null);
+            }, 10000);
+            setError(true);
+          });
       })}
     >
       <input type="hidden" id="timezone" name="timezone" value="+03:00"></input>
@@ -152,7 +159,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           min: { value: 1, message: "Value must be greater than zero" },
         })}
       />
-      <p>{errors.stationId?.message}</p>
+      <p class="text-red-500">{errors.stationId?.message}</p>
       <label>Name: </label>
       <input
         type="text"
@@ -166,7 +173,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       ></input>
-      <p>{errors.name?.message}</p>
+      <p class="text-red-500">{errors.name?.message}</p>
       <label>Address: </label>
       <input
         type="text"
@@ -180,7 +187,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       ></input>
-      <p>{errors.address?.message}</p>
+      <p class="text-red-500">{errors.address?.message}</p>
       <label>City: </label>
       <input
         type="text"
@@ -194,7 +201,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       ></input>
-      <p>{errors.name?.message}</p>
+      <p class="text-red-500">{errors.kaupunki?.message}</p>
       <label>Operator name: </label>
       <input
         type="text"
@@ -208,7 +215,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           },
         })}
       ></input>
-      <p>{errors.name?.message}</p>
+      <p class="text-red-500">{errors.name?.message}</p>
       <label>X coordinates: </label>
       <input
         type="number"
@@ -220,7 +227,7 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
-      <p>{errors.x?.message}</p>
+      <p class="text-red-500">{errors.x?.message}</p>
       <label>Y coordinates: </label>
       <input
         type="number"
@@ -232,8 +239,11 @@ const StationForm = ({ handleSubmit, register, errors }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
-      <p>{errors.y?.message}</p>
-      <button className="" type="submit">
+      <p class="text-red-500">{errors.y?.message}</p>
+      <button
+        class="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
+        type="submit"
+      >
         Submit
       </button>
     </form>
@@ -248,11 +258,12 @@ export const ImportView = () => {
     reset,
   } = useForm();
   const [option, setOpt] = useState("journey");
+  const [error, setError] = useState(null);
 
   return (
-    <div className="mx-10 my-4 mt-[96px] flex flex-col">
-      <div className="m-5">
-        <label>Data type: </label>
+    <div className="mx-10 my-4 mt-[100px] flex flex-col">
+      <div className="m-5 flex w-fit self-center">
+        <label className="mr-2">Data type:</label>
         <select
           onChange={(e) => {
             e.preventDefault();
@@ -269,14 +280,25 @@ export const ImportView = () => {
           handleSubmit={handleSubmit}
           register={register}
           errors={errors}
+          setError={setError}
         />
       ) : (
         <StationForm
           handleSubmit={handleSubmit}
           register={register}
           errors={errors}
+          setError={setError}
         />
       )}
+      {error === true ? (
+        <p className="border-2 rounded-lg flex w-fit self-center p-2 m-4 text-center border-slate-300 bg-red-500 text-white">
+          Unable to save your request
+        </p>
+      ) : error === false ? (
+        <p className="border-2 rounded-lg flex w-fit self-center p-2 m-4 text-center border-slate-300 bg-green-500 text-white">
+          Entry saved
+        </p>
+      ) : null}
     </div>
   );
 };

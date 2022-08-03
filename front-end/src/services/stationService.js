@@ -3,11 +3,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:3003";
 
 const addStation = async (station) => {
-  const response = await axios
-    .post(`${baseUrl}/station/new`, station)
-    .catch(function (error) {
-      return error.toJSON();
-    });
+  const response = await axios.post(`${baseUrl}/station/new`, station);
   return response.data;
 };
 

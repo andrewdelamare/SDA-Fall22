@@ -49,7 +49,7 @@ stationRouter.post(
     if (exists !== null) {
       return res
         .status(400)
-        .json({ error: "This station ID is already in use" });
+        .send({ message: "This station ID is already in use" });
     } else {
       const result = await Station.create(station);
       console.log(result);

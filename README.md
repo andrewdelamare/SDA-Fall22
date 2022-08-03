@@ -53,13 +53,11 @@ Data view:
 
 Import view:
 - Endpoints to store new journeys data or new bicycle stations
-***
-## Upcoming Features
-
-Import view:
 - UI for station input
 - UI for journey input
 - Form validation with react-hook-form
+***
+## Upcoming Features
 
 Tests:
 - Back end tests with jest
@@ -69,3 +67,9 @@ Tests:
 Deployment: 
 - Cloud deployment of back-end on heroku
 - Cloud deployment of front end on cloudflare
+
+Documentation:
+- Parser docs
+- Back end docs
+- Front end docs
+- 
