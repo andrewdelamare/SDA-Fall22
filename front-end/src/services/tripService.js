@@ -1,6 +1,6 @@
 import axios from "axios";
-//const baseUrl = process.env.REACT_APP_BASE_URL;
-const baseUrl = "http://localhost:3003";
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const getTrips = async () => {
   const response = await axios.get(`${baseUrl}/trips`).catch(function (error) {
     return error.toJSON();
