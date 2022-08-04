@@ -10,7 +10,11 @@ const StationRow = ({ station }) => {
   const n = useNavigate();
   return (
     <tr
-      className="bg-white border-b transition duration-300 ease-in-out hover:bg-blue-100 hover:text-blue-600 "
+      className="
+      bg-white border-b transition duration-300 ease-in-out flex flex-col
+      sm:table-row
+      hover:bg-blue-100 hover:text-blue-600 
+      "
       alt="Station row, clickable link to station view"
       onClick={() => {
         n(`${station.stationId}`);
@@ -51,10 +55,10 @@ const StationTable = ({
           <div className="overflow-hidden">
             <table className="min-w-full">
               <thead className="bg-white border-b">
-                <tr>
+                <tr className="flex w-auto justify-center sm:table-row">
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left "
+                    className="text-sm font-medium text-gray-900 md:px-6 py-4 text-left "
                   >
                     <div className="m-2">Name</div>
                     <OrderButton
@@ -65,7 +69,7 @@ const StationTable = ({
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium text-gray-900 md:px-6 py-4 text-left"
                   >
                     <div className="m-2">Address</div>
                     <OrderButton
@@ -194,7 +198,7 @@ export const Stations = () => {
   }, [count]);
 
   return (
-    <div className=" mx-10 my-4 mt-[96px] flex flex-col">
+    <div className=" mx-10 my-4 flex flex-col">
       <div className="w-full flex justify-around mt-2"></div>
       {stations.length === 0 ? (
         <div></div>

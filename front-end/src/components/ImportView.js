@@ -261,7 +261,7 @@ export const ImportView = () => {
   const [error, setError] = useState(null);
 
   return (
-    <div className="mx-10 my-4 mt-[100px] flex flex-col">
+    <div className="mx-10 my-4 flex flex-col">
       <div className="m-5 flex w-fit self-center">
         <label className="mr-2">Data type:</label>
         <select
