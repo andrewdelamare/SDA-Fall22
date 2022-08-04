@@ -119,8 +119,8 @@ const TripRow = ({ trip }) => {
         {trip.distance / 1000}
       </td>
       <div className="font-light sm:hidden text-sm">
-      Departure: 
-      <Link
+        Departure:
+        <Link
           className="underline text-blue-600"
           to={`/stations/${stringDepId}`}
         >
@@ -128,19 +128,17 @@ const TripRow = ({ trip }) => {
         </Link>
       </div>
       <div className="font-light sm:hidden text-sm">
-      Return:   
-      <Link
+        Return:
+        <Link
           className=" underline text-blue-600"
           to={`/stations/${stringRetId}`}
         >
-         {trip.retNm}
+          {trip.retNm}
         </Link>
       </div>
+      <div className="sm:hidden font-light text-sm">Duration: {stringTime}</div>
       <div className="sm:hidden font-light text-sm">
-      Duration: {stringTime}
-      </div>
-      <div className="sm:hidden font-light text-sm">
-      Distance (km): {trip.distance / 1000}
+        Distance (km): {trip.distance / 1000}
       </div>
     </tr>
   );
