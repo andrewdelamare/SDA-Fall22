@@ -275,7 +275,7 @@ export const StationView = () => {
       getPop();
       setFired(true);
     }
-    if ((avs !== null) && (counts !== null) && (popular !== null)) {
+    if (avs !== null && counts !== null && popular !== null) {
       setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
       setSelStyles("mt-3 ");
     }
