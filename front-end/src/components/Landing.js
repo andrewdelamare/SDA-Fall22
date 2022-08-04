@@ -6,19 +6,28 @@ const LandingHero = () => (
     <div className="">
       <img
         src={img}
-        alt="hotel"
-        className="h-600 w-full object-cover saturate-150 contrast-75 "
+        alt="cyclist"
+        className="
+        h-400 w-full object-cover saturate-75 contrast-75
+        md:h-600 md:w-full md:object-cover md:saturate-75 md:contrast-75
+        
+        "
       />
     </div>
 
-    <div className="absolute top-1/2 left-1/2 right-1/8 text-white font-serif">
-      <div className="text-6xl">City Bike App</div>
+    <div
+      className="
+    absolute top-[40%] left-[45%] right-[5%] font-serif text-white text-4xl
+    md:top-[45%] md:left-1/2 md:right-1/8 md:text-5xl
+    "
+    >
+      <div>City Bike App</div>
     </div>
   </div>
 );
 
 const Amenity = ({ title, desc, className, img, linkLoc }) => (
-  <div className={className + " relative place-content-center flex flex-col"}>
+  <div className={className + " place-content-center flex flex-col"}>
     <Link
       to={linkLoc}
       className={
@@ -36,28 +45,40 @@ const Amenity = ({ title, desc, className, img, linkLoc }) => (
 const Amenities = () => (
   <div className="block w-full h-auto pt-4 pl-4 pb-4 relative ">
     <Amenity
-      className="w-3/5 h-[340px] float-left relative"
+      className="
+      h-[340px] 
+      md:w-3/5 md:float-left md:relative
+      "
       title="Data Overview"
       desc="Key data points"
       linkLoc="/data"
       img="bg-data "
     />
     <Amenity
-      className="w-2/5 h-[360px] float-right relative"
+      className="
+      h-[360px] 
+      md:w-2/5 md:float-right md:relative
+      "
       title="Journeys"
       desc="Every trip at your fingertips"
       linkLoc="/trips"
       img="bg-trips bg-cover text-white bg-center"
     />
     <Amenity
-      className="w-3/5 h-[300px] float-left relative"
+      className="
+      h-[300px] 
+      md:w-3/5 md:float-left md:relative
+      "
       title="Stations"
       desc="Check out the data by station"
       linkLoc="/stations"
       img="bg-stations bg-cover bg-[center_left_29rem] text-white "
     />
     <Amenity
-      className="w-2/5 h-[280px] float-right relative"
+      className="
+      h-[280px] 
+      md:w-2/5 md:float-right md:relative
+      "
       title="Upload"
       desc="Add a new journey or station"
       linkLoc="/upload"
@@ -68,7 +89,7 @@ const Amenities = () => (
 
 export const Landing = () => {
   return (
-    <div className="mt-[96px]">
+    <div className="">
       <LandingHero />
       <Amenities />
     </div>
