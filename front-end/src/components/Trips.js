@@ -21,7 +21,11 @@ const HourSelector = ({ selectedHour, setHour }) => {
     22, 11, 23,
   ];
   return (
-    <div className="absolute left-[70%] lg:left-[60%]">
+    <div
+      className="
+    md:absolute md:left-[70%] lg:left-[60%]
+    "
+    >
       <div className="text-sm md:text-md w-full text-center">
         Departure Hour
       </div>
@@ -47,15 +51,20 @@ const DateSelector = ({
   getTrips,
 }) => {
   return (
-    <div className="flex border-2 border-black w-full lg:w-2/3 h-[420px] m-10 p-8  ">
+    <div className="flex flex-col items-center md:flex-row border-2 border-black w-full lg:w-2/3 md:h-[420px] m-10 p-8  ">
       <div className="flex ">
         <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       </div>
-      <div className="flex ">
-        <HourSelector selectedHour={selectedHour} setHour={setHour} />
-      </div>
+
+      <HourSelector selectedHour={selectedHour} setHour={setHour} />
+
       <button
-        className="absolute left-[47%] top-[500px] border-2 border-black p-2 hover:bg-stone-200 active:bg-stone-400 "
+        className="
+        left-[47%] top-[500px] border-2 border-black p-2 
+        md:absolute 
+        hover:bg-stone-200 
+        active:bg-stone-400 
+        "
         onClick={() => getTrips()}
       >
         Get Trips
@@ -89,7 +98,7 @@ const TripRow = ({ trip }) => {
     >
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 duration-300 ease-in-out ">
         <Link
-          className="hover:underline hover:text-blue-600"
+          className="hover:underline hover:text-blue-600 "
           to={`/stations/${stringDepId}`}
         >
           {trip.depNm}
@@ -331,7 +340,7 @@ export const Trips = () => {
     setFCount(f.length);
   };
   return (
-    <div className=" mx-10 my-4 mt-[96px] flex flex-col">
+    <div className=" mx-10 my-4 flex flex-col">
       <div className="w-full flex justify-around">
         <DateSelector
           selectedDay={selectedDay}

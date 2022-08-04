@@ -90,14 +90,14 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
   });
 
   return (
-    <div className={className}>
+    <div className={`${className} h-[300px] md:h-[350px]`}>
       <div className="flex">
-        <h1 className="self-center text-xl mx-auto">
+        <h1 className="self-center md:text-xl mx-auto ">
           {day.toLocaleString("default", { month: "long", year: "numeric" })}
         </h1>
       </div>
 
-      <div className="grid grid-cols-7 pt-3 mx-4 gap-3">
+      <div className="grid grid-cols-7 pt-3 mx-12 md:mx-4 md:gap-3">
         <div className="place-self-center justify-around place-items-center flex w-8 h-8">
           S
         </div>
@@ -120,7 +120,7 @@ const Month = ({ month, className, selectedDay, selectDay }) => {
           S
         </div>
       </div>
-      <div className="grid gap-3 grid-cols-7 pt-3 mx-4">
+      <div className="grid md:gap-3 grid-cols-7 pt-3 md:mx-4 mx-12 ">
         {allDays.map((day) => (
           <Day
             day={day}
@@ -157,17 +157,18 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
 
   const lmStyles = "opacity-0 min-w-96 invisible";
   const lmTransitionR =
-    "opacity-100 min-w-96 transition duration-300 translate-x-full";
+    "invisible opacity-0 md:visible md:opacity-100 min-w-96 md:transition md:duration-300 md:translate-x-full";
 
   const smStyles = "opacity-100 min-w-96 z-10";
   const smTransitionL =
-    "opacity-0 min-w-96 transition duration-300 -translate-x-full  ";
+    " min-w-96 md:opacity-0 md:transition md:duration-300 md:-translate-x-full";
   const smTransitionR =
-    " transition min-w-96 duration-300 opacity-0 translate-x-full";
+    "visible md:transition min-w-96 md:duration-300 md:opacity-0 md:translate-x-full";
 
-  const nmStyles = "opacity-0 invisible -z-20";
+  const nmStyles = "opacity-0 invisible ";
   const nmTransitionL =
-    "opacity-100 min-w-96 transition duration-300 w-2 -translate-x-full";
+    "invisible opacity-0 md:visible md:opacity-100 md:min-w-96 md:transition md:duration-300 md:w-2 md:-translate-x-full";
+  //"invisible opacity-0 md:visible md:opacity-100 min-w-96 md:transition md:duration-300 md:w-2 md:translate-x-full";
 
   const selectDay = (date) => {
     setSelectedDay(date);
@@ -230,12 +231,18 @@ export const Calendar = ({ setSelectedDay, selectedDay, filldates }) => {
   const lArrow = "<";
   const rArrow = ">";
   return (
-    <div className="relative overflow-x-hidden -left-[330px] justify-center items-center">
+    <div className="relative overflow-x-hidden -left-[130px] md:-left-[330px] justify-center items-center">
       <div className="absolute left-[395px] flex z-40">
-        <button className="mr-[143px] " onClick={() => updateMonth("-")}>
+        <button
+          className="md:mr-[143px] md:ml-[0px] mr-[108px] ml-[30px] "
+          onClick={() => updateMonth("-")}
+        >
           {lArrow}
         </button>
-        <button className="ml-[143px] " onClick={() => updateMonth("+")}>
+        <button
+          className="md:ml-[143px] ml-[120px] "
+          onClick={() => updateMonth("+")}
+        >
           {rArrow}
         </button>
       </div>
