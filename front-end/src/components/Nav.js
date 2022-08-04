@@ -11,7 +11,7 @@ export const NavBar = () => {
       <div
         className="
       flex text-2xl pr-2 h-[43px] py-2
-      md:text-2xl md:m-auto
+      md:text-2xl md:my-auto
       lg:text-3xl  "
       >
         <Link to="/">Helsinki City Bike App</Link>

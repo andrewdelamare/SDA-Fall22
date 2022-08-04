@@ -28,17 +28,17 @@ const StationLinkButton = ({ name, id, reset }) => {
 
 const DataView = ({ counts, avs, popular, reset }) => {
   return (
-    <div>
-      <div className="flex flex-wrap">
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+    <div className="flex flex-col items-center">
+      <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Total departures: </h3>
           <div>{counts === null ? <Spinner /> : counts.depCount}</div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Total returns: </h3>
           <div>{counts === null ? <Spinner /> : counts.retCount}</div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Average distance when starting from this station:</h3>
           <div>
             {avs === null ? (
@@ -48,7 +48,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Average distance when returned to this station:</h3>
           <div>
             {avs === null ? (
@@ -59,8 +59,8 @@ const DataView = ({ counts, avs, popular, reset }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+      <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Popular return stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -113,7 +113,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
             </ol>
           </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Popular departure stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -183,7 +183,7 @@ export const StationView = () => {
     "mt-3 hover:cursor-wait pointer-events-none"
   );
   const [bStyle, setBStyle] = useState(
-    "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+    "hover:cursor-wait border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
   );
 
   const resetOnNavigate = () => {
@@ -205,7 +205,7 @@ export const StationView = () => {
       setPopular(null);
       setSelStyles("mt-3 hover:cursor-wait pointer-events-none");
       setBStyle(
-        "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+        "hover:cursor-wait border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
       );
       switch (month) {
         case "all":
@@ -246,7 +246,7 @@ export const StationView = () => {
         default:
           break;
       }
-      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setBStyle("border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
       setSelStyles("mt-3 ");
     }
   };
@@ -276,18 +276,23 @@ export const StationView = () => {
       setFired(true);
     }
     if (avs !== null && counts !== null && popular !== null) {
-      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setBStyle("border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
       setSelStyles("mt-3 ");
     }
   }, [id, fired, avs, counts, popular]);
   return (
-    <div className="mx-10 my-4 mt-[96px] flex flex-col">
+    <div className="mx-10 my-4 flex flex-col">
       <div className="">
-        <div className="flex">
+        <div
+          className="
+        flex flex-col justify-between items-center first-letter
+        md:flex-row md:justify-around
+        "
+        >
           {station.name === "..." ? (
             <Spinner />
           ) : (
-            <h2 className="text-3xl underline font-bold mr-10">
+            <h2 className="text-3xl underline font-bold md:mr-10">
               {station.name}
             </h2>
           )}
@@ -295,7 +300,7 @@ export const StationView = () => {
             <label className="mr-2">Filter by month:</label>
             <select
               onChange={(e) => setMonth(e.target.value)}
-              className={selectStyles}
+              className={`${selectStyles} mr-3`}
             >
               <option value={"all"}>All Months</option>
               <option value={"may"}>May</option>

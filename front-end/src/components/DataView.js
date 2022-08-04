@@ -28,21 +28,21 @@ const StationLinkButton = ({ name, id, reset }) => {
 
 const Data = ({ counts, avs, popular, reset }) => {
   return (
-    <div>
-      <div className="flex flex-wrap">
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+    <div className="flex flex-col items-center">
+      <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Total Journeys: </h3>
           <div>{counts === null ? <Spinner /> : counts.journeys}</div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Average distance:</h3>
           <div>
             {avs === null ? <Spinner /> : ` ${Math.floor(avs.avDis) / 1000} km`}
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+      <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Popular return stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -95,7 +95,7 @@ const Data = ({ counts, avs, popular, reset }) => {
             </ol>
           </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-auto m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
           <h3>Popular departure stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -164,7 +164,7 @@ export const DataView = () => {
     "mt-3 hover:cursor-wait pointer-events-none"
   );
   const [bStyle, setBStyle] = useState(
-    "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+    "hover:cursor-wait border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
   );
   const [popStations, setPopStations] = useState(null);
   const [mapLoad, setMl] = useState(false);
@@ -189,7 +189,7 @@ export const DataView = () => {
       setMl(false);
       setSelStyles("mt-3 hover:cursor-wait pointer-events-none");
       setBStyle(
-        "hover:cursor-wait ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
+        "hover:cursor-wait border-2 px-2 rounded-xl text-sm hover:bg-stone-200"
       );
       switch (month) {
         case "all":
@@ -230,7 +230,7 @@ export const DataView = () => {
         default:
           break;
       }
-      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setBStyle("border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
       setSelStyles("mt-3 ");
     }
   };
@@ -260,7 +260,7 @@ export const DataView = () => {
       popular !== null &&
       popStations !== null
     ) {
-      setBStyle("ml-3 border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
+      setBStyle("border-2 px-2 rounded-xl text-sm hover:bg-stone-200");
       setSelStyles("mt-3 ");
     }
     if (mapLoad === false && popular !== null) {
@@ -293,15 +293,22 @@ export const DataView = () => {
     }
   }, [id, fired, avs, counts, popular, mapLoad, popStations]);
   return (
-    <div className="mx-10 my-4 mt-[96px] flex flex-col">
+    <div className="mx-10 my-4 flex flex-col">
       <div className="">
-        <div className="flex">
-          <h2 className="text-3xl underline font-bold mr-10">Data Overview</h2>
-          <form className="mt-3">
+        <div
+          className="
+        flex flex-col justify-between items-center first-letter
+        md:flex-row md:justify-around
+        "
+        >
+          <h2 className="text-3xl underline font-bold md:mr-10 ">
+            Data Overview
+          </h2>
+          <form className="content-center items-center my-2">
             <label className="mr-2">Filter by month:</label>
             <select
               onChange={(e) => setMonth(e.target.value)}
-              className={selectStyles}
+              className={`${selectStyles} mr-3`}
             >
               <option value={"all"}>All Months</option>
               <option value={"may"}>May</option>
