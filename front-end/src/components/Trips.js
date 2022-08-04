@@ -94,17 +94,17 @@ const TripRow = ({ trip }) => {
   return (
     <tr
       key={trip._id}
-      className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200"
+      className="flex flex-col bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200 sm:table-row "
     >
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 duration-300 ease-in-out ">
+      <td className="px-1 py-4 lg:whitespace-nowrap text-sm font-medium text-gray-900 duration-300 ease-in-out hidden sm:table-cell ">
         <Link
-          className="hover:underline hover:text-blue-600 "
+          className="hover:underline hover:text-blue-600"
           to={`/stations/${stringDepId}`}
         >
           {trip.depNm}
         </Link>
       </td>
-      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap duration-300 ease-in-out  ">
+      <td className="text-sm text-gray-900 font-light px-1 py-4 lg:whitespace-nowrap duration-300 ease-in-out hidden sm:table-cell">
         <Link
           className="hover:underline hover:text-blue-600"
           to={`/stations/${stringRetId}`}
@@ -112,12 +112,36 @@ const TripRow = ({ trip }) => {
           {trip.retNm}
         </Link>
       </td>
-      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+      <td className="text-sm text-gray-900 font-light px-1 py-4 lg:whitespace-nowrap hidden sm:table-cell">
         {stringTime}
       </td>
-      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+      <td className="text-sm text-gray-900 font-light px-1 py-4 lg:whitespace-nowrap hidden sm:table-cell">
         {trip.distance / 1000}
       </td>
+      <div className="font-light sm:hidden text-sm">
+      Departure: 
+      <Link
+          className="underline text-blue-600"
+          to={`/stations/${stringDepId}`}
+        >
+          {trip.depNm}
+        </Link>
+      </div>
+      <div className="font-light sm:hidden text-sm">
+      Return:   
+      <Link
+          className=" underline text-blue-600"
+          to={`/stations/${stringRetId}`}
+        >
+         {trip.retNm}
+        </Link>
+      </div>
+      <div className="sm:hidden font-light text-sm">
+      Duration: {stringTime}
+      </div>
+      <div className="sm:hidden font-light text-sm">
+      Distance (km): {trip.distance / 1000}
+      </div>
     </tr>
   );
 };
@@ -138,17 +162,17 @@ const TripTable = ({
 
   return (
     <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="overflow-x-auto sm:-mx-2 lg:-mx-8">
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-hidden">
             <table className="min-w-full">
               <thead className="bg-white border-b">
-                <tr>
+                <tr className="flex sm:table-row">
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-medium text-gray-900 px-2 py-4 text-left"
                   >
-                    <div className="m-2"> Departure</div>
+                    <div className="mt-2 sm:m-2"> Departure</div>
                     <OrderButton
                       changeOrder={changeOrder}
                       order={depOrder}
@@ -157,9 +181,9 @@ const TripTable = ({
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left "
+                    className="text-sm font-medium text-gray-900 px-2 py-4 text-left "
                   >
-                    <div className="m-2"> Return</div>
+                    <div className="mt-2 sm:m-2"> Return</div>
                     <OrderButton
                       changeOrder={changeOrder}
                       order={retOrder}
@@ -168,9 +192,9 @@ const TripTable = ({
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left "
+                    className="text-sm font-medium text-gray-900 px-2 py-4 text-left "
                   >
-                    <div className="m-2"> Duration</div>
+                    <div className="mt-2 sm:m-2"> Duration</div>
                     <OrderButton
                       changeOrder={changeOrder}
                       order={durOrder}
@@ -179,9 +203,9 @@ const TripTable = ({
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-medium text-gray-900 px-6 py-4 text-left "
+                    className="text-sm font-medium text-gray-900 px-2 py-4 text-left "
                   >
-                    <div className="m-2"> Distance</div>
+                    <div className="mt-2 sm:m-2"> Distance</div>
                     <OrderButton
                       changeOrder={changeOrder}
                       order={disOrder}
