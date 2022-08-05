@@ -51,7 +51,7 @@ const DateSelector = ({
   getTrips,
 }) => {
   return (
-    <div className="flex flex-col items-center md:flex-row border-2 border-black w-full lg:w-2/3 md:h-[420px] m-10 p-8  ">
+    <div className="flex flex-col items-center md:flex-row w-full lg:w-2/3 md:h-[420px] m-10 p-8  ">
       <div className="flex ">
         <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       </div>
