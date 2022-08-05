@@ -56,6 +56,11 @@ Import view:
 - UI for station input
 - UI for journey input
 - Form validation with react-hook-form
+
+Deployment: 
+- Deployment of back-end with heroku
+- Deployment of front end with cloudflare
+
 ***
 ## Upcoming Features
 
@@ -64,9 +69,6 @@ Tests:
 - Front end tests with jest
 - End to end tests with cypress
 
-Deployment: 
-- Cloud deployment of back-end on heroku
-- Cloud deployment of front end on cloudflare
 
 Documentation:
 - Parser docs
