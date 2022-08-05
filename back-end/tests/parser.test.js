@@ -1,8 +1,5 @@
 const { mongoose } = require("mongoose");
-const supertest = require("supertest");
-const app = require("../app");
 const config = require("../utils/config");
-const hourRouter = require("../controllers/hours");
 const Hour = require("../models/hour");
 const {
   processFile,
@@ -10,30 +7,8 @@ const {
   packageHours,
   uploadFiles,
 } = require("../utils/parser");
-const api = supertest(app);
 
-//beforeEach(async () => {
-//await Hour.deleteMany();
-//});
-
-/* 
-  processFile,
-  parseFile: {uniqueRecords, recordsLen, urLength, trash},
-  packageHours,
-  uploadFiles,
-
-            departure: vals[0],
-            ret: vals[1],
-            depId: vals[2],
-            depNm: vals[3],
-            retId: vals[4],
-            retNm: vals[5],
-            distance: vals[6],
-            duration: vals[7],
-
-*/
-
-describe("Testing parser functions", () => {
+describe("Testing parser functions with journeys", () => {
   let obj;
   let hours;
   test("parseFile", async () => {
