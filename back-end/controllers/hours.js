@@ -48,8 +48,6 @@ hourRouter.post(
     const dep = parseISO(req.body.departure);
     const ret = parseISO(req.body.ret);
     const duration = differenceInSeconds(ret, dep);
-    console.log(dep);
-    console.log(ret);
     const trip = {
       departure: dep,
       ret: ret,

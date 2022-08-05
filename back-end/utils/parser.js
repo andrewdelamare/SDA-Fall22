@@ -67,6 +67,7 @@ const parseFile = (file, type) => {
             y: vals[12],
           });
           records.push(it);
+          recordsLen++;
         }
       })
       .on("end", () => {
@@ -107,8 +108,8 @@ const parseFile = (file, type) => {
           const uniqueById = uniqByProp_map(
             "fid",
             "stationId",
-            "",
-            "",
+            "fid",
+            "stationId",
             records
           );
           uniqueRecords = uniqueById;
