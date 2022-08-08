@@ -38,7 +38,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           max: "2021-07-31T21:00",
         })}
       />
-      <p class="text-red-500">{errors.departure?.message}</p>
+      <p className="text-red-500">{errors.departure?.message}</p>
       <label>Return: </label>
       <input
         type="datetime-local"
@@ -52,7 +52,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           max: "2021-07-31T21:00",
         })}
       />
-      <p class="text-red-500">{errors.ret?.message}</p>
+      <p className="text-red-500">{errors.ret?.message}</p>
       <label>Departure ID: </label>
       <input
         type="number"
@@ -63,7 +63,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           type: "number",
         })}
       />
-      <p class="text-red-500">{errors.depId?.message}</p>
+      <p className="text-red-500">{errors.depId?.message}</p>
       <label>Return ID: </label>
       <input
         type="number"
@@ -74,7 +74,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           type: "number",
         })}
       />
-      <p class="text-red-500">{errors.retId?.message}</p>
+      <p className="text-red-500">{errors.retId?.message}</p>
       <label>Departure station name: </label>
       <input
         type="text"
@@ -88,7 +88,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       ></input>
-      <p class="text-red-500">{errors.depNm?.message}</p>
+      <p className="text-red-500">{errors.depNm?.message}</p>
       <label>Return station name: </label>
       <input
         type="text"
@@ -102,7 +102,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       />
-      <p class="text-red-500">{errors.retNm?.message}</p>
+      <p className="text-red-500">{errors.retNm?.message}</p>
       <label>Distance in meters: </label>
       <input
         type="number"
@@ -117,7 +117,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       />
-      <p class="text-red-500">{errors.distance?.message}</p>
+      <p className="text-red-500">{errors.distance?.message}</p>
       <button
         className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
         type="submit"
@@ -159,7 +159,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           min: { value: 1, message: "Value must be greater than zero" },
         })}
       />
-      <p class="text-red-500">{errors.stationId?.message}</p>
+      <p className="text-red-500">{errors.stationId?.message}</p>
       <label>Name: </label>
       <input
         type="text"
@@ -173,7 +173,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       ></input>
-      <p class="text-red-500">{errors.name?.message}</p>
+      <p className="text-red-500">{errors.name?.message}</p>
       <label>Address: </label>
       <input
         type="text"
@@ -187,7 +187,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       ></input>
-      <p class="text-red-500">{errors.address?.message}</p>
+      <p className="text-red-500">{errors.address?.message}</p>
       <label>City: </label>
       <input
         type="text"
@@ -201,7 +201,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       ></input>
-      <p class="text-red-500">{errors.kaupunki?.message}</p>
+      <p className="text-red-500">{errors.kaupunki?.message}</p>
       <label>Operator name: </label>
       <input
         type="text"
@@ -215,7 +215,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           },
         })}
       ></input>
-      <p class="text-red-500">{errors.name?.message}</p>
+      <p className="text-red-500">{errors.name?.message}</p>
       <label>X coordinates: </label>
       <input
         type="number"
@@ -227,7 +227,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
-      <p class="text-red-500">{errors.x?.message}</p>
+      <p className="text-red-500">{errors.x?.message}</p>
       <label>Y coordinates: </label>
       <input
         type="number"
@@ -239,9 +239,9 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
           max: { value: 90, message: "Must not be greater than 90" },
         })}
       />
-      <p class="text-red-500">{errors.y?.message}</p>
+      <p className="text-red-500">{errors.y?.message}</p>
       <button
-        class="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
+        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
         type="submit"
       >
         Submit

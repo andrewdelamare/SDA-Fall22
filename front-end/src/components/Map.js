@@ -1,7 +1,6 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import mapboxgl from "!mapbox-gl";
+import mapboxgl from "mapbox-gl";
 export const Map = ({ features, zoom }) => {
   const [loaded, setLoaded] = useState(false);
   const mapContainer = useRef(null);

@@ -7,15 +7,6 @@ import { StationView } from "./StationView";
 import { DataView } from "./DataView";
 import { ImportView } from "./ImportView";
 function App() {
-  /* let { size } = useParams();
-   <Route path="/" element={<Landing />} />
-          <Route path="/rooms" element={<Rooms />} />
-          <Route path="/book" element={<Booking />}>
-            <Route path=":size" element={<Booking size={size} />} />
-          </Route>
-          <Route path="/spa" element={<Spa />} />
-          <Route path="/restaurant" element={<Restaurant />} /> */
-  //<Footer />
   return (
     <BrowserRouter>
       <link

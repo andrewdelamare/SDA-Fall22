@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const NavBar = () => {
   const [viz, setViz] = useState(false);
   return (
-    <nav
+    <div
       className="
       bg-stone-200 relative w-full flex flex-wrap items-top justify-between px-4 py-4
     "
@@ -131,6 +131,6 @@ export const NavBar = () => {
           </li>
         </ul>
       </div>
-    </nav>
+    </div>
   );
 };
