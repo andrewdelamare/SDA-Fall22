@@ -12,7 +12,7 @@ export const PageSelector = ({ page, changePage, count }) => {
             </button>
           </li>
           <li className="">
-            <button className="text-sm py-1 px-2 relative block border-0 bg-stone-500 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-stone-600 ">{`${page}/${
+            <button className="text-sm py-1 px-2 relative block border-0 bg-blue-400 outline-none transition-all duration-300 rounded text-white hover:text-white">{`${page}/${
               Math.floor(count / 50) + 1
             }`}</button>
           </li>

@@ -6,7 +6,8 @@ import { PageSelector } from "./PageSelector";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 const Hour = ({ selectedHour, setHour, time }) => {
-  const styles = selectedHour === time ? "text-white bg-black rounded-xl" : "";
+  const styles =
+    selectedHour === time ? "text-white bg-blue-400 rounded-xl" : "";
   return (
     <button
       className={styles}
@@ -26,7 +27,7 @@ const HourSelector = ({ selectedHour, setHour }) => {
     md:absolute md:left-[70%] lg:left-[60%]
     "
     >
-      <div className="text-sm md:text-md w-full text-center">
+      <div className="text-md md:text-lg w-full text-center">
         Departure Hour
       </div>
       <div className="grid grid-cols-2 grid-rows-[repeat(12,25px)] gap-x-2 mx-10 my-4 w-24 text-sm">
@@ -60,10 +61,10 @@ const DateSelector = ({
 
       <button
         className="
-        left-[47%] top-[500px] border-2 border-black p-2 
+        left-[47%] top-[500px] border-2 border-slate-800 p-2 rounded-lg shadow-md 
         md:absolute 
-        hover:bg-stone-200 
-        active:bg-stone-400 
+        hover:bg-stone-200 hover:shadow-md
+        active:bg-stone-400 active:shadow-sm
         "
         onClick={() => getTrips()}
       >

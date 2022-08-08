@@ -9,7 +9,7 @@ export const SearchBar = ({ filterEvent, options }) => {
   return (
     <div className="flex w-full justify-center ">
       <form onChange={(e) => searchIt(e)} onSubmit={(e) => e.preventDefault()}>
-        <select id="searchSelect">
+        <select id="searchSelect" className="rounded">
           <option>Filter</option>
 
           {options.map((o) => (
@@ -20,7 +20,7 @@ export const SearchBar = ({ filterEvent, options }) => {
         </select>
         <input
           type="search"
-          className="border-2 mx-2"
+          className="border-2 mx-2 rounded"
           placeholder="Search"
           id="searchInput"
         ></input>

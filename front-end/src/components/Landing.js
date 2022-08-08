@@ -36,7 +36,7 @@ const Amenity = ({ title, desc, className, img, linkLoc }) => (
       }
     />
     <div className=" opacity-100 z-10 blur-none absolute self-center text-white">
-      <div className="text-3xl font-serif">{title}</div>
+      <div className="text-3xl ">{title}</div>
       <div>{desc}</div>
     </div>
   </div>
@@ -60,7 +60,7 @@ const Amenities = () => (
       md:w-2/5 md:float-right md:relative
       "
       title="Journeys"
-      desc="Every trip at your fingertips"
+      desc="Every journey at your fingertips"
       linkLoc="/trips"
       img="bg-trips bg-cover text-white bg-center"
     />
@@ -70,7 +70,7 @@ const Amenities = () => (
       md:w-3/5 md:float-left md:relative
       "
       title="Stations"
-      desc="Check out the data by station"
+      desc="Explore the data by station"
       linkLoc="/stations"
       img="bg-stations bg-cover bg-[center_left_29rem] text-white "
     />

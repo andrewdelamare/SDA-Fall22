@@ -28,7 +28,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Departure: </label>
       <input
         type="datetime-local"
-        className="border-2 mx-2"
+        className="border-2 mx-2 rounded"
         id="departureInput"
         {...register("departure", {
           valueAsDate: true,
@@ -42,7 +42,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Return: </label>
       <input
         type="datetime-local"
-        className="border-2 mx-2"
+        className="border-2 mx-2 rounded"
         id="returnInput"
         {...register("ret", {
           valueAsDate: true,
@@ -56,7 +56,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Departure ID: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("depId", {
           valueAsNumber: true,
           required: "Departure ID is required",
@@ -67,7 +67,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Return ID: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("retId", {
           valueAsNumber: true,
           required: "Return ID is required",
@@ -78,7 +78,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Departure station name: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("depNm", {
           required: "Departure station name is required",
           type: "text",
@@ -92,7 +92,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Return station name: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("retNm", {
           required: "Return station name is required",
           type: "text",
@@ -106,7 +106,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Distance in meters: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("distance", {
           valueAsNumber: true,
           required: "Distance is required",
@@ -152,7 +152,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Station ID: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("stationId", {
           valueAsNumber: true,
           required: "Station ID is required",
@@ -163,7 +163,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Name: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("name", {
           required: "Station name is required",
           type: "text",
@@ -177,7 +177,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Address: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("address", {
           required: "Address name is required",
           type: "text",
@@ -191,7 +191,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>City: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("kaupunki", {
           required: "City is required",
           type: "text",
@@ -205,7 +205,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Operator name: </label>
       <input
         type="text"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("operaattor", {
           required: "Operator name is required",
           type: "text",
@@ -219,7 +219,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>X coordinates: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("x", {
           required: "X coordinates are required",
           type: "number",
@@ -231,7 +231,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       <label>Y coordinates: </label>
       <input
         type="number"
-        className="border-2 mx-2 text-sm"
+        className="border-2 mx-2 text-sm rounded"
         {...register("y", {
           required: "Y coordinates are required",
           type: "number",
@@ -265,6 +265,7 @@ export const ImportView = () => {
       <div className="m-5 flex w-fit self-center">
         <label className="mr-2">Data type:</label>
         <select
+          className=" rounded"
           onChange={(e) => {
             e.preventDefault();
             setOpt(e.target.value);

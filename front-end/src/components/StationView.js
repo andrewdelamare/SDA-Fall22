@@ -30,15 +30,15 @@ const DataView = ({ counts, avs, popular, reset }) => {
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-wrap justify-center">
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Total departures: </h3>
           <div>{counts === null ? <Spinner /> : counts.depCount}</div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Total returns: </h3>
           <div>{counts === null ? <Spinner /> : counts.retCount}</div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Average distance when starting from this station:</h3>
           <div>
             {avs === null ? (
@@ -48,7 +48,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Average distance when returned to this station:</h3>
           <div>
             {avs === null ? (
@@ -60,7 +60,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center">
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Popular return stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -113,7 +113,7 @@ const DataView = ({ counts, avs, popular, reset }) => {
             </ol>
           </div>
         </div>
-        <div className="flex flex-col items-center border-2 border-black w-[300px] m-2 p-2 ">
+        <div className="flex flex-col items-center border-2 rounded shadow-md border-slate-800 w-[300px] m-2 p-2 ">
           <h3>Popular departure stations:</h3>
           <div>
             <ol className="list-decimal list-inside">
@@ -300,7 +300,7 @@ export const StationView = () => {
             <label className="mr-2">Filter by month:</label>
             <select
               onChange={(e) => setMonth(e.target.value)}
-              className={`${selectStyles} mr-3`}
+              className={`${selectStyles} mr-3 rounded`}
             >
               <option value={"all"}>All Months</option>
               <option value={"may"}>May</option>

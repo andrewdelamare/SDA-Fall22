@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl";
 export const Map = ({ features, zoom }) => {
   const [loaded, setLoaded] = useState(false);
   const mapContainer = useRef(null);
@@ -41,7 +42,7 @@ export const Map = ({ features, zoom }) => {
   return (
     <div
       ref={mapContainer}
-      className="map-container min-h-[400px] h-400 w-full"
+      className="map-container min-h-[400px] h-400 w-full rounded shadow-md"
     />
   );
 };

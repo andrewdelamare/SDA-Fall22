@@ -5,16 +5,16 @@ export const NavBar = () => {
   return (
     <div
       className="
-      bg-stone-200 relative w-full flex flex-wrap items-top justify-between px-4 py-4
+    relative w-full flex flex-wrap items-top justify-between px-4 py-4
     "
     >
       <div
         className="
-      flex text-2xl pr-2 h-[43px] py-2
+      flex text-2xl pr-2 h-[43px] py-2 font-serif
       md:text-2xl md:my-auto
       lg:text-3xl  "
       >
-        <Link to="/">Helsinki City Bike App</Link>
+        <Link to="/">City Bike Data Explorer</Link>
       </div>
       <div
         className="
