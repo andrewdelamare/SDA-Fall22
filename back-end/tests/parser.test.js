@@ -46,7 +46,6 @@ describe("Testing parser functions with stations", () => {
   let stations;
   test("parseFile", async () => {
     stations = await parseFile("tests/stationsTestData.csv", "station");
-    console.log(stations);
     expect.assertions(15);
     expect(stations.trash).toStrictEqual(0);
     expect(stations.recordsLen).toStrictEqual(457);
@@ -71,8 +70,6 @@ describe("Testing parser functions with stations", () => {
     await uploadFiles(stations.uniqueRecords, Station);
     await mongoose.connect(config.MONGODB_URI);
     const stationDocs = await Station.estimatedDocumentCount();
-    const found = await Station.find({});
     expect(stationDocs).toBe(457);
-    console.log(found.x);
   }, 60000);
 });

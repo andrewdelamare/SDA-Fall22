@@ -52,7 +52,6 @@ stationRouter.post(
         .send({ message: "This station ID is already in use" });
     } else {
       const result = await Station.create(station);
-      console.log(result);
       return res.status(201).json(result);
     }
   }

@@ -1,24 +1,39 @@
 const supertest = require("supertest");
+const { mongoose } = require("mongoose");
+const config = require("../utils/config");
 const app = require("../app");
 const api = supertest(app);
+const Hour = require("../models/hour");
+const Station = require("../models/station");
+const { hour, station } = require("./initDb");
 describe("Testing stations endpoints", () => {
+  beforeAll(async () => {
+    await mongoose.connect(config.MONGODB_URI);
+    await Hour.deleteMany();
+    await Station.deleteMany();
+    await Hour.create(hour);
+    await Station.create(station);
+  });
   it("GET /stations", async () => {
+    mongoose.connect(config.MONGODB_URI);
     const response = await api
       .get("/stations")
       .expect("content-type", /json/)
       .expect(200);
-    expect(response.body.length).toBe(457);
+    expect(response.body.length).toBeGreaterThanOrEqual(1);
   });
 
   it("GET /stations/station/:id", async () => {
+    mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/551")
+      .get("/stations/station/627")
       .expect("content-type", /json/)
       .expect(200);
-    expect(response.body.name).toBe("Tietäjä");
+    expect(response.body.name).toBe("Piispansilta");
   });
 
   it("POST /station/new", async () => {
+    mongoose.connect(config.MONGODB_URI);
     const response = await api
       .post("/station/new")
       .send({
@@ -33,362 +48,119 @@ describe("Testing stations endpoints", () => {
       .expect("content-type", /json/)
       .expect(201);
   });
+
+  it("GET /stations/station/:id/totalcounts", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/totalcounts")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.depCount).toBe(6);
+  });
+
+  it("GET /stations/station/totalcounts/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/totalcounts/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.journeys).toBe(9);
+  });
+
+  it("GET /stations/station/:id/counts/:month", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/counts/4")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.depCount).toBe(6);
+    expect(response.body.retCount).toBe(3);
+  });
+
+  it("GET /stations/station/counts/:mont/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/counts/4/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.journeys).toBe(9);
+  });
+
+  it("GET /stations/station/:id/totalavs", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/totalavs")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.avDistSt).toBe(1379.6666666666667);
+    expect(response.body.avDistRet).toBe(3415);
+  });
+
+  it("GET /stations/station/totalavs/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/totalavs/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.avDis).toBe(2058.1111111111113);
+  });
+
+  it("GET /stations/station/:id/avs/:month", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/avs/4")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.avDistSt).toBe(1379.6666666666667);
+    expect(response.body.avDistRet).toBe(3415);
+  });
+
+  it("GET /stations/station/avs/:month/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/avs/4/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.avDis).toBe(2058.1111111111113);
+  });
+
+  it("GET /stations/station/:id/allpopular", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/allpopular")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.popDepartures.first.count).toBe(2);
+    expect(response.body.popReturns.first.count).toBe(3);
+  });
+
+  it("GET /stations/station/allpopular/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/allpopular/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.popDepartures.first.stId).toBe(627);
+    expect(response.body.popReturns.first.count).toBe(3);
+  });
+
+  it("GET /stations/station/:id/popular/:month", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/627/popular/4")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.popDepartures.first.stId).toBe(505);
+    expect(response.body.popReturns.first.stId).toBe(641);
+  });
+
+  it("GET /stations/station/popular/:month/data", async () => {
+    mongoose.connect(config.MONGODB_URI);
+    const response = await api
+      .get("/stations/station/popular/4/data")
+      .expect("content-type", /json/)
+      .expect(200);
+    expect(response.body.popDepartures.first.stId).toBe(627);
+    expect(response.body.popReturns.first.count).toBe(3);
+  });
 });
-/*
-stationRouter.get("/stations/station/:id/totalcounts", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const departures = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .count("departures");
-  const returns = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .count("returns");
-  const data = {
-    depCount: departures[0].departures,
-    retCount: returns[0].returns,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/totalcounts/data", async (req, res) => {
-  const departures = await Hour.aggregate().unwind("trips").count("departures");
-  const data = {
-    journeys: departures[0].departures,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/:id/counts/:month", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-
-  const departures = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .count("departures");
-  const returns = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .count("returns");
-  const data = {
-    depCount: departures[0].departures,
-    retCount: returns[0].returns,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/counts/:month/data", async (req, res) => {
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-
-  const departures = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .count("departures");
-  const data = {
-    journeys: departures[0].departures,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/:id/totalavs", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const avDistanceStarted = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .group({ _id: null, averageDistanceStart: { $avg: "$trips.distance" } });
-  const avDistanceEnded = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .group({ _id: null, averageDistanceEnd: { $avg: "$trips.distance" } });
-
-  const data = {
-    avDistSt: avDistanceStarted[0].averageDistanceStart,
-    avDistRet: avDistanceEnded[0].averageDistanceEnd,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/totalavs/data", async (req, res) => {
-  const avDis = await Hour.aggregate()
-    .unwind("trips")
-    .group({ _id: null, averageDist: { $avg: "$trips.distance" } });
-  const data = {
-    avDis: avDis[0].averageDist,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/:id/avs/:month", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-
-  const avDistanceStarted = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .group({ _id: null, averageDistanceStart: { $avg: "$trips.distance" } });
-  const avDistanceEnded = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .group({ _id: null, averageDistanceEnd: { $avg: "$trips.distance" } });
-
-  const data = {
-    avDistSt: avDistanceStarted[0].averageDistanceStart,
-    avDistRet: avDistanceEnded[0].averageDistanceEnd,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/avs/:month/data", async (req, res) => {
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-
-  const avDistanceStarted = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .group({ _id: null, averageDist: { $avg: "$trips.distance" } });
-  const data = {
-    avDis: avDistanceStarted[0].averageDist,
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/:id/allpopular", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const popularDepartures = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .group({
-      _id: "$trips.depId",
-      stNm: { $first: "$trips.depNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-  const popularReturns = await Hour.aggregate()
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .group({
-      _id: "$trips.retId",
-      stNm: { $first: "$trips.retNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-
-  const data = {
-    popDepartures: popularDepartures[0],
-    popReturns: popularReturns[0],
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/allpopular/data", async (req, res) => {
-  const popularDepartures = await Hour.aggregate()
-    .unwind("trips")
-    .group({
-      _id: "$trips.depId",
-      stNm: { $first: "$trips.depNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-  const popularReturns = await Hour.aggregate()
-    .unwind("trips")
-    .group({
-      _id: "$trips.retId",
-      stNm: { $first: "$trips.retNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-
-  const data = {
-    popDepartures: popularDepartures[0],
-    popReturns: popularReturns[0],
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/:id/popular/:month", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-  const popularDepartures = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.retId": id })
-    .group({
-      _id: "$trips.depId",
-      stNm: { $first: "$trips.depNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-  const popularReturns = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .match({ "trips.depId": id })
-    .group({
-      _id: "$trips.retId",
-      stNm: { $first: "$trips.retNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-
-  const data = {
-    popDepartures: popularDepartures[0],
-    popReturns: popularReturns[0],
-  };
-  return res.status(200).json(data);
-});
-
-stationRouter.get("/stations/station/popular/:month/data", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const month = parseInt(req.params.month);
-  const monthDate = new Date(2021, month, 1);
-  const startMon = startOfMonth(monthDate);
-  const endMon = startOfDay(endOfMonth(monthDate));
-  const popularDepartures = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .group({
-      _id: "$trips.depId",
-      stNm: { $first: "$trips.depNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-  const popularReturns = await Hour.aggregate()
-    .match({ $and: [{ day: { $gte: startMon } }, { day: { $lte: endMon } }] })
-    .unwind("trips")
-    .group({
-      _id: "$trips.retId",
-      stNm: { $first: "$trips.retNm" },
-      count: { $sum: 1 },
-    })
-    .sort({ count: -1 })
-    .group({
-      _id: 1,
-      stations: {
-        $push: { stId: "$_id", count: "$count", stNm: "$stNm" },
-      },
-    })
-    .project({
-      first: { $arrayElemAt: ["$stations", 0] },
-      second: { $arrayElemAt: ["$stations", 1] },
-      third: { $arrayElemAt: ["$stations", 2] },
-      fourth: { $arrayElemAt: ["$stations", 3] },
-      fifth: { $arrayElemAt: ["$stations", 4] },
-    });
-
-  const data = {
-    popDepartures: popularDepartures[0],
-    popReturns: popularReturns[0],
-  };
-  return res.status(200).json(data);
-});
-*/

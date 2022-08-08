@@ -1,14 +1,25 @@
 const supertest = require("supertest");
+const { mongoose } = require("mongoose");
+const config = require("../utils/config");
 const app = require("../app");
 const api = supertest(app);
-
+const Hour = require("../models/hour");
+const Station = require("../models/station");
+const { hour, station } = require("./initDb");
 describe("Testing hours endpoints", () => {
+  beforeAll(async () => {
+    await mongoose.connect(config.MONGODB_URI);
+    await Hour.deleteMany();
+    await Station.deleteMany();
+    await Hour.create(hour);
+    await Station.create(station);
+  });
   it("GET /hour", async () => {
     const response = await api
       .get("/hour")
       .expect("content-type", /json/)
       .expect(200);
-    expect(response.body[0].trips.length).toBe(477);
+    expect(response.body[0].trips.length).toBe(9);
   });
 
   it("GET /hours/:day/:hour", async () => {
@@ -16,7 +27,7 @@ describe("Testing hours endpoints", () => {
       .get("/hours/1619816400000/0")
       .expect("content-type", /json/)
       .expect(200);
-    expect(response.body[0].trips.length).toBe(477);
+    expect(response.body[0].trips.length).toBe(9);
   });
 
   it("POST /trip", async () => {
