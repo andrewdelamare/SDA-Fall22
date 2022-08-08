@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../components/App";
 import { Calendar } from "../components/Calendar";
@@ -16,12 +16,15 @@ import { StationView } from "../components/StationView";
 test("Renders App component", () => {
   render(<App />);
 });
+
 test("Renders DataView component", () => {
   render(<DataView />);
 });
+
 test("Renders ImportView component", () => {
   render(<ImportView />);
 });
+
 test("Renders Landing component", () => {
   render(
     <MemoryRouter>
@@ -41,21 +44,26 @@ test("Renders Calendar component", () => {
 test("Renders OrderButton component", () => {
   render(<OrderButton />);
 });
+
 test("Renders PageSelector component", () => {
   render(<PageSelector />);
 });
 test("Renders SearchBar component", () => {
   render(<SearchBar options={["fake", "fake2"]} />);
 });
+
 test("Renders Spinner component", () => {
   render(<Spinner />);
 });
+
 test("Renders Stations component", () => {
   render(<Stations />);
 });
+
 test("Renders StationView component", () => {
   render(<StationView />);
 });
+
 test("Renders Nav component", () => {
   render(
     <MemoryRouter>

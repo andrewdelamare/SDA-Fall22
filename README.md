@@ -61,14 +61,15 @@ Deployment:
 - Deployment of back-end with heroku
 - Deployment of front end with cloudflare
 
+Tests:
+- Back end tests with jest
+- Basic front end render tests with jest
+
 ***
 ## Upcoming Features
 
 Tests:
-- Back end tests with jest
-- Front end tests with jest
 - End to end tests with cypress
-
 
 Documentation:
 - Parser docs

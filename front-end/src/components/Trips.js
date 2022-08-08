@@ -67,7 +67,7 @@ const DateSelector = ({
         "
         onClick={() => getTrips()}
       >
-        Get Trips
+        Get Journeys
       </button>
     </div>
   );
