@@ -119,7 +119,7 @@ const JourneyForm = ({ handleSubmit, register, errors, setError }) => {
       />
       <p className="text-red-500">{errors.distance?.message}</p>
       <button
-        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
+        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 shadow hover:bg-stone-400"
         type="submit"
       >
         Submit
@@ -241,7 +241,7 @@ const StationForm = ({ handleSubmit, register, errors, setError }) => {
       />
       <p className="text-red-500">{errors.y?.message}</p>
       <button
-        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 hover:bg-stone-400"
+        className="m-2 rounded-xl border-2 w-fit self-center p-2 bg-stone-200 shadow-md hover:bg-stone-400"
         type="submit"
       >
         Submit
@@ -261,7 +261,7 @@ export const ImportView = () => {
   const [error, setError] = useState(null);
 
   return (
-    <div className="mx-10 my-4 flex flex-col">
+    <div className="mx-10 my-7 flex flex-col">
       <div className="m-5 flex w-fit self-center">
         <label className="mr-2">Data type:</label>
         <select

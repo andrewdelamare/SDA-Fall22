@@ -14,7 +14,7 @@ export const NavBar = () => {
       md:text-2xl md:my-auto
       lg:text-3xl  "
       >
-        <Link to="/">City Bike Data Explorer</Link>
+        <Link to="/">City Bike App</Link>
       </div>
       <div
         className="
@@ -88,7 +88,7 @@ export const NavBar = () => {
         <ul
           className={`
         ${viz === true ? "visible" : "hidden"}
-          flex flex-col items-end pr-3
+          flex flex-col items-end pr-3 text-lg
           md:hidden
       `}
         >

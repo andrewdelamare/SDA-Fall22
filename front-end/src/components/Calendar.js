@@ -58,7 +58,7 @@ const Day = ({ selectDay, day, selectedDay }) => {
       ? console.log("no data for this day, please select another")
       : selectDay(day);
   };
-  const selected = "bg-black text-white rounded-full";
+  const selected = "bg-blue-400 text-white rounded-full";
   let selStylez = sel !== false ? selected : "";
 
   const invalidStylez = "line-through text-slate-500 decoration-red-500";
