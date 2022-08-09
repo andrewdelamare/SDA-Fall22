@@ -1,9 +1,39 @@
-# SDA-Fall22
+# Solita Dev Academy Finland fall 2022 pre-assignment
 
-## Solita Dev Academy Finland fall 2022 pre-assignment
-Status: In progress 
+## Project Overview
+This is a full stack React and NodeJS data exploration website which enables the user to examine  HSL's city bike station and journey data from May to July 2021.
 
-***
+Front end:
+- React
+- Axios
+- React Router
+- Mapbox GL
+
+Back end:
+- NodeJS
+- Express
+- Mongoose 
+
+Database: 
+- MongoDB (Atlas)
+
+---
+
+## Live Site
+[https://sda-fall22.pages.dev](https://sda-fall22.pages.dev)
+
+![Landing](readme-imgs/Landing.png)
+![Data](readme-imgs/Data.png)
+![Journeys](readme-imgs/Journeys.png)
+![Stations](readme-imgs/Stations.png)
+![Station](readme-imgs/Station.png)
+![Import](readme-imgs/Import.png)
+
+---
+### Want to run it locally? 
+Please navigate to the [front-end](https://github.com/andrewdelamare/SDA-Fall22/tree/master/front-end) and [back-end](https://github.com/andrewdelamare/SDA-Fall22/tree/master/back-end) directories for complete instructions 
+
+---
 ### Completed features: 
 
 #### Data import:
@@ -65,13 +95,9 @@ Tests:
 - Back end tests with jest
 - Basic front end render tests with jest
 
-***
-## Upcoming Features
-
-Tests:
-- End to end tests with cypress
-
 Documentation:
+- Front end docs
 - Parser docs
 - Back end docs
-- Front end docs
+
+***
