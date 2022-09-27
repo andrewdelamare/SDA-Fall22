@@ -17,7 +17,9 @@ export const Month = ({ month, className, selectedDay, selectDay }) => {
     start: start,
     end: end,
   });
-
+  const dayLetterStyle =
+    "place-self-center justify-around place-items-center flex w-8 h-8";
+  const dayLetterArr = ["S", "M", "T", "W", "T", "F", "S"];
   return (
     <div className={`${className} h-[300px] md:h-[350px]`}>
       <div className="flex">
@@ -27,27 +29,9 @@ export const Month = ({ month, className, selectedDay, selectDay }) => {
       </div>
 
       <div className="grid grid-cols-7 pt-3 mx-12 md:mx-4 md:gap-3">
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          S
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          M
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          T
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          W
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          T
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          F
-        </div>
-        <div className="place-self-center justify-around place-items-center flex w-8 h-8">
-          S
-        </div>
+        {dayLetterArr.map((d) => (
+          <div className={dayLetterStyle}>{d}</div>
+        ))}
       </div>
       <div className="grid md:gap-3 grid-cols-7 pt-3 md:mx-4 mx-12 ">
         {allDays.map((day) => (
