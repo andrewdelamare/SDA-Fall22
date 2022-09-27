@@ -8,9 +8,9 @@ import {
   getMonthCounts,
   getMonthAverages,
   getMonthPopular,
-} from "../services/stationService";
-import { Map } from "./Map";
-import { Spinner } from "./Spinner";
+} from "../../services/stationService";
+import { Map } from "../Map";
+import { Spinner } from "../Spinner";
 
 const StationLinkButton = ({ name, id, reset }) => {
   const stringId = id < 10 ? `00${id}` : id < 100 ? `0${id}` : id;
