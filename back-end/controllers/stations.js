@@ -357,7 +357,6 @@ stationRouter.get("/stations/:id/popular/:month", async (req, res) => {
 });
 
 stationRouter.get("/stations/popular/:month/data", async (req, res) => {
-  const id = parseInt(req.params.id);
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
   const startMon = startOfMonth(monthDate);
