@@ -4,7 +4,7 @@ import { Trips } from "./journeys-view/Trips";
 import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
 import { StationView } from "./StationView";
-import { DataView } from "./DataView";
+import { DataView } from "./data-view/DataView";
 import { ImportView } from "./ImportView";
 import { Footer } from "./Footer";
 function App() {
