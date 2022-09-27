@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getTripsByDateHour } from "../services/tripService";
-import { Calendar } from "./Calendar";
+import { Calendar } from "./calendar/Calendar";
 import { OrderButton } from "./OrderButton";
 import { PageSelector } from "./PageSelector";
 import { Link } from "react-router-dom";
