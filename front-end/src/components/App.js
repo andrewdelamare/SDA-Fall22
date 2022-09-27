@@ -5,7 +5,7 @@ import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
 import { StationView } from "./StationView";
 import { DataView } from "./data-view/DataView";
-import { ImportView } from "./ImportView";
+import { ImportView } from "./import-view/ImportView";
 import { Footer } from "./Footer";
 function App() {
   return (
