@@ -16,9 +16,6 @@ const {
   eachHourOfInterval,
   getMonth,
 } = require("date-fns");
-//node utils/parser.js csv/2021-05.csv
-//FID,ID,Nimi,Namn,Name,Osoite,Adress,Kaupunki,Stad,Operaattor,Kapasiteet,x,y
-//1,501,Hanasaari,Hanaholmen,Hanasaari,Hanasaarenranta 1,Hanaholmsstranden 1,Espoo,Esbo,CityBike Finland,10,24.840319,60.16582
 
 const parseFile = (file, type) => {
   let records = [];
@@ -122,6 +119,8 @@ const parseFile = (file, type) => {
   });
 };
 
+//Due to MongoDB Atlas free tier size limits, I chose to store the trips in buckets based on departure hour, thus decreasing its size.
+//The packageHours function takes parsed journey records and packages them into the appropriate hour.
 const packageHours = (records) => {
   const hours = [];
   const dep = parseISO(records[0].departure);
@@ -168,7 +167,7 @@ const chunkedUpload = async (arr, model) => {
       {},
       cliProgress.Presets.shades_classic
     );
-    const leng = ~~(arr.length / 100) + 1;
+    const leng = Math.floor(arr.length / 100) + 1;
     progbar.start(leng, 0);
     for (let i = 0; i < arr.length; i += 100) {
       const chunk = arr.slice(i, i + 100);
