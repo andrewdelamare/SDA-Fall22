@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Landing } from "./Landing";
-import { Trips } from "./Trips";
+import { Trips } from "./journeys-view/Trips";
 import { NavBar } from "./Nav";
 import { Stations } from "./Stations";
 import { StationView } from "./StationView";
