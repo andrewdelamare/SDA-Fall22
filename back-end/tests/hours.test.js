@@ -14,9 +14,9 @@ describe("Testing hours endpoints", () => {
     await Hour.create(hour);
     await Station.create(station);
   });
-  it("GET /hour", async () => {
+  it("GET /hours", async () => {
     const response = await api
-      .get("/hour")
+      .get("/hours")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body[0].trips.length).toBe(9);
@@ -30,9 +30,9 @@ describe("Testing hours endpoints", () => {
     expect(response.body[0].trips.length).toBe(9);
   });
 
-  it("POST /trip", async () => {
+  it("POST /hours/trip", async () => {
     const response = await api
-      .post("/trip")
+      .post("hours/trip")
       .send({
         departure: "2021-04-30T21:59:54.000+00:00",
         ret: "2021-04-30T22:06:44.000+00:00",

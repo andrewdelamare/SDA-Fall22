@@ -14,11 +14,11 @@ const {
   parseISO,
 } = require("date-fns");
 
-hourRouter.get("/hour", async (req, res) => {
+hourRouter.get("/", async (req, res) => {
   const result = await Hour.find({}).limit(1).lean();
   return res.status(200).json(result);
 });
-hourRouter.get("/hours/:day/:hour", async (req, res) => {
+hourRouter.get("/:day/:hour", async (req, res) => {
   const day = req.params.day;
   const hour = req.params.hour;
 

@@ -9,6 +9,6 @@ const app = express();
 mongoose.connect(config.MONGODB_URI);
 app.use(cors());
 app.use(express.json());
-app.use(hourRouter);
+app.use("/hours", hourRouter);
 app.use("/stations", stationRouter);
 module.exports = app;
