@@ -32,7 +32,7 @@ describe("Testing hours endpoints", () => {
 
   it("POST /hours/trip", async () => {
     const response = await api
-      .post("hours/trip")
+      .post("/hours/trip")
       .send({
         departure: "2021-04-30T21:59:54.000+00:00",
         ret: "2021-04-30T22:06:44.000+00:00",
