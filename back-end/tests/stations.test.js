@@ -23,19 +23,19 @@ describe("Testing stations endpoints", () => {
     expect(response.body.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("GET /stations/station/:id", async () => {
+  it("GET /stations/:id", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627")
+      .get("/stations/627")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.name).toBe("Piispansilta");
   });
 
-  it("POST /station/new", async () => {
+  it("POST /stations/new", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .post("/station/new")
+      .post("/stations/new")
       .send({
         stationId: "999",
         name: "fake station",
@@ -49,115 +49,115 @@ describe("Testing stations endpoints", () => {
       .expect(201);
   });
 
-  it("GET /stations/station/:id/totalcounts", async () => {
+  it("GET /stations/:id/totalcounts", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/totalcounts")
+      .get("/stations/627/totalcounts")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.depCount).toBe(6);
   });
 
-  it("GET /stations/station/totalcounts/data", async () => {
+  it("GET /stations/totalcounts/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/totalcounts/data")
+      .get("/stations/totalcounts/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.journeys).toBe(9);
   });
 
-  it("GET /stations/station/:id/counts/:month", async () => {
+  it("GET /stations/:id/counts/:month", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/counts/4")
+      .get("/stations/627/counts/4")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.depCount).toBe(6);
     expect(response.body.retCount).toBe(3);
   });
 
-  it("GET /stations/station/counts/:mont/data", async () => {
+  it("GET /stations/counts/:mont/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/counts/4/data")
+      .get("/stations/counts/4/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.journeys).toBe(9);
   });
 
-  it("GET /stations/station/:id/totalavs", async () => {
+  it("GET /stations/:id/totalavs", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/totalavs")
+      .get("/stations/627/totalavs")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.avDistSt).toBe(1379.6666666666667);
     expect(response.body.avDistRet).toBe(3415);
   });
 
-  it("GET /stations/station/totalavs/data", async () => {
+  it("GET /stations/totalavs/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/totalavs/data")
+      .get("/stations/totalavs/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.avDis).toBe(2058.1111111111113);
   });
 
-  it("GET /stations/station/:id/avs/:month", async () => {
+  it("GET /stations/:id/avs/:month", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/avs/4")
+      .get("/stations/627/avs/4")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.avDistSt).toBe(1379.6666666666667);
     expect(response.body.avDistRet).toBe(3415);
   });
 
-  it("GET /stations/station/avs/:month/data", async () => {
+  it("GET /stations/avs/:month/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/avs/4/data")
+      .get("/stations/avs/4/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.avDis).toBe(2058.1111111111113);
   });
 
-  it("GET /stations/station/:id/allpopular", async () => {
+  it("GET /stations/:id/allpopular", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/allpopular")
+      .get("/stations/627/allpopular")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.popDepartures.first.count).toBe(2);
     expect(response.body.popReturns.first.count).toBe(3);
   });
 
-  it("GET /stations/station/allpopular/data", async () => {
+  it("GET /stations/allpopular/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/allpopular/data")
+      .get("/stations/allpopular/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.popDepartures.first.stId).toBe(627);
     expect(response.body.popReturns.first.count).toBe(3);
   });
 
-  it("GET /stations/station/:id/popular/:month", async () => {
+  it("GET /stations/:id/popular/:month", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/627/popular/4")
+      .get("/stations/627/popular/4")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.popDepartures.first.stId).toBe(505);
     expect(response.body.popReturns.first.stId).toBe(641);
   });
 
-  it("GET /stations/station/popular/:month/data", async () => {
+  it("GET /stations/popular/:month/data", async () => {
     mongoose.connect(config.MONGODB_URI);
     const response = await api
-      .get("/stations/station/popular/4/data")
+      .get("/stations/popular/4/data")
       .expect("content-type", /json/)
       .expect(200);
     expect(response.body.popDepartures.first.stId).toBe(627);

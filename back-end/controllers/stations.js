@@ -5,19 +5,19 @@ const stationRouter = express.Router();
 const { body, validationResult } = require("express-validator");
 const { startOfMonth, endOfMonth, startOfDay } = require("date-fns");
 
-stationRouter.get("/stations", async (req, res) => {
+stationRouter.get("/", async (req, res) => {
   const result = await Station.find({}).lean();
   return res.status(200).json(result);
 });
 
-stationRouter.get("/stations/:id", async (req, res) => {
+stationRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
   const doc = await Station.findOne({ stationId: id }).lean();
   return res.status(200).json(doc);
 });
 
 stationRouter.post(
-  "/station/new",
+  "/new",
   body("stationId").isNumeric(),
   body("name").isString(),
   body("address").isString(),
@@ -57,7 +57,7 @@ stationRouter.post(
   }
 );
 
-stationRouter.get("/stations/:id/totalcounts", async (req, res) => {
+stationRouter.get("/:id/totalcounts", async (req, res) => {
   const id = parseInt(req.params.id);
   const departures = await Hour.aggregate()
     .unwind("trips")
@@ -74,7 +74,7 @@ stationRouter.get("/stations/:id/totalcounts", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/totalcounts/data", async (req, res) => {
+stationRouter.get("/totalcounts/data", async (req, res) => {
   const departures = await Hour.aggregate().unwind("trips").count("departures");
   const data = {
     journeys: departures[0].departures,
@@ -82,7 +82,7 @@ stationRouter.get("/stations/totalcounts/data", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/:id/counts/:month", async (req, res) => {
+stationRouter.get("/:id/counts/:month", async (req, res) => {
   const id = parseInt(req.params.id);
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
@@ -106,7 +106,7 @@ stationRouter.get("/stations/:id/counts/:month", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/counts/:month/data", async (req, res) => {
+stationRouter.get("/counts/:month/data", async (req, res) => {
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
   const startMon = startOfMonth(monthDate);
@@ -122,7 +122,7 @@ stationRouter.get("/stations/counts/:month/data", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/:id/totalavs", async (req, res) => {
+stationRouter.get("/:id/totalavs", async (req, res) => {
   const id = parseInt(req.params.id);
   const avDistanceStarted = await Hour.aggregate()
     .unwind("trips")
@@ -140,7 +140,7 @@ stationRouter.get("/stations/:id/totalavs", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/totalavs/data", async (req, res) => {
+stationRouter.get("/totalavs/data", async (req, res) => {
   const avDis = await Hour.aggregate()
     .unwind("trips")
     .group({ _id: null, averageDist: { $avg: "$trips.distance" } });
@@ -150,7 +150,7 @@ stationRouter.get("/stations/totalavs/data", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/:id/avs/:month", async (req, res) => {
+stationRouter.get("/:id/avs/:month", async (req, res) => {
   const id = parseInt(req.params.id);
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
@@ -175,7 +175,7 @@ stationRouter.get("/stations/:id/avs/:month", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/avs/:month/data", async (req, res) => {
+stationRouter.get("/avs/:month/data", async (req, res) => {
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
   const startMon = startOfMonth(monthDate);
@@ -191,7 +191,7 @@ stationRouter.get("/stations/avs/:month/data", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/:id/allpopular", async (req, res) => {
+stationRouter.get("/:id/allpopular", async (req, res) => {
   const id = parseInt(req.params.id);
   const popularDepartures = await Hour.aggregate()
     .unwind("trips")
@@ -245,7 +245,7 @@ stationRouter.get("/stations/:id/allpopular", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/allpopular/data", async (req, res) => {
+stationRouter.get("/allpopular/data", async (req, res) => {
   const popularDepartures = await Hour.aggregate()
     .unwind("trips")
     .group({
@@ -296,7 +296,7 @@ stationRouter.get("/stations/allpopular/data", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/:id/popular/:month", async (req, res) => {
+stationRouter.get("/:id/popular/:month", async (req, res) => {
   const id = parseInt(req.params.id);
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
@@ -356,7 +356,7 @@ stationRouter.get("/stations/:id/popular/:month", async (req, res) => {
   return res.status(200).json(data);
 });
 
-stationRouter.get("/stations/popular/:month/data", async (req, res) => {
+stationRouter.get("/popular/:month/data", async (req, res) => {
   const month = parseInt(req.params.month);
   const monthDate = new Date(2021, month, 1);
   const startMon = startOfMonth(monthDate);

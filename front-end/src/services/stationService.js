@@ -1,14 +1,14 @@
 import axios from "axios";
-const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = `${process.env.REACT_APP_BASE_URL}/stations`;
 
 const addStation = async (station) => {
-  const response = await axios.post(`${baseUrl}/station/new`, station);
+  const response = await axios.post(`${baseUrl}/new`, station);
   return response.data;
 };
 
 const getStations = async () => {
   const response = await axios
-    .get(`${baseUrl}/stations`)
+    .get(`${baseUrl}/`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -17,7 +17,7 @@ const getStations = async () => {
 
 const getStation = async (id) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}`)
+    .get(`${baseUrl}/${id}`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -26,7 +26,7 @@ const getStation = async (id) => {
 
 const getTotalCounts = async (id) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}/totalcounts`)
+    .get(`${baseUrl}/${id}/totalcounts`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -35,7 +35,7 @@ const getTotalCounts = async (id) => {
 
 const getTotalAverages = async (id) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}/totalavs`)
+    .get(`${baseUrl}/${id}/totalavs`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -44,7 +44,7 @@ const getTotalAverages = async (id) => {
 
 const getAllPopular = async (id) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}/allpopular`)
+    .get(`${baseUrl}/${id}/allpopular`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -53,7 +53,7 @@ const getAllPopular = async (id) => {
 
 const getDVCounts = async () => {
   const response = await axios
-    .get(`${baseUrl}/stations/totalcounts/data`)
+    .get(`${baseUrl}/totalcounts/data`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -62,7 +62,7 @@ const getDVCounts = async () => {
 
 const getDVAverages = async () => {
   const response = await axios
-    .get(`${baseUrl}/stations/totalavs/data`)
+    .get(`${baseUrl}/totalavs/data`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -71,7 +71,7 @@ const getDVAverages = async () => {
 
 const getDVPopular = async () => {
   const response = await axios
-    .get(`${baseUrl}/stations/allpopular/data`)
+    .get(`${baseUrl}/allpopular/data`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -80,7 +80,7 @@ const getDVPopular = async () => {
 
 const getMonthCounts = async (id, month) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}/counts/${month}`)
+    .get(`${baseUrl}/${id}/counts/${month}`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -89,7 +89,7 @@ const getMonthCounts = async (id, month) => {
 
 const getMonthAverages = async (id, month) => {
   const response = await axios
-    .get(`${baseUrl}/stations/${id}/avs/${month}`)
+    .get(`${baseUrl}/${id}/avs/${month}`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -98,14 +98,14 @@ const getMonthAverages = async (id, month) => {
 
 const getMonthPopular = async (id, month) => {
   const response = await axios.get(
-    `${baseUrl}/stations/${id}/popular/${month}`
+    `${baseUrl}/${id}/popular/${month}`
   );
   return response.data;
 };
 
 const dvMonthCounts = async (month) => {
   const response = await axios
-    .get(`${baseUrl}/stations/counts/${month}/data`)
+    .get(`${baseUrl}/counts/${month}/data`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -114,7 +114,7 @@ const dvMonthCounts = async (month) => {
 
 const dvMonthAverages = async (month) => {
   const response = await axios
-    .get(`${baseUrl}/stations/avs/${month}/data`)
+    .get(`${baseUrl}/avs/${month}/data`)
     .catch(function (error) {
       return error.toJSON();
     });
@@ -123,7 +123,7 @@ const dvMonthAverages = async (month) => {
 
 const dvMonthPopular = async (month) => {
   const response = await axios
-    .get(`${baseUrl}/stations/popular/${month}/data`)
+    .get(`${baseUrl}/popular/${month}/data`)
     .catch(function (error) {
       return error.toJSON();
     });
